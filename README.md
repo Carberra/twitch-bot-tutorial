@@ -16,7 +16,7 @@ Download the latest version from here: https://www.python.org/downloads/.
 #### On Unix based systems:
 `python3.x -m pip install irc requests` (replace "x" with your subversion).
 #### On Windows:
-`pip install irc requests`, or `py -m pip install irc requests`.
+`pip install irc requests` or `py -m pip install irc requests`.
 
 ## Notes
 
