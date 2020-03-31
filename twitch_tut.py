@@ -18,13 +18,14 @@ Some code in this file is licensed under the Apache License, Version 2.0.
 	NOTES
 	-----
 
-This file is the base shell for creating a Twitch bot using Python, and doesn't really do much.
-The full code will be made public once the series has completed, but in the meantime, feel free to experiment.
 You will obviously need to modify `NAME`, `OWNER`, `bot.CLIENT_ID`, and `bot.TOKEN` to your own info before running the bot.
+Otherwise, the modifications to this code, and all the code in the /lib directory, are copyright © Carberra 2020.
 """
 
 from irc.bot import SingleServerIRCBot
 from requests import get
+
+from lib import db, cmds, react, automod
 
 NAME = "your bot's name here"
 OWNER = "your channel's name here"
@@ -35,12 +36,12 @@ class Bot(SingleServerIRCBot):
 		self.HOST = "irc.chat.twitch.tv"
 		self.PORT = 6667
 		self.USERNAME = NAME.lower()
-		self.CLIENT_ID = "your bot's client ID here"
+		self.CLIENT_ID = "your bot's Client ID here"
 		self.TOKEN = "your bot's token here"
 		self.CHANNEL = f"#{OWNER}"
 
 		url = f"https://api.twitch.tv/kraken/users?login={self.USERNAME}"
-		headers = {"Client-ID" : self.CLIENT_ID, "Accept" : 'application/vnd.twitchtv.v5+json'}
+		headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
 		resp = get(url, headers=headers).json()
 		self.channel_id = resp["users"][0]["_id"]
 
@@ -49,16 +50,22 @@ class Bot(SingleServerIRCBot):
 	def on_welcome(self, cxn, event):
 		for req in ("membership", "tags", "commands"):
 			cxn.cap("REQ", f":twitch.tv/{req}")
-			
+
 		cxn.join(self.CHANNEL)
+		db.build()
 		self.send_message("Now online.")
 
+	@db.with_commit
 	def on_pubmsg(self, cxn, event):
-		tags = {kvpair["key"] : kvpair["value"] for kvpair in event.tags}
-		user = {"name" : tags["display-name"], "id" : tags["user-id"]}
+		tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
+		user = {"name": tags["display-name"], "id": tags["user-id"]}
 		message = event.arguments[0]
 
-		print(f"Message from {user['name']}: {message}")
+		react.add_user(bot, user)
+
+		if user["name"] != NAME and automod.clear(bot, user, message):
+			react.process(bot, user, message)
+			cmds.process(bot, user, message)
 
 	def send_message(self, message):
 		self.connection.privmsg(self.CHANNEL, message)

@@ -1,0 +1,4 @@
+*.db
+*.db-journal
+files/things.txt
+__pycache__
