@@ -3,6 +3,8 @@ from sqlite3 import connect
 cxn = connect("./files/database.db", check_same_thread=False)
 cur = cxn.cursor()
 
+def unsinnprint():
+    print("tata")
 
 def with_commit(func):
 	def inner(*args, **kwargs):
@@ -44,10 +46,8 @@ def column(command, *values):
 	cur.execute(command, tuple(values))
 	return [item[0] for item in cur.fetchall()]
 
-
 def execute(command, *values):
 	cur.execute(command, tuple(values))
-
 
 def mutliexec(command, valueset):
 	cur.executemany(command, valueset)
