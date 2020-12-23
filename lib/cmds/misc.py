@@ -5,10 +5,14 @@ import configParser
 
 from .. import db
 from .. import user_management
+from .. import react
 
 BOOT_TIME = time()
 read_successful, cfg = configParser.get_configuration("bot")
 OWNER = cfg["owner"]
+
+def bye(bot, user, *args):
+    react.say_goodbye(bot, user)
 
 def lurk(bot, user, *args):
     # ToDo: Wenn files und imports sortiert werden hier das say_goodbye() zusammenführen

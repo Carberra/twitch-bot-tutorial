@@ -10,7 +10,8 @@ from . import user_management
 
 # loginWords = ["En Gude", "EnGudeEmote"]
 
-logoutWords = ["Bye", "bye", "ciao", "Ciao", "tschö", "Tschö"]
+# "Command from a another world" <-- POG
+cmds_another_world = ["(y)"]
 
 messages = defaultdict(int)
 
@@ -20,9 +21,10 @@ def process(bot, user, message):
     if user_management.is_user_id_active(user.get_id()) == False:
         welcome(bot, user)
     else:
-        for element in logoutWords:
-            if element in message:
-                say_goodbye(bot, user)
+        # ToDo: Schön machen mit Kommandos aus Git z.B. auch.
+        for element in cmds_another_world:
+            if element in message.lower():
+                bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Befehl aus einer anderen Welt GG!")
                 break
 
     check_activity(bot, user)
