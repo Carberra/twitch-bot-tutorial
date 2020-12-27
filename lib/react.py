@@ -8,10 +8,8 @@ from . import db
 from .cmds import games
 from . import user_management
 
-# loginWords = ["En Gude", "EnGudeEmote"]
-
-# "Command from a another world" <-- POG
-cmds_another_world = ["(y)"]
+# "Emote from a another world"
+emotes_another_world = ["(y)"]
 
 messages = defaultdict(int)
 
@@ -21,10 +19,9 @@ def process(bot, user, message):
     if user_management.is_user_id_active(user.get_id()) == False:
         welcome(bot, user)
     else:
-        # ToDo: Schön machen mit Kommandos aus Git z.B. auch.
-        for element in cmds_another_world:
+        for element in emotes_another_world:
             if element in message.lower():
-                bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Befehl aus einer anderen Welt GG!")
+                bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Emote aus einer anderen Welt!")
                 break
 
     check_activity(bot, user)
@@ -67,7 +64,6 @@ def welcome(bot, user):
     user_management.set_user_active(user)
 
 def say_goodbye(bot, user):
-    # ToDo: Überprüfung. Nur wenn User in activeList
     if user_management.is_user_id_active(user.get_id()) == True:
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()}. Bis zum nächsten Mal.")
         user_management.set_user_inactive(user.get_id())

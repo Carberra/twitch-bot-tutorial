@@ -15,7 +15,6 @@ def bye(bot, user, *args):
     react.say_goodbye(bot, user)
 
 def lurk(bot, user, *args):
-    # ToDo: Wenn files und imports sortiert werden hier das say_goodbye() zusammenführen
     if user_management.is_user_id_active(user.get_id()) == True:
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()} und viel Spaß Im Lurk.")
         user_management.set_user_inactive(user.get_id())
@@ -27,8 +26,7 @@ def lostcounter(bot, user, *args):
     if len(args) < 1:
         db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", user.get_name())
     elif len(args) > 1:
-        # ToDo: Text ersetzen, 'Lieber' verallgemeinern
-        bot.send_message(f"Lieber {user.get_displayname()} bitte nach dem Kommando nur ein Argument übergeben.")
+        bot.send_message(f"{user.get_displayname()}, bitte nach dem Kommando nur ein Argument übergeben.")
     else:
         clear_username = args[0].replace("@", "").lower()
         if user_management.is_user_name_active(clear_username) == True:
