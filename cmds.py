@@ -1,5 +1,5 @@
 from time import time
-from . import misc, economy, games, mod
+import misc, economy, games, mod
 
 PREFIX = "!"
 

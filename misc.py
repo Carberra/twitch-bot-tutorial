@@ -1,14 +1,11 @@
 from datetime import timedelta
 from sys import exit
 from time import time
-import configParser
-
-from .. import db
-from .. import user_management
-from .. import react
+import tetueSrc
+import db, user_management, react
 
 BOOT_TIME = time()
-read_successful, cfg = configParser.get_configuration("bot")
+read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
 
 def bye(bot, user, *args):

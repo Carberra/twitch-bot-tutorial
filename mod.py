@@ -1,9 +1,7 @@
-from .. import db
-from lib import cmds
+import db, cmds
+import tetueSrc
 
-import configParser
-
-read_successful, cfg = configParser.get_configuration("bot")
+read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
 
 warning_timers = (1, 5, 60)
