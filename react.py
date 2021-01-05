@@ -4,9 +4,7 @@ from random import randint
 from re import search
 from time import time
 
-from . import db
-from .cmds import games
-from . import user_management
+import db, games, user_management
 
 # "Emote from a another world"
 emotes_another_world = ["(y)"]

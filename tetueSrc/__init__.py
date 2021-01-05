@@ -1,0 +1,1 @@
+from tetueSrc.configParser import get_configuration

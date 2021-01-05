@@ -17,10 +17,10 @@ Otherwise, the modifications to this code, and all the code in the /lib director
 import sys
 from irc.bot import SingleServerIRCBot
 from requests import get
-from lib import db, cmds, react, automod, user_management
-import configParser
+import tetueSrc
+import user_management, db, react, automod, cmds
 
-read_successful, cfg = configParser.get_configuration("bot")
+read_successful, cfg = tetueSrc.get_configuration("bot")
 
 class Bot(SingleServerIRCBot):
     def __init__(self):
@@ -45,7 +45,8 @@ class Bot(SingleServerIRCBot):
 
         cxn.join(self.CHANNEL)
         db.build()
-        self.send_message("Now online.")
+        print("Online")
+        # self.send_message("Now online.") ToDo
 
     @db.with_commit
     def on_pubmsg(self, cxn, event):
