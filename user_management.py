@@ -7,6 +7,9 @@ class Chatuser:
         self.name = name
         self.badgets = badgets
         self.set_status()
+        self.messages = 0
+        self.loyalty_points = 0
+        self.statusIsActive = True
 
 #    def get_user_status(self):
         #Wenn sich jemand in den Lurch verabschiedet, wird der Status auf "Lurch" gesetzt und später begrüßt mit "Willkommen aus dem Lurch"
@@ -43,8 +46,18 @@ class Chatuser:
             return True
         else:
             return False
+    def count_loyalty_points(self):
+        if self.loyalty_points < 3: # ToDo: Die Anzahl der max. Punkte in die config mit einbinden.
+            self.loyalty_points += 1
+    def get_loyalty_points(self):
+        return self.loyalty_points
+    def count_message(self):
+        self.messages += 1
+    def get_messages(self):
+        return self.messages
 
 activeUserList = []
+userListToday = []
 
 def set_user_active(user):
     activeUserList.append(user)

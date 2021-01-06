@@ -46,13 +46,13 @@ class Bot(SingleServerIRCBot):
         cxn.join(self.CHANNEL)
         db.build()
         print("Online")
-        # self.send_message("Now online.") ToDo
+        self.send_message("Now online.")
 
     @db.with_commit
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        temp_user_obj = user_management.Chatuser(tags["user-id"], tags["display-name"], tags["badges"])
+        temp_user_obj = user_management.Chatuser(tags["user-id"], tags["display-name"], tags["badges"]) # ToDo: Jede Message ein neues Objekt? bist du sicher?
         react.add_user(bot, temp_user_obj)
         print(tags)
 
