@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import db
 
 class Chatuser:
     def __init__(self, id, name, badgets):
@@ -9,7 +10,7 @@ class Chatuser:
         self.set_status()
         self.messages = 0
         self.loyalty_points = 0
-        self.statusIsActive = True
+        self.statusIsActive = False
 
 #    def get_user_status(self):
         #Wenn sich jemand in den Lurch verabschiedet, wird der Status auf "Lurch" gesetzt und später begrüßt mit "Willkommen aus dem Lurch"
@@ -55,18 +56,68 @@ class Chatuser:
         self.messages += 1
     def get_messages(self):
         return self.messages
+    def get_user_active_status(self):
+        return self.statusIsActive
+    def set_user_active_status(self, status):
+        print("Setze User: " + str(status))
+        self.statusIsActive = status
 
-activeUserList = []
-userListToday = []
+activeUserList = [] # Aktive User im Chat
+userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
+
+def get_active_user(user_id, display_name, badges):
+    user_active_found, user = get_user_with_id_from_list(activeUserList, user_id)
+    if user_active_found == True: return user
+    print("User war nicht aktiv")
+    user_active_found, user = get_user_with_id_from_list(userListToday, user_id)
+    if user_active_found == True:
+        print("User war inaktiv")
+        set_user_active(user)
+        return user
+    else:
+        print("User war nicht inaktiv")
+        user_db = db.record("SELECT * FROM users WHERE UserID = ?", user_id)
+        if user_db == None: # Check if user not in DB
+            print("User war nicht in der Datenbank")
+            new_user = Chatuser(user_id, display_name, badges)
+            set_user_active(new_user)
+            add_user_db(new_user)
+            return new_user
+        else:
+            # Hier brauche ich noch keine Informationen aus der DB, kann aber dann hinzugefügt werden über tubel[index] --> temp_user_db[0] für User-ID
+            print("User war in der Datenbank")
+            old_user = Chatuser(user_id, display_name, badges)
+            set_user_active(old_user)
+            return old_user
 
 def set_user_active(user):
-    activeUserList.append(user)
+    user_found = False
+    for element in userListToday:
+        if element.get_id() == user.get_id():
+            activeUserList.append(element)
+            user_found = True
+            break
+    if user_found == False:
+        activeUserList.append(user)
+        userListToday.append(user)
 
 def set_user_inactive(user_id):
     for element in activeUserList:
         if element.get_id() == user_id:
             activeUserList.remove(element)
+            element.set_user_active_status(False)
             return
+
+def get_user_with_id_from_list(list, user_id):
+    '''Prüft, ob ein User in der Listen vorhanden ist und gibt ihn zurück'''
+    user_found = False
+    user = None
+    for element in list:
+        if element.get_id() == user_id:
+            user_found = True
+            user = element
+            break
+    return user_found, user
 
 def is_user_id_active(user_id):
     user_found = False
@@ -83,6 +134,9 @@ def is_user_name_active(user_name):
             user_found = True
             break
     return user_found
+
+def add_user_db(user):
+    db.execute("INSERT OR IGNORE INTO users (UserID, UserName) VALUES (?, ?)", user.get_id(), user.get_name())
 
 def main():
     pass

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
 	MessagesSent integer DEFAULT 0,
 	CountLogins integer DEFAULT 1,
 	LastLogin text DEFAULT CURRENT_TIMESTAMP,
+	LoyaltyPoints integer DEFAULT 0,
 	Coins integer DEFAULT 0,
 	CoinLock text DEFAULT CURRENT_TIMESTAMP,
 	Warnings integer DEFAULT 0,

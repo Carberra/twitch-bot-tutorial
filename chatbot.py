@@ -52,14 +52,11 @@ class Bot(SingleServerIRCBot):
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        temp_user_obj = user_management.Chatuser(tags["user-id"], tags["display-name"], tags["badges"]) # ToDo: Jede Message ein neues Objekt? bist du sicher?
-        react.add_user(bot, temp_user_obj)
-        print(tags)
-
-        if temp_user_obj.get_name() != cfg["name"] and automod.clear(bot, temp_user_obj, message):
+        active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
+        if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
             # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
-            react.process(bot, temp_user_obj, message)
-            cmds.process(bot, temp_user_obj, message)
+            react.process(bot, active_user, message)
+            cmds.process(bot, active_user, message)
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)
