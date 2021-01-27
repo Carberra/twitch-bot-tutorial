@@ -6,10 +6,9 @@ class Chatuser:
     def __init__(self, id, name, badgets):
         self.id = id
         self.name = name
-        self.badgets = badgets
+        self.badgets = badgets # ToDo: iSEVEN: Ja ohne "T" halt LUL
         self.set_status()
         self.messages = 0
-        self.loyalty_points = 0
         self.statusIsActive = False
 
 #    def get_user_status(self):
@@ -47,11 +46,11 @@ class Chatuser:
             return True
         else:
             return False
-    def count_loyalty_points(self):
-        if self.loyalty_points < 3: # ToDo: Die Anzahl der max. Punkte in die config mit einbinden.
-            self.loyalty_points += 1
-    def get_loyalty_points(self):
-        return self.loyalty_points
+    # def count_loyalty_points(self):
+    #     if self.loyalty_points < 3: # ToDo: Die Anzahl der max. Punkte in die config mit einbinden.
+    #         self.loyalty_points += 1
+    # def get_loyalty_points(self):
+    #     return self.loyalty_points
     def count_message(self):
         self.messages += 1
     def get_messages(self):
@@ -66,6 +65,11 @@ activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
 
 def get_active_user(user_id, display_name, badges):
+    """
+    Diese Funktion prüft, ob der User schon in einer der Listen ist und gibt das Objekt zurück.
+    Weiterhin wird der Status des Users angepasst. Sollte der User nicht existieren, wird er 
+    in der Datenbank erstellt.
+    """
     user_active_found, user = get_user_with_id_from_list(activeUserList, user_id)
     if user_active_found == True: return user
     print("User war nicht aktiv")
@@ -91,6 +95,9 @@ def get_active_user(user_id, display_name, badges):
             return old_user
 
 def set_user_active(user):
+    """
+    Setzt den User aktiv und fügt ihn in in die entsprechenden Listen hinzu.
+    """
     user_found = False
     for element in userListToday:
         if element.get_id() == user.get_id():

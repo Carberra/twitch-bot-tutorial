@@ -13,7 +13,8 @@ messages = defaultdict(int)
 
 def process(bot, user, message):
     update_records(bot, user)
-    
+    update_loyalty_points(user)
+
     if user.get_user_active_status() == False:
         welcome(bot, user) # Willkommensnachricht für den User
         user.set_user_active_status(True)
@@ -31,18 +32,10 @@ def update_records(bot, user):
     # Zähle Nachrichten für lokalen User
     user.count_message()
     print("Nachrichten in dieser Session: " + str(user.get_messages()))
+
     # Update DB
     db.execute("UPDATE users SET UserName = ?, MessagesSent = MessagesSent + 1 WHERE UserID = ?", user.get_name(), user.get_id())
-    # Loyalty points (maximal 3 Punkte pro Stream)
-    # -- 1 Punkt beim Erstanmelden im Stream
-    lastLoginTime = db.field("SELECT LastLogin FROM users WHERE UserID = ?", user.get_id()) # get last login date
-    conv_lastLoginTime = datetime.strptime(lastLoginTime, "%Y-%m-%d %H:%M:%S") # convert to datetime-obj
-    temp_diff_time = datetime.today() - conv_lastLoginTime # diff time
-    if temp_diff_time.days >= 1: # time diff longer then 1 day
-        db.execute("UPDATE users SET CountLogins = CountLogins + ?, LastLogin = ? WHERE UserID = ?", 1, datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S"), user.get_id())
-    # -- 2 Punkt nach 50 Nachrichten
-    
-    # -- 3 Punkt wäre nach 100 Nachrichten
+
     # earn random coins
     stamp = db.field("SELECT CoinLock FROM users WHERE UserID = ?", user.get_id())
     if datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S") < datetime.today():
@@ -66,6 +59,21 @@ def say_goodbye(bot, user):
 
 def thank_for_cheer(bot, user, match):
     bot.send_message(f"Thanks for the {match.group[5:]:,} bits {user.get_displayname()}! That's really appreciated!")
+
+def update_loyalty_points(user):
+    # Loyalty points (maximal 3 Punkte pro Stream)
+    # -- 1. Punkt beim Erstanmelden im Stream
+    lastLoginTime = db.field("SELECT LastLogin FROM users WHERE UserID = ?", user.get_id()) # get last login date
+    conv_lastLoginTime = datetime.strptime(lastLoginTime, "%Y-%m-%d %H:%M:%S") # convert to datetime-obj
+    temp_diff_time = datetime.today() - conv_lastLoginTime # diff time
+    if temp_diff_time.days >= 1: # time diff longer then 1 day
+        db.execute("UPDATE users SET CountLogins = CountLogins + ?, LastLogin = ? WHERE UserID = ?", 1, datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S"), user.get_id())
+    # -- 2. Punkt nach 50 Nachrichten
+    if user.get_messages() == 50: #ToDo: Grenzen in config schreiben
+        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.get_id())
+    # -- 3. Punkt wäre nach 100 Nachrichten
+    elif user.get_messages() == 100: #ToDo: Grenzen in config schreiben
+        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.get_id())
 
 def main():
     # t = timedelta(days = 5, hours = 1, seconds = 33, microseconds = 233423)
