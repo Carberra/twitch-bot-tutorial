@@ -1,12 +1,16 @@
 from collections import defaultdict
 import db
+import tetueSrc
 
 warning_timers = (1, 5, 60)
-BAD_WORDS_LIST = ("bum", "poo", "depp", "d3pp")
-FILLER_WORDS = (" ", ".", "!")
+filler_sign_list = tetueSrc.get_string_list("automod", "filler_sign")
+bad_word_list = tetueSrc.get_string_list("automod", "badwords")
 
 def clear(bot, user, message):
-    if any([word in message.lower() for word in BAD_WORDS_LIST]):
+    temp_message = message.lower()
+    for element in filler_sign_list:
+        temp_message = temp_message.replace(element, "")
+    if any(word in temp_message for word in bad_word_list):
         warn(bot, user)
         return False
     return True
@@ -32,6 +36,8 @@ def testbla(para1, para2, para3=None):
 def main():
     testbla("Zeile 1", "Zeile 2")
     testbla("Zeile 1", "Zeile 2", para3="Zeile 3")
+    FILLER_WORDS = tetueSrc.get_string_list("automod", "filler_sign")
+    BAD_WORDS_LIST = tetueSrc.get_string_list("automod", "badwords")
     text = "halLO du d.e.p p"
     temp_text = text.lower()
     for element in FILLER_WORDS:

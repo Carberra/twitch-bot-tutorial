@@ -1,1 +1,1 @@
-from tetueSrc.configParser import get_configuration
+from tetueSrc.configParser import get_configuration, get_string_list
