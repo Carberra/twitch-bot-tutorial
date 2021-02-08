@@ -1,10 +1,9 @@
 import tetueSrc
 
 def main():
-    read_successful, cfg = tetueSrc.get_configuration("bot")
-    if read_successful == True:
-        print("Konfiguration erfolgreich gelesen.")
-    else:
-        print("Konfiguration nicht erfolgreich gelesen.")
+    print(51/50)
+#    print(51/50)
+    print(600%50)
+
 if __name__ == "__main__":
     main()
