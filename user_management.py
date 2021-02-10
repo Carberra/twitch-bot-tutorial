@@ -3,10 +3,10 @@
 import db
 
 class Chatuser:
-    def __init__(self, id, name, badgets):
+    def __init__(self, id, name, badges):
         self.id = id
         self.name = name
-        self.badgets = badgets # ToDo: iSEVEN: Ja ohne "T" halt LUL
+        self.badges = badges
         self.set_status()
         self.messages = 0
         self.statusIsActive = False
@@ -16,12 +16,12 @@ class Chatuser:
 
     def set_status(self):
         self.status = None
-        if self.badgets is None: return
-        if "moderator" in self.badgets:
+        if self.badges is None: return
+        if "moderator" in self.badges:
             self.status = "moderator"
-        elif "vip" in self.badgets:
+        elif "vip" in self.badges:
             self.status = "vip"
-        elif "broadcaster" in self.badgets:
+        elif "broadcaster" in self.badges:
             self.status = "broadcaster"
     
     def get_status(self):
@@ -38,8 +38,8 @@ class Chatuser:
     def get_name(self):
         return self.name.lower()
 
-    def get_badgets(self):
-        return self.badgets
+    def get_badges(self):
+        return self.badges
         
     def get_mod_rights(self):
         if self.status == "moderator":
@@ -146,7 +146,11 @@ def add_user_db(user):
     db.execute("INSERT OR IGNORE INTO users (UserID, UserName) VALUES (?, ?)", user.get_id(), user.get_name())
 
 def main():
-    pass
+#    warnings = db.column("SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2)
+#    warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Knorzer")
+#    warnings = db.column("SELECT Badges FROM users")
+    print(warnings)
+    print(type(warnings))
 
 if __name__ == "__main__":
     main()

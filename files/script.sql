@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS users (
 	Coins integer DEFAULT 0,
 	CoinLock text DEFAULT CURRENT_TIMESTAMP,
 	Warnings integer DEFAULT 0,
-	LostCounter integer DEFAULT 0
+	LostCounter integer DEFAULT 0,
+	VipStufe text DEFAULT "Knorzer"
 );
