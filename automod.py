@@ -25,8 +25,8 @@ def warn(bot, user):
         db.execute("UPDATE users SET Warnings = Warnings + 1 WHERE UserID = ?", user.get_id())
 
     else:
-        bot.send_message(f"/ban {user.get_displayname()} Repeated infractions.")
-        bot.send_message(f"{user.get_displayname()}, you have been banned from chat for repeated infractions.")
+        bot.send_message(f"/ban {user.get_displayname()} wiederholter Verstoß.")
+        bot.send_message(f"{user.get_displayname()}, du wurdest wegen wiederholter Verstöße der Chatregeln aus dem Chat verbannt.")
 
 def testbla(para1, para2, para3=None):
     print(para1)

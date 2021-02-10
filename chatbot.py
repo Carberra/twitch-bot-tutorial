@@ -1,19 +1,13 @@
-"""
-    COPYRIGHT INFORMATION
-    ---------------------
-Python Twitch bot (twitch_tut.py)
-    Copyright © Parafoxia 2020.
-    Copyright © Carberra 2020.
-This bot was created on the Carberra YouTube channel. The tutorial series it featured in can be found here:
-    https://www.youtube.com/playlist?list=PLYeOw6sTSy6ZFDkfO9Kl8d37H_3wLyNxO
-This bot can be freely copied and modified without permission, but not sold as is.
-Some code in this file is licensed under the Apache License, Version 2.0.
-    http://aws.amazon.com/apache2.0/
-    NOTES
-    -----
-You will obviously need to modify `NAME`, `OWNER`, `bot.CLIENT_ID`, and `bot.TOKEN` to your own info before running the bot.
-Otherwise, the modifications to this code, and all the code in the /lib directory, are copyright © Carberra 2020.
-"""
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# COPYRIGHT INFORMATION
+# ---------------------
+# This bot is forked from Carberra YouTube channel: https://www.youtube.com/playlist?list=PLYeOw6sTSy6ZFDkfO9Kl8d37H_3wLyNxO
+# This bot can be freely copied and modified without permission, but not sold as is.
+# Some code in this file is licensed under the Apache License, Version 2.0.
+# http://aws.amazon.com/apache2.0/
+
 import sys
 from irc.bot import SingleServerIRCBot
 from requests import get

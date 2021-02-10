@@ -60,7 +60,7 @@ def perform(bot, user, call, *args):
                     cmd.func(bot, user, *args)
                     cmd.next_use = time() + cmd.cooldown
                 else:
-                    bot.send_message(f"Cooldown still in effect. Try again in {cmd.next_use-time():,.0f} seconds.")
+                    bot.send_message(f"Cooldown ist noch aktiv. Versuch es in {cmd.next_use-time():,.0f} Sekunde(n) noch einmal.")
 
                 return
-        bot.send_message(f"{user.get_displayname()}, \"{call}\" isn't a registered command.")
+        bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
