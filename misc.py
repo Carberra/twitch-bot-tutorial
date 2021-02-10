@@ -32,12 +32,8 @@ def lostcounter(bot, user, *args):
         #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
 def help(bot, prefix, cmds):
-ToDo: Nur ein Befehl, den Rest in die Twicth-Info
     bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
-
-    bot.send_message(f"Registrierte Befehle (inkl. Aliasen): "
-        + ", ".join([f"{prefix}{'/'.join(cmd.callables)}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
 
 def shutdown(bot, user, *args):
     if user.get_name() == OWNER:

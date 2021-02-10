@@ -18,7 +18,7 @@ def set_games_off(bot, user, *args):
         if element.get_function_info() == "games":
             element.set_allowed(False)
 
-def warn(bot, user, target=None):
+def warn(bot, user, target=None, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     
     if target is None:
