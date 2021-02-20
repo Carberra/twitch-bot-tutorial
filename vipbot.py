@@ -42,24 +42,21 @@ class VipBot(SingleServerIRCBot):
             cxn.cap("REQ", f":twitch.tv/{req}")
 
         cxn.join(self.CHANNEL)
-        # self.send_message("VIP-bot startet")
         vip_user = db.column("SELECT UserName FROM users WHERE Badges = ?", "AutoVIP")
         for element in vip_user:
             self.send_message(f"/unvip {element}")
             db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "Knorzer", element)
             time.sleep(0.5)
-        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Knorzer")
-        auto_vips = []
-        for i in range(tetueSrc.get_int_element("autovip", "max_avail_auto_vips")):
-            self.send_message(f"/vip {vip_user[i]}")
-            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", vip_user[i])
-            auto_vips.append(vip_user[i])
+        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC LIMIT ?", "Knorzer", tetueSrc.get_int_element("autovip", "max_avail_auto_vips"))
+        for element in vip_user:
+            self.send_message(f"/vip {element}")
+            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", element)
             time.sleep(0.5)
+        print(vip_user)
         db.commit()
         db.close()
-        print("disconnect")
         self.disconnect()
-        print("die")
+        print("Beendet")
         self.die()
 
     def send_message(self, message):
