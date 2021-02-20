@@ -1,9 +1,8 @@
 import tetueSrc
 
 def main():
-    print(51/50)
-#    print(51/50)
-    print(600%50)
+    test = tetueSrc.get_int_element("autovip", "e")
+    print(str(test) + " / " + str(type(test)))
 
 if __name__ == "__main__":
     main()

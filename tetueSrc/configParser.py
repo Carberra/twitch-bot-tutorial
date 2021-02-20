@@ -6,6 +6,25 @@ from configparser import ConfigParser
 PATH_TO_INIT_FILE = 'files/login_data.priv'
 PATH_TO_FILE_CONFIG_FILE = 'files/conf.cfg'
 
+def get_string_element(section, option):
+    if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return ""
+    config = ConfigParser()
+    config.read(PATH_TO_FILE_CONFIG_FILE)
+    if not config.has_section(section): return ""
+    if not config.has_option(section, option): return ""
+    return config.get(section, option)
+
+def get_int_element(section, option):
+    if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return 0
+    config = ConfigParser()
+    config.read(PATH_TO_FILE_CONFIG_FILE)
+    if not config.has_section(section): return 0
+    if not config.has_option(section, option): return 0
+    try:
+        return config.getint(section, option)
+    except:
+        return 0
+
 def get_string_list(section, option):
     "Return a list with all elements from a option welche are seperate by a comma"
     dict_string = {}
