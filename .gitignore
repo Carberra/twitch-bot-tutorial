@@ -1,8 +1,10 @@
 *.db
 *.db-journal
-files/things.txt
 __pycache__
 
 # VS Code
 .vscode/
 venv/
+
+# private data
+*.priv

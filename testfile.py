@@ -1,10 +1,8 @@
 import tetueSrc
 
 def main():
-    read_successful, cfg = tetueSrc.get_configuration("bot")
-    if read_successful == True:
-        print("Konfiguration erfolgreich gelesen.")
-    else:
-        print("Konfiguration nicht erfolgreich gelesen.")
+    test = tetueSrc.get_int_element("autovip", "e")
+    print(str(test) + " / " + str(type(test)))
+
 if __name__ == "__main__":
     main()

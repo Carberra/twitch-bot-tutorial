@@ -8,15 +8,19 @@
 # Some code in this file is licensed under the Apache License, Version 2.0.
 # http://aws.amazon.com/apache2.0/
 
-import sys
+import sys, time, threading
 from irc.bot import SingleServerIRCBot
 from requests import get
 import tetueSrc
-import user_management, db, react, automod, cmds
+import db
 
-read_successful, cfg = tetueSrc.get_configuration("bot")
+read_successful, cfg = tetueSrc.get_configuration("vipbot")
 
-class Bot(SingleServerIRCBot):
+def start_vip_bot():
+    vipbot = VipBot()
+    vipbot.start()
+
+class VipBot(SingleServerIRCBot):
     def __init__(self):
         self.HOST = "irc.chat.twitch.tv"
         self.PORT = 6667
@@ -38,24 +42,27 @@ class Bot(SingleServerIRCBot):
             cxn.cap("REQ", f":twitch.tv/{req}")
 
         cxn.join(self.CHANNEL)
-        db.build()
-        print("Online")
-        self.send_message("Now online.")
-
-    @db.with_commit
-    def on_pubmsg(self, cxn, event):
-        tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
-        message = event.arguments[0]
-        print(tags)
-        active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
-        if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
-            # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
-            react.process(bot, active_user, message)
-            cmds.process(bot, active_user, message)
+        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ?", "AutoVIP")
+        for element in vip_user:
+            self.send_message(f"/unvip {element}")
+            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "Knorzer", element)
+            time.sleep(0.5)
+        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC LIMIT ?", "Knorzer", tetueSrc.get_int_element("autovip", "max_avail_auto_vips"))
+        for element in vip_user:
+            self.send_message(f"/vip {element}")
+            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", element)
+            time.sleep(0.5)
+        print(vip_user)
+        db.commit()
+        db.close()
+        self.disconnect()
+        print("Beendet")
+        self.die()
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)
 
 if __name__ == "__main__":
-    bot = Bot()
-    bot.start()
+    print("Start")
+    vipbot = VipBot()
+    vipbot.start()

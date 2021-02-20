@@ -32,19 +32,16 @@ def lostcounter(bot, user, *args):
         #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
 def help(bot, prefix, cmds):
-    bot.send_message(f"Registered commands: "
+    bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
-
-    bot.send_message(f"Registered commands (incl. aliases): "
-        + ", ".join([f"{prefix}{'/'.join(cmd.callables)}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
 
 def shutdown(bot, user, *args):
     if user.get_name() == OWNER:
-        bot.send_message("Shutting down.")
+        bot.send_message("Herunterfahren")
         db.commit()
         db.close()
         bot.disconnect()
         exit(0)
 
     else:
-        bot.send_message("You can't do that.")
+        bot.send_message("Du kannst diesen Befehl nicht ausführen.")

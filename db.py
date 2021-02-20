@@ -20,19 +20,31 @@ def close():
     cxn.close()
 
 def field(command, *values):
+    '''Gibt nur das erste Element einer Abfrage für z.B. eines Users zurück.
+    Beispiel: "SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2
+    Rückgabe: Warnings <int>'''
     cur.execute(command, tuple(values))
     if (fetch := cur.fetchone()) is not None:
         return fetch[0]
 
 def record(command, *values):
+    '''Gibt alle Element einer Abfrage für z.B. eines Users zurück.
+    Beispiel: "SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2
+    Rückgabe: Warnings, Coins <tuple>'''
     cur.execute(command, tuple(values))
     return cur.fetchone()
 
 def records(command, *values):
+    '''Gibt alle Element einer Abfrage für z.B. alle Users zurück.
+    Beispiel: "SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2
+    Rückgabe: [(Warnings, Coins), (Warnings, Coins), ...]'''
     cur.execute(command, tuple(values))
     return cur.fetchall()
 
 def column(command, *values):
+    ''' Gibt ein Element einer Abfrage für z.B. alle Users zurück.
+    Beispiel: "SELECT Coins FROM users WHERE CountLogins = ?", 2
+    Rückgabe: [Coins, Coins, ...]'''
     cur.execute(command, tuple(values))
     return [item[0] for item in cur.fetchall()]
 
