@@ -4,15 +4,17 @@ Welcome to the official GitHub repository for the [Building a Python Twitch bot 
 
 This repository is designed purely as a supplementary aid to the series, and should **NOT** be downloaded without having watched it first.
 
+You can [browse the tags](https://github.com/Carberra/twitch-bot-tutorial/releases) to view the code as it was after a specific episode. **Note:** This series did not have per episode commits, so only a few episodes are available.
+
 ## Prerequisites
 
 ### Version table
 
-|              | Minimum   | Used in series |
-| ------------ | --------- | -------------- |
-| **Python**   | 3.6.0     | 3.8.2          |
-| **irc**      | 18.0.0    | 18.0.0         |
-| **requests** | Unknown   | 2.22.0         |
+|              | Required      | Used in series |
+| ------------ | ------------- | -------------- |
+| **Python**   | >= 3.6.0      | 3.8.2          |
+| **irc**      | >= 18.0.0     | 18.0.0         |
+| **requests** | Unknown       | 2.22.0         |
 
 ### Installing required libraries
 
