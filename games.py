@@ -14,7 +14,7 @@ def coinflip(bot, user, side=None, *args):
     else:
         result = choice(("kopf", "zahl"))
         if side[0] == result[0]:
-            db.execute("UPDATE users SET Coins = Coins + 50 WHERE UserID = ?", user.get_id())
+            db.execute("UPDATE users SET Coins = Coins + 50 WHERE UserID = ?", user.id)
             bot.send_message(f"Es ist auf {result} gelandet. Du hast 50 coins gewonnen.")
         else:
             bot.send_message(f"Die Münze ist auf {result} gelandet. Du hast nichts gewonnen.")

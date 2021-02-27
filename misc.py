@@ -12,9 +12,9 @@ def bye(bot, user, *args):
     react.say_goodbye(bot, user)
 
 def lurk(bot, user, *args):
-    if user_management.is_user_id_active(user.get_id()) == True:
+    if user_management.is_user_id_active(user.id) == True:
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()} und viel Spaß Im Lurk.")
-        user_management.set_user_inactive(user.get_id())
+        user_management.set_user_inactive(user.id)
 
 def love(bot, user, *args):
     bot.send_message(40*"VirtualHug ")

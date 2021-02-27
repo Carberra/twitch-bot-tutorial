@@ -47,6 +47,9 @@ def process(bot, user, message):
     if message.startswith(PREFIX):
         cmd = message.split(" ")[0][len(PREFIX):].lower()
         args = message.split(" ")[1:]
+        print(cmd)
+        print(cmd[1])
+        print(args)
         perform(bot, user, cmd, *args)
 
 def perform(bot, user, call, *args):

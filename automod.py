@@ -16,13 +16,13 @@ def clear(bot, user, message):
     return True
 
 def warn(bot, user):
-    warnings = db.field("SELECT Warnings FROM users WHERE UserID = ?", user.get_id())
+    warnings = db.field("SELECT Warnings FROM users WHERE UserID = ?", user.id)
     if warnings < len(warning_timers):
         mins = warning_timers[warnings]
         bot.send_message(f"/timeout {user.get_displayname()} {mins}m")
         bot.send_message(f"{user.get_displayname()}, du hast einen Timeout bekommen, weil du gegen die Chatregeln verstoßen hast. Die Timeoutlänge beträgt {mins} Minute(n).")
 
-        db.execute("UPDATE users SET Warnings = Warnings + 1 WHERE UserID = ?", user.get_id())
+        db.execute("UPDATE users SET Warnings = Warnings + 1 WHERE UserID = ?", user.id)
 
     else:
         bot.send_message(f"/ban {user.get_displayname()} wiederholter Verstoß.")
