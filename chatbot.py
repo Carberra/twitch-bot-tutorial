@@ -48,7 +48,6 @@ class Bot(SingleServerIRCBot):
         message = event.arguments[0]
         print(tags)
         active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
-        print(active_user.badge)
         if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
             # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
             react.process(bot, active_user, message)

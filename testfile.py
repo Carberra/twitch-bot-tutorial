@@ -23,6 +23,13 @@ class Test:
         return self.__nummer
 
 def main():
+    PREFIX = "!"
+    teststring = "!gehk!"
+    if PREFIX in teststring:
+        print("yes")
+    else:
+        print("no")
+
     new_test = Test("Roland", nummer = 77)
     print(new_test.name)
     new_test.name = "Vanessa"

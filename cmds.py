@@ -12,15 +12,6 @@ class Cmd(object):
         self.allowed = True
         self.function_info = function_info
 
-    def get_function_info(self):
-        return self.function_info
-
-    def set_allowed(self, allow_value):
-        self.allowed = allow_value
-
-    def get_allowed(self):
-        return self.allowed
-
 cmds = [
     #	misc
     Cmd(["shutdown"], misc.shutdown, "misc"),
@@ -47,18 +38,16 @@ def process(bot, user, message):
     if message.startswith(PREFIX):
         cmd = message.split(" ")[0][len(PREFIX):].lower()
         args = message.split(" ")[1:]
-        print(cmd)
-        print(cmd[1])
-        print(args)
         perform(bot, user, cmd, *args)
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):
         misc.help(bot, PREFIX, cmds)
     else:
+        if PREFIX in call: return # Sortiere Nachrichten aus wie <!!!>
         for cmd in cmds:
             if call in cmd.callables:
-                if cmd.get_allowed() != True: return
+                if cmd.allowed != True: return # cmd ist gerade nicht erlaubt
                 if time() > cmd.next_use:
                     cmd.func(bot, user, *args)
                     cmd.next_use = time() + cmd.cooldown
