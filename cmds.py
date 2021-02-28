@@ -26,6 +26,8 @@ cmds = [
 
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
+    Cmd(["competition"], games.competition, "games"),
+
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
