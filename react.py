@@ -15,9 +15,9 @@ def process(bot, user, message):
     update_records(bot, user)
     update_loyalty_points(user)
 
-    if user.get_user_active_status() == False:
+    if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
-        user.set_user_active_status(True)
+        user.statusIsActive = True
 
     # ToDo: Falscher Platz für diese Abfrage
     for element in emotes_another_world:
@@ -31,31 +31,33 @@ def process(bot, user, message):
 def update_records(bot, user):
     # Zähle Nachrichten für lokalen User
     user.count_message()
-    print("Nachrichten in dieser Session: " + str(user.get_messages()))
+    print("Nachrichten in dieser Session: " + str(user.messages))
 
     # Update DB
-    db.execute("UPDATE users SET UserName = ?, MessagesSent = MessagesSent + 1 WHERE UserID = ?", user.get_name(), user.get_id())
+    db.execute("UPDATE users SET UserName = ?, MessagesSent = MessagesSent + 1 WHERE UserID = ?", user.get_name(), user.id)
 
     # earn random coins
-    stamp = db.field("SELECT CoinLock FROM users WHERE UserID = ?", user.get_id())
+    stamp = db.field("SELECT CoinLock FROM users WHERE UserID = ?", user.id)
     if datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S") < datetime.today():
         coinlock = (datetime.today()+timedelta(seconds=60)).strftime("%Y-%m-%d %H:%M:%S")
-        db.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", randint(1, 5), coinlock, user.get_id())
+        db.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", randint(1, 5), coinlock, user.id)
 
 def welcome(bot, user):
-    if user.get_status() == "moderator":
+    if user.badge == user_management.Badge.Moderator:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Die Macht ist mit dir!")
-    elif user.get_status() == "vip":
+    elif user.badge == user_management.Badge.AutoVIP:
+        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du einen VIP Status erhalten. Belehre mich!")
+    elif user.badge == user_management.Badge.ManuVIP:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Belehre mich!")
-    elif user.get_status() == "broadcaster":
-        bot.send_message(f"Das du da bist is klar {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
+    elif user.badge == user_management.Badge.Broadcaster:
+        bot.send_message(f"Dass du da bist is klar {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
     else:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Viel Spaß beim mittüfteln.")
 
 def say_goodbye(bot, user):
-    if user_management.is_user_id_active(user.get_id()) == True:
+    if user_management.is_user_id_active(user.id) == True:
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()}. Bis zum nächsten Mal.")
-        user_management.set_user_inactive(user.get_id())
+        user_management.set_user_inactive(user.id)
 
 def thank_for_cheer(bot, user, match):
     bot.send_message(f"Thanks for the {match.group[5:]:,} bits {user.get_displayname()}! That's really appreciated!")
@@ -63,17 +65,17 @@ def thank_for_cheer(bot, user, match):
 def update_loyalty_points(user):
     # Loyalty points (maximal 3 Punkte pro Stream)
     # -- 1. Punkt beim Erstanmelden im Stream
-    lastLoginTime = db.field("SELECT LastLogin FROM users WHERE UserID = ?", user.get_id()) # get last login date
+    lastLoginTime = db.field("SELECT LastLogin FROM users WHERE UserID = ?", user.id) # get last login date
     conv_lastLoginTime = datetime.strptime(lastLoginTime, "%Y-%m-%d %H:%M:%S") # convert to datetime-obj
     temp_diff_time = datetime.today() - conv_lastLoginTime # diff time
     if temp_diff_time.days >= 1: # time diff longer then 1 day
-        db.execute("UPDATE users SET CountLogins = CountLogins + ?, LastLogin = ? WHERE UserID = ?", 1, datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S"), user.get_id())
+        db.execute("UPDATE users SET CountLogins = CountLogins + ?, LastLogin = ? WHERE UserID = ?", 1, datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S"), user.id)
     # -- 2. Punkt nach 50 Nachrichten
-    if user.get_messages() == 50: #ToDo: Grenzen in config schreiben
-        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.get_id())
+    if user.messages == 50: #ToDo: Grenzen in config schreiben
+        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
     # -- 3. Punkt wäre nach 100 Nachrichten
-    elif user.get_messages() == 100: #ToDo: Grenzen in config schreiben
-        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.get_id())
+    elif user.messages == 100: #ToDo: Grenzen in config schreiben
+        db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
 
 def main():
     # t = timedelta(days = 5, hours = 1, seconds = 33, microseconds = 233423)

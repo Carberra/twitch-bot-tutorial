@@ -9,14 +9,14 @@ warning_timers = (1, 5, 60)
 def set_games_on(bot, user, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     for element in cmds.cmds:
-        if element.get_function_info() == "games":
-            element.set_allowed(True)
+        if element.function_info == "games":
+            element.allowed = True
 
 def set_games_off(bot, user, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     for element in cmds.cmds:
-        if element.get_function_info() == "games":
-            element.set_allowed(False)
+        if element.function_info == "games":
+            element.allowed = False
 
 def warn(bot, user, target=None, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return

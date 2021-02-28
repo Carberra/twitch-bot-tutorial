@@ -1,70 +1,55 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import db
+from enum import Enum, auto
+
+class Badge(Enum):
+    Broadcaster = auto()
+    Moderator = auto()
+    ManuVIP = auto()
+    AutoVIP = auto()
+    Knorzer = auto()
+
+def abstract_badge(badge_from_string):
+    """
+    Diese Funktion prüft den tag aus der Chatnachricht und ordnet ein badge aus dem user_management zu.
+    Auch wird das badge aus der Datenbank geprüft und der Klasse Badge zugeordnet
+    Beispiel: "broadcaster/1,subscriber/0,premium/1" --> Broadcaster
+    """
+    if badge_from_string is None: return Badge.Knorzer
+    if "moderator" in badge_from_string: return Badge.Moderator
+    if "Broadcaster" in badge_from_string: return Badge.Broadcaster
+    if "Moderator" in badge_from_string: return Badge.Moderator
+    if "ManuVIP" in badge_from_string: return Badge.ManuVIP
+    if "AutoVIP" in badge_from_string: return Badge.AutoVIP
+    if "Knorzer" in badge_from_string: return Badge.Knorzer
 
 class Chatuser:
-    def __init__(self, id, name, badges):
+    def __init__(self, id, name, badge):
         self.id = id
         self.name = name
-        self.badges = badges
-        self.set_status()
+        self.badge = badge
         self.messages = 0
         self.statusIsActive = False
-
-#    def get_user_status(self):
-        #Wenn sich jemand in den Lurch verabschiedet, wird der Status auf "Lurch" gesetzt und später begrüßt mit "Willkommen aus dem Lurch"
-
-    def set_status(self):
-        self.status = None
-        if self.badges is None: return
-        if "moderator" in self.badges:
-            self.status = "moderator"
-        elif "vip" in self.badges:
-            self.status = "vip"
-        elif "broadcaster" in self.badges:
-            self.status = "broadcaster"
     
-    def get_status(self):
-        return self.status
-
-    def get_id(self):
-        return self.id
-
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
         return self.name
-
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
-
-    def get_badges(self):
-        return self.badges
-        
     def get_mod_rights(self):
-        if self.status == "moderator":
+        if self.badge == Badge.Moderator:
             return True
         else:
             return False
-    # def count_loyalty_points(self):
-    #     if self.loyalty_points < 3: # ToDo: Die Anzahl der max. Punkte in die config mit einbinden.
-    #         self.loyalty_points += 1
-    # def get_loyalty_points(self):
-    #     return self.loyalty_points
     def count_message(self):
         self.messages += 1
-    def get_messages(self):
-        return self.messages
-    def get_user_active_status(self):
-        return self.statusIsActive
-    def set_user_active_status(self, status):
-        print("Setze User: " + str(status))
-        self.statusIsActive = status
 
 activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
 
-def get_active_user(user_id, display_name, badges):
+def get_active_user(user_id, display_name, badge):
     """
     Diese Funktion prüft, ob der User schon in einer der Listen ist und gibt das Objekt zurück.
     Weiterhin wird der Status des Users angepasst. Sollte der User nicht existieren, wird er 
@@ -83,14 +68,14 @@ def get_active_user(user_id, display_name, badges):
         user_db = db.record("SELECT * FROM users WHERE UserID = ?", user_id)
         if user_db == None: # Check if user not in DB
             print("User war nicht in der Datenbank")
-            new_user = Chatuser(user_id, display_name, badges)
+            new_user = Chatuser(user_id, display_name, abstract_badge(badge))
             set_user_active(new_user)
             add_user_db(new_user)
             return new_user
         else:
             # Hier brauche ich noch keine Informationen aus der DB, kann aber dann hinzugefügt werden über tubel[index] --> temp_user_db[0] für User-ID
             print("User war in der Datenbank")
-            old_user = Chatuser(user_id, display_name, badges)
+            old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]))
             set_user_active(old_user)
             return old_user
 
@@ -100,7 +85,7 @@ def set_user_active(user):
     """
     user_found = False
     for element in userListToday:
-        if element.get_id() == user.get_id():
+        if element.id == user.id:
             activeUserList.append(element)
             user_found = True
             break
@@ -110,9 +95,9 @@ def set_user_active(user):
 
 def set_user_inactive(user_id):
     for element in activeUserList:
-        if element.get_id() == user_id:
+        if element.id == user_id:
             activeUserList.remove(element)
-            element.set_user_active_status(False)
+            element.statusIsActive  = False
             return
 
 def get_user_with_id_from_list(list, user_id):
@@ -120,7 +105,7 @@ def get_user_with_id_from_list(list, user_id):
     user_found = False
     user = None
     for element in list:
-        if element.get_id() == user_id:
+        if element.id == user_id:
             user_found = True
             user = element
             break
@@ -129,7 +114,7 @@ def get_user_with_id_from_list(list, user_id):
 def is_user_id_active(user_id):
     user_found = False
     for element in activeUserList:
-        if element.get_id() == user_id:
+        if element.id == user_id:
             user_found = True
             break
     return user_found
@@ -143,14 +128,18 @@ def is_user_name_active(user_name):
     return user_found
 
 def add_user_db(user):
-    db.execute("INSERT OR IGNORE INTO users (UserID, UserName) VALUES (?, ?)", user.get_id(), user.get_name())
+    db.execute("INSERT OR IGNORE INTO users (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
 
 def main():
-#    warnings = db.column("SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2)
-#    warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Knorzer")
-#    warnings = db.column("SELECT Badges FROM users")
-    print(warnings)
-    print(type(warnings))
+    # warnings = db.column("SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2)
+    # warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Knorzer")
+    # warnings = db.column("SELECT Badges FROM users")
+    # print(warnings)
+    # print(type(warnings))
+    temp_user = Chatuser(1234, "Roland", "broadcaster/1,subscriber/0,premium/1")
+    print(temp_user.id)
+    temp_user.id = 77
+    print(temp_user.id)
 
 if __name__ == "__main__":
     main()
