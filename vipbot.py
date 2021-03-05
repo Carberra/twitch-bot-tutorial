@@ -45,9 +45,9 @@ class VipBot(SingleServerIRCBot):
         vip_user = db.column("SELECT UserName FROM users WHERE Badges = ?", "AutoVIP")
         for element in vip_user:
             self.send_message(f"/unvip {element}")
-            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "Knorzer", element)
+            db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "Tueftlie", element)
             time.sleep(0.5)
-        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC LIMIT ?", "Knorzer", tetueSrc.get_int_element("autovip", "max_avail_auto_vips"))
+        vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC LIMIT ?", "Tueftlie", tetueSrc.get_int_element("autovip", "max_avail_auto_vips"))
         for element in vip_user:
             self.send_message(f"/vip {element}")
             db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", element)
