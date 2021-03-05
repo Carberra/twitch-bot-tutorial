@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import tetueSrc
 from enum import Enum, auto
 
@@ -25,6 +26,9 @@ class Test:
 def main():
     PREFIX = "!"
     teststring = "!gehk!"
+    output_text = tetueSrc.get_string_element("outputtext", "huhn")
+    print(output_text)
+    
     if PREFIX in teststring:
         print("yes")
     else:

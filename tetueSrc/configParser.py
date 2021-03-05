@@ -9,7 +9,7 @@ PATH_TO_FILE_CONFIG_FILE = 'files/conf.cfg'
 def get_string_element(section, option):
     if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return ""
     config = ConfigParser()
-    config.read(PATH_TO_FILE_CONFIG_FILE)
+    config.read(PATH_TO_FILE_CONFIG_FILE, "UTF-8")
     if not config.has_section(section): return ""
     if not config.has_option(section, option): return ""
     return config.get(section, option)

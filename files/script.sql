@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS users (
 	CoinLock text DEFAULT CURRENT_TIMESTAMP,
 	Warnings integer DEFAULT 0,
 	LostCounter integer DEFAULT 0,
-	Badges text DEFAULT "Knorzer"
+	Badges text DEFAULT "Tueftlie"
 );

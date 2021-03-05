@@ -31,6 +31,12 @@ def lostcounter(bot, user, *args):
         # else:
         #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
+def text(bot, user, *args):
+    if len(args) < 1: return
+    output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
+    if output_text == "": return
+    bot.send_message(output_text)
+
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))

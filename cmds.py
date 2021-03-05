@@ -19,6 +19,7 @@ cmds = [
     Cmd(["liebe","love"], misc.love, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
+    Cmd(["text"], misc.text, "misc"),
     #Cmd(["bug", "bugcounter"], misc.lostcounter, cooldown=10),
 
     #	economy
@@ -26,6 +27,8 @@ cmds = [
 
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
+    Cmd(["competition"], games.competition, "games"),
+
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),

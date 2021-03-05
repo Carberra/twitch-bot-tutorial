@@ -8,7 +8,7 @@ class Badge(Enum):
     Moderator = auto()
     ManuVIP = auto()
     AutoVIP = auto()
-    Knorzer = auto()
+    Tueftlie = auto()
 
 def abstract_badge(badge_from_string):
     """
@@ -16,13 +16,13 @@ def abstract_badge(badge_from_string):
     Auch wird das badge aus der Datenbank geprüft und der Klasse Badge zugeordnet
     Beispiel: "broadcaster/1,subscriber/0,premium/1" --> Broadcaster
     """
-    if badge_from_string is None: return Badge.Knorzer
+    if badge_from_string is None: return Badge.Tueftlie
     if "moderator" in badge_from_string: return Badge.Moderator
     if "Broadcaster" in badge_from_string: return Badge.Broadcaster
     if "Moderator" in badge_from_string: return Badge.Moderator
     if "ManuVIP" in badge_from_string: return Badge.ManuVIP
     if "AutoVIP" in badge_from_string: return Badge.AutoVIP
-    if "Knorzer" in badge_from_string: return Badge.Knorzer
+    if "Tueftlie" in badge_from_string: return Badge.Tueftlie
 
 class Chatuser:
     def __init__(self, id, name, badge):
@@ -132,7 +132,7 @@ def add_user_db(user):
 
 def main():
     # warnings = db.column("SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2)
-    # warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Knorzer")
+    # warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Tueftlie")
     # warnings = db.column("SELECT Badges FROM users")
     # print(warnings)
     # print(type(warnings))
