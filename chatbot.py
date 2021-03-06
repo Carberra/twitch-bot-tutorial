@@ -15,9 +15,11 @@ import tetueSrc
 import user_management, db, react, automod, cmds
 
 read_successful, cfg = tetueSrc.get_configuration("bot")
+read_successful, cfg_owner = tetueSrc.get_configuration("vipbot")
 
 class Bot(SingleServerIRCBot):
     def __init__(self):
+        # Init for Chat-Bot
         self.HOST = "irc.chat.twitch.tv"
         self.PORT = 6667
         self.USERNAME = cfg["name"].lower()
@@ -25,13 +27,17 @@ class Bot(SingleServerIRCBot):
         self.TOKEN = cfg["token"]
         owner = cfg["owner"]
         self.CHANNEL = f"#{owner}"
-
         url = f"https://api.twitch.tv/kraken/users?login={self.USERNAME}"
         headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
         resp = get(url, headers=headers).json()
         self.channel_id = resp["users"][0]["_id"]
-
         super().__init__([(self.HOST, self.PORT, f"oauth:{self.TOKEN}")], self.USERNAME, self.USERNAME)
+
+        # Init for TeTue-Channel
+        url_owner = f"https://api.twitch.tv/kraken/users?login={owner}"
+        headers_owner = {"Client-ID": cfg_owner["client_id"], "Accept": "application/vnd.twitchtv.v5+json"}
+        resp_owner = get(url_owner, headers=headers_owner).json()
+        self.channel_id = resp_owner["users"][0]["_id"]
 
     def on_welcome(self, cxn, event):
         for req in ("membership", "tags", "commands"):
@@ -55,6 +61,18 @@ class Bot(SingleServerIRCBot):
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)
+    
+    def get_channel_info(self):
+        url = f"https://api.twitch.tv/kraken/channels/{self.channel_id}"
+        headers = {"Client-ID": cfg_owner["client_id"], "Accept": "application/vnd.twitchtv.v5+json"}
+        resp = get(url, headers=headers).json()
+        stream_info = {"Game":None}
+        try:
+            stream_info["Game"] = resp["game"]
+        except:
+            pass
+        finally:
+            return stream_info
 
 if __name__ == "__main__":
     bot = Bot()

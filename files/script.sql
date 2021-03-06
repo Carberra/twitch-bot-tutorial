@@ -11,3 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
 	LostCounter integer DEFAULT 0,
 	Badges text DEFAULT "Tueftlie"
 );
+
+CREATE TABLE IF NOT EXISTS category (
+	Category text PRIMARY KEY,
+	Wins integer DEFAULT 0,
+	Loses integer DEFAULT 0
+);

@@ -37,6 +37,16 @@ def text(bot, user, *args):
     if output_text == "": return
     bot.send_message(output_text)
 
+def win(bot, user, *args):
+    dict = bot.get_channel_info()
+    db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", dict["Game"], 0, 0)
+    db.execute("UPDATE category SET Wins = Wins + 1 WHERE Category = ?", dict["Game"])
+
+def lose(bot, user, *args):
+    dict = bot.get_channel_info()
+    db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", dict["Game"], 0, 0)
+    db.execute("UPDATE category SET Loses = Loses + 1 WHERE Category = ?", dict["Game"])
+
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))

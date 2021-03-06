@@ -42,6 +42,7 @@ def update_records(bot, user):
         coinlock = (datetime.today()+timedelta(seconds=60)).strftime("%Y-%m-%d %H:%M:%S")
         db.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", randint(1, 5), coinlock, user.id)
 
+
 def welcome(bot, user):
     if user.badge == user_management.Badge.Moderator:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Die Macht ist mit dir!")

@@ -20,6 +20,8 @@ cmds = [
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
     Cmd(["text"], misc.text, "misc"),
+    Cmd(["win"], misc.win, "misc", cooldown=5),
+    Cmd(["lose"], misc.lose, "misc", cooldown=5),
     #Cmd(["bug", "bugcounter"], misc.lostcounter, cooldown=10),
 
     #	economy
