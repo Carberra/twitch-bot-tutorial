@@ -58,6 +58,8 @@ class Bot(SingleServerIRCBot):
             # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
             react.process(bot, active_user, message)
             cmds.process(bot, active_user, message)
+            if "custom-reward-id" in tags:
+                react.channel_point(bot, active_user, message, tags["custom-reward-id"])
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)

@@ -29,7 +29,7 @@ def main():
     # else:
     #     print(resp["game"])
 
-    # config
+    # config 'custom-reward-id': '5f4a599a-0133-4226-9eea-d5d2d53b9a4e'
     namelist = tetueSrc.get_string_list("huehnername","name")
     print(choice(namelist))
 

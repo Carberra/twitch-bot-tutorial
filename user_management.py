@@ -25,16 +25,20 @@ def abstract_badge(badge_from_string):
     if "Tueftlie" in badge_from_string: return Badge.Tueftlie
 
 class Chatuser:
-    def __init__(self, id, name, badge):
+    def __init__(self, id, name, badge, hunname):
         self.id = id
         self.name = name
         self.badge = badge
         self.messages = 0
         self.statusIsActive = False
+        self.hunname = hunname
     
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
-        return self.name
+        if not self.hunname:
+            return self.name
+        else:
+            return self.hunname
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
@@ -68,14 +72,14 @@ def get_active_user(user_id, display_name, badge):
         user_db = db.record("SELECT * FROM users WHERE UserID = ?", user_id)
         if user_db == None: # Check if user not in DB
             print("User war nicht in der Datenbank")
-            new_user = Chatuser(user_id, display_name, abstract_badge(badge))
+            new_user = Chatuser(user_id, display_name, abstract_badge(badge), "")
             set_user_active(new_user)
             add_user_db(new_user)
             return new_user
         else:
             # Hier brauche ich noch keine Informationen aus der DB, kann aber dann hinzugefügt werden über tubel[index] --> temp_user_db[0] für User-ID
             print("User war in der Datenbank")
-            old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]))
+            old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]), user_db[11])
             set_user_active(old_user)
             return old_user
 

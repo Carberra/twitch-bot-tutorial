@@ -1,13 +1,15 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
-from random import randint
+from random import randint, choice
 from re import search
 from time import time
 
-import db, games, user_management
+import db, games, user_management, tetueSrc
 
 # "Emote from a another world"
 emotes_another_world = ["(y)"]
+# Channel-Points
+HENNAME = "5f4a599a-0133-4226-9eea-d5d2d53b9a4e"
 
 messages = defaultdict(int)
 
@@ -28,6 +30,18 @@ def process(bot, user, message):
     if (match := search(r'cheer[0-9]+', message)) is not None:
         thank_for_cheer(bot, user, match)
 
+def channel_point(bot, user, message, rewardid):
+    #name = db.field("SELECT Henname FROM users WHERE UserID = ?", user.id)
+    #print(name)
+    if rewardid == HENNAME:
+        for i in range(20):
+            henname = choice(tetueSrc.get_string_list("hunname","propertie")) + str(" ") + choice(tetueSrc.get_string_list("hunname","name"))
+            henname_exist = db.column("SELECT Coins FROM users WHERE Henname = ?", henname)
+            if henname_exist == 0:
+                break
+        db.execute("UPDATE users SET Henname = ? WHERE UserID = ?", henname, user.id)
+        bot.send_message(f"@{user.get_displayname()}, dein Hühnername ist: {henname}.")
+
 def update_records(bot, user):
     # Zähle Nachrichten für lokalen User
     user.count_message()
@@ -47,11 +61,11 @@ def welcome(bot, user):
     if user.badge == user_management.Badge.Moderator:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Die Macht ist mit dir!")
     elif user.badge == user_management.Badge.AutoVIP:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du einen VIP Status erhalten. Belehre mich!")
+        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du den VIP Status erhalten. Belehre mich!")
     elif user.badge == user_management.Badge.ManuVIP:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Belehre mich!")
     elif user.badge == user_management.Badge.Broadcaster:
-        bot.send_message(f"Dass du da bist is klar {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
+        bot.send_message(f"Dass du da bist is klar, {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
     else:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Viel Spaß beim mittüfteln.")
 
