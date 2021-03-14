@@ -32,7 +32,7 @@ class Chatuser:
         self.messages = 0
         self.statusIsActive = False
         self.hunname = hunname
-    
+
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
         if not self.hunname:
@@ -42,7 +42,7 @@ class Chatuser:
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
-    def get_mod_rights(self):
+    def get_mod_rights(self): # ToDo: badge direkt abfragen im code, kein getter
         if self.badge == Badge.Moderator:
             return True
         else:
@@ -114,6 +114,8 @@ def get_user_with_id_from_list(list, user_id):
             user = element
             break
     return user_found, user
+
+#def get_user_with_name_from_list():
 
 def is_user_id_active(user_id):
     user_found = False

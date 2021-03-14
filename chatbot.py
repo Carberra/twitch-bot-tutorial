@@ -38,7 +38,7 @@ class Bot(SingleServerIRCBot):
         headers_owner = {"Client-ID": cfg_owner["client_id"], "Accept": "application/vnd.twitchtv.v5+json"}
         resp_owner = get(url_owner, headers=headers_owner).json()
         self.channel_id = resp_owner["users"][0]["_id"]
-
+    
     def on_welcome(self, cxn, event):
         for req in ("membership", "tags", "commands"):
             cxn.cap("REQ", f":twitch.tv/{req}")
@@ -47,6 +47,7 @@ class Bot(SingleServerIRCBot):
         db.build()
         print("Online")
         self.send_message("Now online.")
+        react.update_KD_Counter(bot)
 
     @db.with_commit
     def on_pubmsg(self, cxn, event):

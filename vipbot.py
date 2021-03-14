@@ -16,10 +16,6 @@ import db
 
 read_successful, cfg = tetueSrc.get_configuration("vipbot")
 
-def start_vip_bot():
-    vipbot = VipBot()
-    vipbot.start()
-
 class VipBot(SingleServerIRCBot):
     def __init__(self):
         self.HOST = "irc.chat.twitch.tv"
@@ -43,16 +39,18 @@ class VipBot(SingleServerIRCBot):
 
         cxn.join(self.CHANNEL)
         vip_user = db.column("SELECT UserName FROM users WHERE Badges = ?", "AutoVIP")
+        print("Alte VIPs: " + str(vip_user))
         for element in vip_user:
             self.send_message(f"/unvip {element}")
             db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "Tueftlie", element)
             time.sleep(0.5)
         vip_user = db.column("SELECT UserName FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC LIMIT ?", "Tueftlie", tetueSrc.get_int_element("autovip", "max_avail_auto_vips"))
+        # keinen Verwarung, Ehre-Feature?
         for element in vip_user:
             self.send_message(f"/vip {element}")
             db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", element)
             time.sleep(0.5)
-        print(vip_user)
+        print("Neue VIPs: " + str(vip_user))
         db.commit()
         db.close()
         self.disconnect()

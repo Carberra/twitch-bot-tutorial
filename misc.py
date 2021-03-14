@@ -16,8 +16,28 @@ def lurk(bot, user, *args):
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()} und viel Spaß Im Lurk.")
         user_management.set_user_inactive(user.id)
 
+def hug(bot, user, *args):
+    if len(args) > 1: return
+    if len(args) < 1:
+        bot.send_message(f"{user.get_displayname()} nimmt sich selbst in den Arm <3 VirtualHug")
+    else:
+        clear_username = args[0].replace("@", "")
+        if user_management.is_user_name_active(clear_username.lower()) == True:
+            bot.send_message(f"{user.get_displayname()} nimmt {clear_username} ganz fest in den Arm <3")
+
 def love(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
+
+# def miteinandereden(bot, user,*args):
+#     # miteinandereden statt gemeinsam streiten! Ihr Wort ist Gesetz!" <3
+#     # 
+#     pass
+
+def hype(bot, user, *args):
+     bot.send_message(tetueSrc.get_string_element("outputtext", "hype"))
+
+def modlove(bot, user, *args):
+    bot.send_message(tetueSrc.get_string_element("outputtext", "modlove"))
 
 def lostcounter(bot, user, *args):
     if len(args) < 1:
@@ -31,7 +51,7 @@ def lostcounter(bot, user, *args):
         # else:
         #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
-def text(bot, user, *args):
+def state(bot, user, *args):
     if len(args) < 1: return
     output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
     if output_text == "": return
@@ -41,11 +61,13 @@ def win(bot, user, *args):
     dict = bot.get_channel_info()
     db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", dict["Game"], 0, 0)
     db.execute("UPDATE category SET Wins = Wins + 1 WHERE Category = ?", dict["Game"])
+    react.update_KD_Counter(bot)
 
 def lose(bot, user, *args):
     dict = bot.get_channel_info()
     db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", dict["Game"], 0, 0)
     db.execute("UPDATE category SET Loses = Loses + 1 WHERE Category = ?", dict["Game"])
+    react.update_KD_Counter(bot)
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "

@@ -27,7 +27,7 @@ def get_int_element(section, option):
 
 def get_string_list(section, option):
     "Return a list with all elements from a option welche are seperate by a comma"
-    dict_string = {}
+    dict_string = {} # ToDo: warum dict und nicht list?
     if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return dict_string
     config = ConfigParser()
     config.read(PATH_TO_FILE_CONFIG_FILE)

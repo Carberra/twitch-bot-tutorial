@@ -35,6 +35,7 @@ def competition(bot, user, cmd=None, *args):
     # Verlosung starten
     if running_competition == None and cmd == "start" and user.badge == user_management.Badge.Broadcaster:
         running_competition = Competition()
+        # ToDo: Feedback für Streamerdass er ein Gewinnspiel startet? vielleicht mit Namen?
     # Verlosung stoppen
     elif running_competition != None and cmd == "ende" and user.badge == user_management.Badge.Broadcaster:
         running_competition.status = Status.Stopped

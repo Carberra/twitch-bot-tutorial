@@ -19,11 +19,12 @@ cmds = [
     Cmd(["liebe","love"], misc.love, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
-    Cmd(["text"], misc.text, "misc"),
-    Cmd(["win"], misc.win, "misc", cooldown=5),
-    Cmd(["lose"], misc.lose, "misc", cooldown=5),
-    #Cmd(["bug", "bugcounter"], misc.lostcounter, cooldown=10),
-
+    Cmd(["state", "statement"], misc.state, "misc"),
+    Cmd(["win"], misc.win, "misc", cooldown=30),
+    Cmd(["lose"], misc.lose, "misc", cooldown=30),
+    Cmd(["modlove", "ml"], misc.modlove, "misc"),
+    Cmd(["hug"], misc.hug, "misc"),
+    Cmd(["hype"], misc.hype, "misc"),
     #	economy
     Cmd(["coins", "money"], economy.coins, "economy"),
 

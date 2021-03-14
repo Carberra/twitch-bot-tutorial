@@ -11,6 +11,8 @@ emotes_another_world = ["(y)"]
 # Channel-Points
 HENNAME = "5f4a599a-0133-4226-9eea-d5d2d53b9a4e"
 
+cfg_kd = tetueSrc.get_string_element("paths", "kd")
+
 messages = defaultdict(int)
 
 def process(bot, user, message):
@@ -92,6 +94,18 @@ def update_loyalty_points(user):
     elif user.messages == 100: #ToDo: Grenzen in config schreiben
         db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
 
+def update_KD_Counter(bot):
+    dict = bot.get_channel_info()
+    wins = db.field("SELECT Wins FROM category WHERE Category = ?", dict["Game"])
+    loses = db.field("SELECT Loses FROM category WHERE Category = ?", dict["Game"])
+    try:
+        f = open(cfg_kd, "w")
+        f.write("K/D: " + str(wins) + "/" + str(loses))
+        f.close()
+    except:
+        print("Fehler beim lesen/schreiben der K/D.")
+
+
 def main():
     # t = timedelta(days = 5, hours = 1, seconds = 33, microseconds = 233423)
     # print("total seconds =", t.total_seconds())
@@ -102,6 +116,10 @@ def main():
     # print(datetime.today())
 
     # print(type(datetime.strptime(datetime.today(), "%Y-%m-%d %H:%M:%S")))
-    print(type(datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S")))
+    #print(type(datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S")))
+
+    f = open(cfg_kd, "r")
+    print(f.read())
+
 if __name__ == "__main__":
     main()
