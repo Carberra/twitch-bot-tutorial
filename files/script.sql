@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
 	Warnings integer DEFAULT 0,
 	LostCounter integer DEFAULT 0,
 	Badges text DEFAULT "Tueftlie",
-	Henname text
+	HenName text
 );
 
 CREATE TABLE IF NOT EXISTS category (

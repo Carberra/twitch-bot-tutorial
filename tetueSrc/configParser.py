@@ -22,7 +22,7 @@ def get_int_element(section, option):
     if not config.has_option(section, option): return 0
     try:
         return config.getint(section, option)
-    except:
+    except Exception:
         return 0
 
 def get_string_list(section, option):

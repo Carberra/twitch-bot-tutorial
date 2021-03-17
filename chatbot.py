@@ -45,6 +45,7 @@ class Bot(SingleServerIRCBot):
 
         cxn.join(self.CHANNEL)
         db.build()
+        react.create_hen_name_list()
         print("Online")
         self.send_message("Now online.")
         react.update_KD_Counter(bot)
@@ -72,7 +73,7 @@ class Bot(SingleServerIRCBot):
         stream_info = {"Game":None}
         try:
             stream_info["Game"] = resp["game"]
-        except:
+        except Exception:
             pass
         finally:
             return stream_info

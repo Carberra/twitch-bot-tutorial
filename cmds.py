@@ -1,7 +1,9 @@
 from time import time
-import misc, economy, games, mod
+import misc, economy, games, mod, tetueSrc, user_management
 
-PREFIX = "!"
+PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
+PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
+TWEETMINSIZE = tetueSrc.get_int_element("general", "hastag_min_size")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, cooldown=0):
@@ -41,16 +43,21 @@ cmds = [
 ]
 
 def process(bot, user, message):
-    if message.startswith(PREFIX):
-        cmd = message.split(" ")[0][len(PREFIX):].lower()
+    if message.startswith(PREFIXMSG):
+        cmd = message.split(" ")[0][len(PREFIXMSG):].lower()
         args = message.split(" ")[1:]
         perform(bot, user, cmd, *args)
+    elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.ManuVIP.value:
+        hashtag = message.split(" ")[0].lower()
+        args = message.split(" ")[1:]
+        if len(hashtag) >= TWEETMINSIZE:
+            misc.register_hastag(bot, user, hashtag, *args)
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):
-        misc.help(bot, PREFIX, cmds)
+        misc.help(bot, PREFIXMSG, cmds)
     else:
-        if PREFIX in call: return # Sortiere Nachrichten aus wie <!!!>
+        if PREFIXMSG in call: return # Sortiere Nachrichten aus wie <!!!>
         for cmd in cmds:
             if call in cmd.callables:
                 if cmd.allowed != True: return # cmd ist gerade nicht erlaubt

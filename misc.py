@@ -7,6 +7,7 @@ import db, user_management, react
 BOOT_TIME = time()
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
+hashtag_tweet_list = []
 
 def bye(bot, user, *args):
     react.say_goodbye(bot, user)
@@ -27,11 +28,6 @@ def hug(bot, user, *args):
 
 def love(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
-
-# def miteinandereden(bot, user,*args):
-#     # miteinandereden statt gemeinsam streiten! Ihr Wort ist Gesetz!" <3
-#     # 
-#     pass
 
 def hype(bot, user, *args):
      bot.send_message(tetueSrc.get_string_element("outputtext", "hype"))
@@ -69,17 +65,26 @@ def lose(bot, user, *args):
     db.execute("UPDATE category SET Loses = Loses + 1 WHERE Category = ?", dict["Game"])
     react.update_KD_Counter(bot)
 
+def register_hastag(bot, user, hashtag, *args):
+    global hashtag_tweet_list
+    hashtag_tweet_list.append(hashtag)
+    print(hashtag_tweet_list)
+
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
 
 def shutdown(bot, user, *args):
     if user.get_name() == OWNER:
-        bot.send_message("Herunterfahren")
+        if not hashtag_tweet_list:
+            bot.send_message("Danke für den tollen Stream Tüftlies. Bis zum nächsten Mal.")
+        else:
+            bot.send_message("Danke für den tollen Stream Tüftlies. Das waren die Highlights heute:")
+            print(*hashtag_tweet_list)
+            bot.send_message(" ".join(hashtag_tweet_list))
         db.commit()
         db.close()
         bot.disconnect()
         exit(0)
-
     else:
         bot.send_message("Du kannst diesen Befehl nicht ausführen.")
