@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import db
+import db, tetueSrc
 from enum import Enum, auto
 
 class Badge(Enum):
@@ -9,6 +9,9 @@ class Badge(Enum):
     ManuVIP = auto()
     AutoVIP = auto()
     Tueftlie = auto()
+    def __lt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value < other.value
 
 def abstract_badge(badge_from_string):
     """
@@ -25,20 +28,24 @@ def abstract_badge(badge_from_string):
     if "Tueftlie" in badge_from_string: return Badge.Tueftlie
 
 class Chatuser:
-    def __init__(self, id, name, badge):
+    def __init__(self, id, name, badge, hunname):
         self.id = id
         self.name = name
         self.badge = badge
         self.messages = 0
         self.statusIsActive = False
-    
+        self.hunname = hunname
+
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
-        return self.name
+        if not self.hunname:
+            return self.name
+        else:
+            return self.hunname
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
-    def get_mod_rights(self):
+    def get_mod_rights(self): # ToDo: badge direkt abfragen im code, kein getter
         if self.badge == Badge.Moderator:
             return True
         else:
@@ -57,25 +64,25 @@ def get_active_user(user_id, display_name, badge):
     """
     user_active_found, user = get_user_with_id_from_list(activeUserList, user_id)
     if user_active_found == True: return user
-    print("User war nicht aktiv")
+    #print("User war nicht aktiv")
     user_active_found, user = get_user_with_id_from_list(userListToday, user_id)
     if user_active_found == True:
-        print("User war inaktiv")
+        #print("User war inaktiv")
         set_user_active(user)
         return user
     else:
-        print("User war nicht inaktiv")
+        #print("User war nicht inaktiv")
         user_db = db.record("SELECT * FROM users WHERE UserID = ?", user_id)
         if user_db == None: # Check if user not in DB
-            print("User war nicht in der Datenbank")
-            new_user = Chatuser(user_id, display_name, abstract_badge(badge))
+            #print("User war nicht in der Datenbank")
+            new_user = Chatuser(user_id, display_name, abstract_badge(badge), "")
             set_user_active(new_user)
             add_user_db(new_user)
             return new_user
         else:
             # Hier brauche ich noch keine Informationen aus der DB, kann aber dann hinzugefügt werden über tubel[index] --> temp_user_db[0] für User-ID
-            print("User war in der Datenbank")
-            old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]))
+            #print("User war in der Datenbank")
+            old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]), user_db[11])
             set_user_active(old_user)
             return old_user
 
@@ -111,6 +118,8 @@ def get_user_with_id_from_list(list, user_id):
             break
     return user_found, user
 
+#def get_user_with_name_from_list():
+
 def is_user_id_active(user_id):
     user_found = False
     for element in activeUserList:
@@ -131,15 +140,39 @@ def add_user_db(user):
     db.execute("INSERT OR IGNORE INTO users (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
 
 def main():
-    # warnings = db.column("SELECT Warnings, Coins FROM users WHERE CountLogins = ?", 2)
-    # warnings = db.column("SELECT UserName, CountLogins, LoyaltyPoints, Coins FROM users WHERE Badges = ? ORDER BY CountLogins DESC, LoyaltyPoints DESC, Coins DESC", "Tueftlie")
-    # warnings = db.column("SELECT Badges FROM users")
-    # print(warnings)
-    # print(type(warnings))
-    temp_user = Chatuser(1234, "Roland", "broadcaster/1,subscriber/0,premium/1")
-    print(temp_user.id)
-    temp_user.id = 77
-    print(temp_user.id)
+    # --------------- Hen-Name ---------------
+    # import timeit
+    # start = timeit.default_timer()
+    # namelist = tetueSrc.get_string_list("hunname","name")
+    # proplist = tetueSrc.get_string_list("hunname","propertie")
+    # hennamelist = db.column("SELECT HenName FROM users WHERE HenName IS NOT NULL")
 
+    # print(hennamelist)
+    # num = 0
+    # hen_name_list = []
+    # for name in namelist:
+    #     for prop in proplist:
+    #         if name.lower().startswith(prop[:1]):
+    #             henname = prop + str(" ") + name
+    #             if henname not in hennamelist:
+    #                 hen_name_list.append(henname)
+    # print(num)
+    # stop = timeit.default_timer()
+    # print('Time: ', stop - start)
+    # start = timeit.default_timer()
+    # # expression for name in list_1 for element in list_2 if condition
+    # list_3 = [("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    # print(len(list_3))
+    # print(choice(list_3))
+    # stop = timeit.default_timer()
+    # print('Time: ', stop - start)
+    # henname = choice([("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))])
+    # print(henname)
+    user = Chatuser(555, "test", Badge.Tueftlie, "Huhn")
+    print(user.badge)
+    if Badge.Tueftlie.value == Badge.Broadcaster.value:
+        print("Jopa")
+    else:
+        print("nope")
 if __name__ == "__main__":
     main()

@@ -1,50 +1,44 @@
 # -*- coding: utf-8 -*-
 import tetueSrc
-from enum import Enum, auto
+from requests import get
+from random import choice
 
-class Color(Enum):
-    RED = auto()
-    BLUE = auto()
-    GREEN = auto()
-
-class Test:
-    def __init__(self, name, nummer = 5 ):
-        self.__name = name
-        self.__nummer = nummer
-        self.color = Color.RED
-
-    @property
-    def name(self):
-        return self.__name
-    @name.setter
-    def name(self, new_name):
-        self.__name = new_name
-    @property
-    def nummer(self):
-        return self.__nummer
+read_successful, cfg = tetueSrc.get_configuration("vipbot")
+USERNAME = cfg["name"].lower()
+CLIENT_ID = cfg["client_id"]
+TOKEN = "OAuth " + cfg["token"]
 
 def main():
-    PREFIX = "!"
-    teststring = "!gehk!"
-    output_text = tetueSrc.get_string_element("outputtext", "huhn")
-    print(output_text)
-    
-    if PREFIX in teststring:
-        print("yes")
-    else:
-        print("no")
+    # Get Channel
+    # url = f"https://api.twitch.tv/kraken/channel"
+    # headers = {"Client-ID": CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json", "Authorization": TOKEN}
+    # resp = get(url, headers=headers).json()
+    # print(resp)
 
-    new_test = Test("Roland", nummer = 77)
-    print(new_test.name)
-    new_test.name = "Vanessa"
-    print(new_test.name)
-    print(new_test.nummer)
-    print(new_test.color)
-    if new_test.color == Color.GREEN:
-        print("Yes")
-    else:
-        print("No")
-    print(list(Color))
+    # Get Channel by ID
+    # url = f"https://api.twitch.tv/kraken/users?login={USERNAME}"
+    # headers = {"Client-ID": CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
+    # resp = get(url, headers=headers).json()
+    # channel_id = resp["users"][0]["_id"]
+
+    # url = f"https://api.twitch.tv/kraken/channels/{channel_id}"
+    # headers = {"Client-ID": CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
+    # resp = get(url, headers=headers).json()
+    # if not resp:
+    #     print("Fehler")
+    # else:
+    #     print(resp["game"])
+
+    # config 'custom-reward-id': '5f4a599a-0133-4226-9eea-d5d2d53b9a4e'
+    # namelist = tetueSrc.get_string_list("huehnername","name")
+    # print(choice(namelist))
+    test_string = "#pog das wird ein hash für den tweet"
+    string_1 = test_string.split(" ")[0].lower()
+    print(string_1)
+
+    list = ["test","test 2", "test 3"]
+    temp_string =  " ".join(list)
+    print(temp_string)
 
 if __name__ == "__main__":
     main()

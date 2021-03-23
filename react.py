@@ -1,15 +1,24 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
-from random import randint
+from random import randint, choice
 from re import search
 from time import time
 
-import db, games, user_management
+import db, games, user_management, tetueSrc
+
+messages = defaultdict(int)
 
 # "Emote from a another world"
 emotes_another_world = ["(y)"]
-
-messages = defaultdict(int)
+# K/D Counter
+cfg_kd = tetueSrc.get_string_element("paths", "kd")
+# Hen name
+HENNAME = tetueSrc.get_string_element("hunname", "id")
+hen_name_list = []
+# Auto-Vip
+LOYALITYPOINT_1 = tetueSrc.get_int_element("autovip", "loy_point_1")
+LOYALITYPOINT_2 = tetueSrc.get_int_element("autovip", "loy_point_2")
+LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "loy_point_3")
 
 def process(bot, user, message):
     update_records(bot, user)
@@ -25,13 +34,22 @@ def process(bot, user, message):
             bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Emote aus einer anderen Welt!")
             break
 
-    if (match := search(r'cheer[0-9]+', message)) is not None:
-        thank_for_cheer(bot, user, match)
+    # if (match := search(r'cheer[0-9]+', message)) is not None:
+    #     thank_for_cheer(bot, user, match)
+
+def channel_point(bot, user, message, rewardid):
+    global hen_name_list
+    if rewardid == HENNAME:
+        henname = choice(hen_name_list)
+        hen_name_list.remove(henname) 
+        db.execute("UPDATE users SET HenName = ? WHERE UserID = ?", henname, user.id)
+        bot.send_message(f"@{user.get_displayname()}, dein Hühnername ist: {henname}.")
+        user.hunname = henname
 
 def update_records(bot, user):
     # Zähle Nachrichten für lokalen User
     user.count_message()
-    print("Nachrichten in dieser Session: " + str(user.messages))
+    #print("Nachrichten in dieser Session: " + str(user.messages))
 
     # Update DB
     db.execute("UPDATE users SET UserName = ?, MessagesSent = MessagesSent + 1 WHERE UserID = ?", user.get_name(), user.id)
@@ -42,15 +60,16 @@ def update_records(bot, user):
         coinlock = (datetime.today()+timedelta(seconds=60)).strftime("%Y-%m-%d %H:%M:%S")
         db.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", randint(1, 5), coinlock, user.id)
 
+
 def welcome(bot, user):
     if user.badge == user_management.Badge.Moderator:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Die Macht ist mit dir!")
     elif user.badge == user_management.Badge.AutoVIP:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du einen VIP Status erhalten. Belehre mich!")
+        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du den VIP Status erhalten. Belehre mich!")
     elif user.badge == user_management.Badge.ManuVIP:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Belehre mich!")
     elif user.badge == user_management.Badge.Broadcaster:
-        bot.send_message(f"Dass du da bist is klar {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
+        bot.send_message(f"Dass du da bist is klar, {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
     else:
         bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Viel Spaß beim mittüfteln.")
 
@@ -59,8 +78,11 @@ def say_goodbye(bot, user):
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()}. Bis zum nächsten Mal.")
         user_management.set_user_inactive(user.id)
 
-def thank_for_cheer(bot, user, match):
-    bot.send_message(f"Thanks for the {match.group[5:]:,} bits {user.get_displayname()}! That's really appreciated!")
+def thank_for_cheer(bot, user, bits):
+    if bits != "1":
+        bot.send_message(f"Vielen Dank für die {bits} Bits, {user.get_displayname()} <3 <3 <3. Die kommen in den Topf fürs nächste Projekt.")
+    else:
+        bot.send_message(f"Vielen Dank für den einen Bit, {user.get_displayname()} <3 <3 <3. Der kommt in den Topf fürs nächste Projekt.")
 
 def update_loyalty_points(user):
     # Loyalty points (maximal 3 Punkte pro Stream)
@@ -68,25 +90,35 @@ def update_loyalty_points(user):
     lastLoginTime = db.field("SELECT LastLogin FROM users WHERE UserID = ?", user.id) # get last login date
     conv_lastLoginTime = datetime.strptime(lastLoginTime, "%Y-%m-%d %H:%M:%S") # convert to datetime-obj
     temp_diff_time = datetime.today() - conv_lastLoginTime # diff time
-    if temp_diff_time.days >= 1: # time diff longer then 1 day
+    if temp_diff_time.days >= LOYALITYPOINT_1: # time diff longer then 1 day
         db.execute("UPDATE users SET CountLogins = CountLogins + ?, LastLogin = ? WHERE UserID = ?", 1, datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S"), user.id)
     # -- 2. Punkt nach 50 Nachrichten
-    if user.messages == 50: #ToDo: Grenzen in config schreiben
+    if user.messages == LOYALITYPOINT_2:
         db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
     # -- 3. Punkt wäre nach 100 Nachrichten
-    elif user.messages == 100: #ToDo: Grenzen in config schreiben
+    elif user.messages == LOYALITYPOINT_3:
         db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
 
-def main():
-    # t = timedelta(days = 5, hours = 1, seconds = 33, microseconds = 233423)
-    # print("total seconds =", t.total_seconds())
-    # print("sec: " + str(t.seconds))
-    # print("days: " + str(t.days))
-    # print(type(t.days))
-    # print(datetime.utcnow())
-    # print(datetime.today())
+def update_KD_Counter(bot):
+    dict = bot.get_channel_info()
+    wins = db.field("SELECT Wins FROM category WHERE Category = ?", dict["Game"])
+    loses = db.field("SELECT Loses FROM category WHERE Category = ?", dict["Game"])
+    try:
+        with open(cfg_kd, "w") as f:
+            f.write("K/D: " + str(wins) + "/" + str(loses))
+    except Exception:
+        print("Fehler beim lesen/schreiben der K/D.")
 
-    # print(type(datetime.strptime(datetime.today(), "%Y-%m-%d %H:%M:%S")))
-    print(type(datetime.strftime(datetime.today(), "%Y-%m-%d %H:%M:%S")))
+def create_hen_name_list():
+    global hen_name_list
+    namelist = tetueSrc.get_string_list("hunname","name") # Read all possible Hen-Names
+    proplist = tetueSrc.get_string_list("hunname","propertie") # Read all possible properties
+    hennamelist = db.column("SELECT HenName FROM users WHERE HenName IS NOT NULL") # Get all existing Hen-Names
+    # Create list with all possible combinations of 
+    hen_name_list = [("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+
+def main():
+    pass
+
 if __name__ == "__main__":
     main()
