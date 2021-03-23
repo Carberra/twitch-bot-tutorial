@@ -12,7 +12,6 @@ class Badge(Enum):
     def __lt__(self, other):
         if self.__class__ is other.__class__:
             return self.value < other.value
-    
 
 def abstract_badge(badge_from_string):
     """

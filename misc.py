@@ -7,7 +7,7 @@ import db, user_management, react
 BOOT_TIME = time()
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
-hashtag_tweet_list = []
+hashtag_tweet_list = [] # <- Keine Liste, sondern Set. So fallen doppelte raus.
 
 def bye(bot, user, *args):
     react.say_goodbye(bot, user)

@@ -34,8 +34,8 @@ def process(bot, user, message):
             bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Emote aus einer anderen Welt!")
             break
 
-    if (match := search(r'cheer[0-9]+', message)) is not None:
-        thank_for_cheer(bot, user, match)
+    # if (match := search(r'cheer[0-9]+', message)) is not None:
+    #     thank_for_cheer(bot, user, match)
 
 def channel_point(bot, user, message, rewardid):
     global hen_name_list
@@ -78,8 +78,11 @@ def say_goodbye(bot, user):
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()}. Bis zum nächsten Mal.")
         user_management.set_user_inactive(user.id)
 
-def thank_for_cheer(bot, user, match):
-    bot.send_message(f"Thanks for the {match.group[5:]:,} bits {user.get_displayname()}! That's really appreciated!")
+def thank_for_cheer(bot, user, bits):
+    if bits != "1":
+        bot.send_message(f"Vielen Dank für die {bits} Bits, {user.get_displayname()} <3 <3 <3. Die kommen in den Topf fürs nächste Projekt.")
+    else:
+        bot.send_message(f"Vielen Dank für den einen Bit, {user.get_displayname()} <3 <3 <3. Der kommt in den Topf fürs nächste Projekt.")
 
 def update_loyalty_points(user):
     # Loyalty points (maximal 3 Punkte pro Stream)

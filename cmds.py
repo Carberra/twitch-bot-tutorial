@@ -47,7 +47,7 @@ def process(bot, user, message):
         cmd = message.split(" ")[0][len(PREFIXMSG):].lower()
         args = message.split(" ")[1:]
         perform(bot, user, cmd, *args)
-    elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.ManuVIP.value:
+    elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.AutoVIP.value:
         hashtag = message.split(" ")[0].lower()
         args = message.split(" ")[1:]
         if len(hashtag) >= TWEETMINSIZE:

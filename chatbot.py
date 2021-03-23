@@ -62,6 +62,8 @@ class Bot(SingleServerIRCBot):
             cmds.process(bot, active_user, message)
             if "custom-reward-id" in tags:
                 react.channel_point(bot, active_user, message, tags["custom-reward-id"])
+            elif "bits" in tags:
+                react.thank_for_cheer(bot, active_user, tags("bits"))
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)
