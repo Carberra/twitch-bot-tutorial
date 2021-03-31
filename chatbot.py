@@ -11,11 +11,19 @@
 import sys
 from irc.bot import SingleServerIRCBot
 from requests import get
+import logging
 import tetueSrc
 import user_management, db, react, automod, cmds
 
+logging.basicConfig(
+    handlers=[logging.FileHandler(tetueSrc.get_string_element("paths", "logfile"), 'a', 'utf-8')],
+    format='[%(asctime)s] %(levelname)-10s %(message)s',
+    level=logging.INFO
+)
+
 read_successful, cfg = tetueSrc.get_configuration("bot")
 read_successful, cfg_owner = tetueSrc.get_configuration("vipbot")
+
 
 class Bot(SingleServerIRCBot):
     def __init__(self):
@@ -54,7 +62,9 @@ class Bot(SingleServerIRCBot):
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        print(tags)
+        logging.info(tags)
+        logging.info(message)
+
         active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
         if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
             # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
@@ -63,7 +73,7 @@ class Bot(SingleServerIRCBot):
             if "custom-reward-id" in tags:
                 react.channel_point(bot, active_user, message, tags["custom-reward-id"])
             elif "bits" in tags:
-                react.thank_for_cheer(bot, active_user, tags("bits"))
+                react.thank_for_cheer(bot, active_user, tags["bits"])
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)

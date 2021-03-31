@@ -35,6 +35,7 @@ class Chatuser:
         self.messages = 0
         self.statusIsActive = False
         self.hunname = hunname
+        self.failedCmd = 0
 
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):

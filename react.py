@@ -111,13 +111,19 @@ def update_KD_Counter(bot):
 
 def create_hen_name_list():
     global hen_name_list
-    namelist = tetueSrc.get_string_list("hunname","name") # Read all possible Hen-Names
+    namelist_f = tetueSrc.get_string_list("hunname","name_f") # Read all possible Hen-Names
+    namelist_m = tetueSrc.get_string_list("hunname","name_m") # Read all possible Hen-Names
     proplist = tetueSrc.get_string_list("hunname","propertie") # Read all possible properties
     hennamelist = db.column("SELECT HenName FROM users WHERE HenName IS NOT NULL") # Get all existing Hen-Names
-    # Create list with all possible combinations of 
-    hen_name_list = [("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    # Create list with all possible combinations of names
+    hen_name_list_f = [("".join([prop, " ", name])) for name in namelist_f for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    hen_name_list_m = [("".join([prop, "r ", name])) for name in namelist_m for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    hen_name_list = hen_name_list_f + hen_name_list_m
 
 def main():
+    global hen_name_list
+    create_hen_name_list()
+    print(hen_name_list)
     pass
 
 if __name__ == "__main__":

@@ -7,7 +7,10 @@ import db, user_management, react
 BOOT_TIME = time()
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
-hashtag_tweet_list = [] # <- Keine Liste, sondern Set. So fallen doppelte raus.
+TWEETMAXLENGTH = tetueSrc.get_int_element("general", "hashtag_max_length")
+TWEETWELCOME = tetueSrc.get_string_element("general", "tweet_welcome")
+TWEETMINSIZE = tetueSrc.get_int_element("general", "hashtag_min_size")
+hashtag_tweet_list = {"#twitchstreamer", "#TwitchDE", "#knorzen"}
 
 def bye(bot, user, *args):
     react.say_goodbye(bot, user)
@@ -67,8 +70,12 @@ def lose(bot, user, *args):
 
 def register_hastag(bot, user, hashtag, *args):
     global hashtag_tweet_list
-    hashtag_tweet_list.append(hashtag)
-    print(hashtag_tweet_list)
+    if len(hashtag) < TWEETMINSIZE: return
+    if len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list) + " " + hashtag) <= TWEETMAXLENGTH:
+        hashtag_tweet_list.add(hashtag)
+        print(hashtag_tweet_list)
+    else:
+        bot.send_message(f'Hashtag nicht registriert. {user.get_displayname()}, es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "
@@ -79,9 +86,7 @@ def shutdown(bot, user, *args):
         if not hashtag_tweet_list:
             bot.send_message("Danke für den tollen Stream Tüftlies. Bis zum nächsten Mal.")
         else:
-            bot.send_message("Danke für den tollen Stream Tüftlies. Das waren die Highlights heute:")
-            print(*hashtag_tweet_list)
-            bot.send_message(" ".join(hashtag_tweet_list))
+            bot.send_message(TWEETWELCOME + " " + " ".join(hashtag_tweet_list))
         db.commit()
         db.close()
         bot.disconnect()

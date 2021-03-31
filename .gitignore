@@ -8,3 +8,4 @@ venv/
 
 # private data
 *.priv
+*.log

@@ -1,9 +1,8 @@
 from time import time
-import misc, economy, games, mod, tetueSrc, user_management
+import misc, economy, games, mod, tetueSrc, user_management, automod
 
 PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
-TWEETMINSIZE = tetueSrc.get_int_element("general", "hastag_min_size")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, cooldown=0):
@@ -34,7 +33,6 @@ cmds = [
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
     Cmd(["competition"], games.competition, "games"),
 
-
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
     Cmd(["unwarn", "rmwarn"], mod.remove_warn, "mod"),
@@ -45,13 +43,13 @@ cmds = [
 def process(bot, user, message):
     if message.startswith(PREFIXMSG):
         cmd = message.split(" ")[0][len(PREFIXMSG):].lower()
+        if len(cmd) <= 1: return
         args = message.split(" ")[1:]
         perform(bot, user, cmd, *args)
     elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.AutoVIP.value:
         hashtag = message.split(" ")[0].lower()
         args = message.split(" ")[1:]
-        if len(hashtag) >= TWEETMINSIZE:
-            misc.register_hastag(bot, user, hashtag, *args)
+        misc.register_hastag(bot, user, hashtag, *args)
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):
@@ -68,4 +66,5 @@ def perform(bot, user, call, *args):
                     bot.send_message(f"Cooldown ist noch aktiv. Versuch es in {cmd.next_use-time():,.0f} Sekunde(n) noch einmal.")
 
                 return
-        bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
+        if automod.check_spam_cmd(bot, user) == True:
+            bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")

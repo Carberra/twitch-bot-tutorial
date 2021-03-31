@@ -5,6 +5,7 @@ import tetueSrc
 warning_timers = (1, 5, 60)
 filler_sign_list = tetueSrc.get_string_list("automod", "filler_sign")
 bad_word_list = tetueSrc.get_string_list("automod", "badwords")
+failed_cmd_thr = tetueSrc.get_int_element("automod", "failed_cmd_thr")
 
 def clear(bot, user, message):
     temp_message = message.lower()
@@ -14,6 +15,17 @@ def clear(bot, user, message):
         warn(bot, user)
         return False
     return True
+
+def check_spam_cmd(bot, user):
+    # Prüft ob der User den cmd Befehl als Spam benutzt. Wenn Anzahl überschritten, bekommt er ein
+    # Timeout aber keine Verwarnung eingetragen.
+    user.failedCmd += 1
+    if user.failedCmd >= failed_cmd_thr:
+        bot.send_message(f"/timeout {user.get_displayname()} 1m")
+        bot.send_message(f"{user.get_displayname()}, du hast einen Timeout bekommen, weil du zu häufig falsche Befehle eingegeben hast. Die Timeoutlänge beträgt 1 Minute.")
+        return False
+    else:
+        return True
 
 def warn(bot, user):
     warnings = db.field("SELECT Warnings FROM users WHERE UserID = ?", user.id)
