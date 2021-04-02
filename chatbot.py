@@ -24,7 +24,6 @@ logging.basicConfig(
 read_successful, cfg = tetueSrc.get_configuration("bot")
 read_successful, cfg_owner = tetueSrc.get_configuration("vipbot")
 
-
 class Bot(SingleServerIRCBot):
     def __init__(self):
         # Init for Chat-Bot
@@ -55,7 +54,7 @@ class Bot(SingleServerIRCBot):
         db.build()
         react.create_hen_name_list()
         print("Online")
-        self.send_message("Now online.")
+        self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
         react.update_KD_Counter(bot)
 
     @db.with_commit

@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-import tetueSrc
+#import tetueSrc
 import time
 from requests import get
 from random import choice
 import logging
+import json
 
-read_successful, cfg = tetueSrc.get_configuration("vipbot")
-USERNAME = cfg["name"].lower()
-CLIENT_ID = cfg["client_id"]
-TOKEN = "OAuth " + cfg["token"]
+# read_successful, cfg = tetueSrc.get_configuration("vipbot")
+# USERNAME = cfg["name"].lower()
+# CLIENT_ID = cfg["client_id"]
+# TOKEN = "OAuth " + cfg["token"]
+
+with open ('files/config.json', encoding='utf-8') as file:
+    data = json.load(file)
 
 def main():
     # Get Channel
@@ -69,7 +73,25 @@ def main():
     # logging.error('error')
     # logging.critical('critical')
 
-    pass
+    # --------------- Json ----------------
+    print(json.dumps(data, indent=4)) # Formatierte Ausgabe
+    print(type(data))
+    print(type(data['hunname']['icon']))
+    print(data['hunname']['icon'])
+    if "icon" in data['hunname']:
+        print("Vorhanden")
+    else:
+        print("Nicht vorhanden")
+    if "icon" not in data['hunname']:
+        print("Nicht Vorhanden 2")
+    else:
+        print("Vorhanden 2")
+
+    print(data['autovip']['num_max_auto_vips'])
+    print(type(data['autovip']['num_max_auto_vips']))
+    print(type(str(data['autovip']['num_max_auto_vips'])))
+
+    print(data['games']['Populous: The Beginning']['welcome'])
 
 if __name__ == "__main__":
     main()

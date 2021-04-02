@@ -3,9 +3,9 @@ import db
 import tetueSrc
 
 warning_timers = (1, 5, 60)
-filler_sign_list = tetueSrc.get_string_list("automod", "filler_sign")
-bad_word_list = tetueSrc.get_string_list("automod", "badwords")
-failed_cmd_thr = tetueSrc.get_int_element("automod", "failed_cmd_thr")
+filler_sign_list = tetueSrc.get_string_list("automod", "list_filler_sign")
+bad_word_list = tetueSrc.get_string_list("automod", "list_badwords")
+failed_cmd_thr = tetueSrc.get_int_element("automod", "num_failed_cmd_thr")
 
 def clear(bot, user, message):
     temp_message = message.lower()
@@ -48,8 +48,8 @@ def testbla(para1, para2, para3=None):
 def main():
     testbla("Zeile 1", "Zeile 2")
     testbla("Zeile 1", "Zeile 2", para3="Zeile 3")
-    FILLER_WORDS = tetueSrc.get_string_list("automod", "filler_sign")
-    BAD_WORDS_LIST = tetueSrc.get_string_list("automod", "badwords")
+    FILLER_WORDS = tetueSrc.get_string_list("automod", "list_filler_sign")
+    BAD_WORDS_LIST = tetueSrc.get_string_list("automod", "list_badwords")
     text = "halLO du d.e.p p"
     temp_text = text.lower()
     for element in FILLER_WORDS:
