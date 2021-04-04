@@ -7,7 +7,8 @@
     },
     "paths": { 
         "kd": "files/KD.txt",
-        "logfile": "files/debug.log"
+        "logfile": "files/debug.log",
+        "reminderfile": "files/reminder.txt"
     },
     "outputtext": {
         "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
@@ -36,23 +37,23 @@
     },
     "games": {
         "Science & Technology":{
-            "win": "Feature",
-            "lose": "Bug",
+            "win": "Features",
+            "lose": "Bugs",
             "welcome": "Viel Spaß beim mittüfteln."
         },
         "Populous: The Beginning":{
-            "win": "Win",
-            "lose": "Lose",
+            "win": "Wins",
+            "lose": "Loses",
             "welcome": "Lass uns gemeinsam die anderen Schamanen bezwingen."
         },
         "Makers & Crafting":{
-            "win": "Finished",
-            "lose": "Failed",
+            "win": "Successes",
+            "lose": "Failures",
             "welcome": "Viel Spaß beim mitknorzen."
         },
         "Grounded":{
-            "win": "Kill",
-            "lose": "Dead",
+            "win": "Kills",
+            "lose": "Deads",
             "welcome": "Lass uns gemeinsam Spinnen killen."
         }
     }

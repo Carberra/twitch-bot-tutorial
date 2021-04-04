@@ -5,13 +5,14 @@ PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
 
 class Cmd(object):
-    def __init__(self, callables, func, function_info, cooldown=0):
+    def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
         self.callables = callables
         self.func = func
         self.cooldown = cooldown
         self.next_use = time()
         self.allowed = True
         self.function_info = function_info
+        self.rights = rights
 
 cmds = [
     #	misc
@@ -37,7 +38,8 @@ cmds = [
     Cmd(["warn"], mod.warn, "mod"),
     Cmd(["unwarn", "rmwarn"], mod.remove_warn, "mod"),
     Cmd(["gameon"], mod.set_games_on, "mod"),
-    Cmd(["gameoff"], mod.set_games_off, "mod")
+    Cmd(["gameoff"], mod.set_games_off, "mod"),
+    Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP)
 ]
 
 def process(bot, user, message):
@@ -59,6 +61,7 @@ def perform(bot, user, call, *args):
         for cmd in cmds:
             if call in cmd.callables:
                 if cmd.allowed != True: return # cmd ist gerade nicht erlaubt
+                if user.badge.value > cmd.rights.value: return # Darf user das Kommando überhaupt ausführen
                 if time() > cmd.next_use:
                     cmd.func(bot, user, *args)
                     cmd.next_use = time() + cmd.cooldown

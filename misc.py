@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from sys import exit
 from time import time
 import tetueSrc
@@ -76,6 +76,10 @@ def register_hastag(bot, user, hashtag, *args):
         print(hashtag_tweet_list)
     else:
         bot.send_message(f'Hashtag nicht registriert. {user.get_displayname()}, es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
+
+def reminder(bot, user, *args):
+    with open(tetueSrc.get_string_element("paths", "reminderfile"), "a") as f:
+        f.write(f'{datetime.today()}: {" ".join(args)}\n')
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "

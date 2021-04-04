@@ -74,24 +74,26 @@ def main():
     # logging.critical('critical')
 
     # --------------- Json ----------------
-    print(json.dumps(data, indent=4)) # Formatierte Ausgabe
-    print(type(data))
-    print(type(data['hunname']['icon']))
-    print(data['hunname']['icon'])
-    if "icon" in data['hunname']:
-        print("Vorhanden")
-    else:
-        print("Nicht vorhanden")
-    if "icon" not in data['hunname']:
-        print("Nicht Vorhanden 2")
-    else:
-        print("Vorhanden 2")
+    # print(json.dumps(data, indent=4)) # Formatierte Ausgabe
+    # print(type(data))
+    # print(type(data['hunname']['icon']))
+    # print(data['hunname']['icon'])
+    # if "icon" in data['hunname']:
+    #     print("Vorhanden")
+    # else:
+    #     print("Nicht vorhanden")
+    # if "icon" not in data['hunname']:
+    #     print("Nicht Vorhanden 2")
+    # else:
+    #     print("Vorhanden 2")
 
-    print(data['autovip']['num_max_auto_vips'])
-    print(type(data['autovip']['num_max_auto_vips']))
-    print(type(str(data['autovip']['num_max_auto_vips'])))
+    # print(data['autovip']['num_max_auto_vips'])
+    # print(type(data['autovip']['num_max_auto_vips']))
+    # print(type(str(data['autovip']['num_max_auto_vips'])))
 
-    print(data['games']['Populous: The Beginning']['welcome'])
+    # print(data['games']['Populous: The Beginning']['welcome'])
+
+    pass
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ from enum import Enum, auto
 class Badge(Enum):
     Broadcaster = auto()
     Moderator = auto()
+    #Gruender = auto()
     ManuVIP = auto()
     AutoVIP = auto()
     Tueftlie = auto()
@@ -26,6 +27,7 @@ def abstract_badge(badge_from_string):
     if "ManuVIP" in badge_from_string: return Badge.ManuVIP
     if "AutoVIP" in badge_from_string: return Badge.AutoVIP
     if "Tueftlie" in badge_from_string: return Badge.Tueftlie
+    # ToDo: Gründerabzeichen einfügen, richtig sortieren und alle badges der chatter einfügen
 
 class Chatuser:
     def __init__(self, id, name, badge, hunname):

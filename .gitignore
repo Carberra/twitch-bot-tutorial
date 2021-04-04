@@ -9,3 +9,4 @@ venv/
 # private data
 *.priv
 *.log
+*.txt
