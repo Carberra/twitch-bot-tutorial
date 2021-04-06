@@ -35,7 +35,7 @@ def process_tea_butler(bot, user, *args):
         if tea.get_lifetime() > TEAANSWERTIME:
             running_tea_butler.remove(tea)
         elif tea.user_id == user.id:
-            list = [string_msg for string_msg in args for string_list in TEAANSWER if string_msg == string_list]
+            list = [string_msg for string_msg in args for string_list in TEAANSWER if string_msg.lower() == string_list.lower()]
             if len(list) > 0:
                 bot.send_message(f"{user.get_displayname()}, bitteschön <3")
                 running_tea_butler.remove(tea)

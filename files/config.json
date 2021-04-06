@@ -37,7 +37,7 @@
     },
     "tea_butler":{
         "prefix_butler": "@",
-        "answer_butler": ["danke", "dankeschön"],
+        "answer_butler": ["danke", "dankeschön", "dange"],
         "answer_time": 60,
         "quotes_path": "files/quotes.txt",
         "emote": "CoffeeTime"

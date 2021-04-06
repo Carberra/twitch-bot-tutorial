@@ -34,7 +34,7 @@ cmds = [
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
     Cmd(["competition"], games.competition, "games"),
-    Cmd(["tee", "tea"], games.new_tea, "games"),
+    Cmd(["tee", "tea", "kaffee", "coffee"], games.new_tea, "games"),
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
