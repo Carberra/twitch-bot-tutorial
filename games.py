@@ -1,14 +1,45 @@
-from random import choice, randint
+from random import choice
 from enum import Enum, auto
 import time
-import db,user_management
+import db,user_management, tetueSrc
+
+TEAANSWERTIME = tetueSrc.get_int_element("tea_butler", "answer_time")
+TEAANSWER = tetueSrc.get_string_list("tea_butler", "answer_butler")
+TEAEMOTE = tetueSrc.get_string_element("tea_butler", "emote")
+QUOTESPATH = tetueSrc.get_string_element("tea_butler", "quotes_path")
 
 running_competition = None
+running_tea_butler = []
 
 class Status(Enum):
     Running = auto()
     Stopped = auto()
     Closed = auto()
+
+class tea_butler():
+    def __init__(self, user):
+        self.user_id = user
+        self.starttime = time.time()
+    def get_lifetime(self):
+        return time.time() - self.starttime
+
+def new_tea(bot, user, cmd=None, *args):
+    quote_raw = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
+    quote = quote_raw.replace("\n", "")
+    bot.send_message(f"{TEAEMOTE} {user.get_displayname()}, bitteschön. {quote}")
+
+    running_tea_butler.append(tea_butler(user.id))
+
+def process_tea_butler(bot, user, *args):
+    for tea in running_tea_butler:
+        if tea.get_lifetime() > TEAANSWERTIME:
+            running_tea_butler.remove(tea)
+        elif tea.user_id == user.id:
+            list = [string_msg for string_msg in args for string_list in TEAANSWER if string_msg.lower() == string_list.lower()]
+            if len(list) > 0:
+                bot.send_message(f"{user.get_displayname()}, bitteschön <3")
+                running_tea_butler.remove(tea)
+                break
 
 class Competition:
     def __init__(self):
@@ -35,13 +66,15 @@ def competition(bot, user, cmd=None, *args):
     # Verlosung starten
     if running_competition == None and cmd == "start" and user.badge == user_management.Badge.Broadcaster:
         running_competition = Competition()
-        # ToDo: Feedback für Streamerdass er ein Gewinnspiel startet? vielleicht mit Namen?
+        bot.send_message(f"Verlosung gestartet.")
     # Verlosung stoppen
     elif running_competition != None and cmd == "ende" and user.badge == user_management.Badge.Broadcaster:
         running_competition.status = Status.Stopped
+        bot.send_message(f"Teilnahme an der Verlosung beendet.")
     # Verlosung beenden
     elif running_competition != None and cmd == "schließen" and running_competition.status == Status.Stopped and user.badge == user_management.Badge.Broadcaster:
         running_competition = None
+        bot.send_message(f"Verlosung beendet.")
     # Gewinner ziehen
     elif running_competition != None and cmd == "ziehen" and running_competition.status == Status.Running and user.badge == user_management.Badge.Broadcaster:
         running_competition.drawing(bot)

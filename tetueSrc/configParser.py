@@ -1,40 +1,37 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
+import json
 from configparser import ConfigParser
 
 PATH_TO_INIT_FILE = 'files/login_data.priv'
-PATH_TO_FILE_CONFIG_FILE = 'files/conf.cfg'
+PATH_TO_FILE_CONFIG_FILE = 'files/config.json'
+
+with open (PATH_TO_FILE_CONFIG_FILE, encoding='utf-8') as file:
+    data = json.load(file)
+
+def get_dict(section, option):
+    if section not in data: return {}
+    if option not in data[section]: return {}
+    return data[section][option]
 
 def get_string_element(section, option):
-    if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return ""
-    config = ConfigParser()
-    config.read(PATH_TO_FILE_CONFIG_FILE, "UTF-8")
-    if not config.has_section(section): return ""
-    if not config.has_option(section, option): return ""
-    return config.get(section, option)
+    if section not in data: return ""
+    if option not in data[section]: return ""
+    return str(data[section][option])
 
 def get_int_element(section, option):
-    if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return 0
-    config = ConfigParser()
-    config.read(PATH_TO_FILE_CONFIG_FILE)
-    if not config.has_section(section): return 0
-    if not config.has_option(section, option): return 0
+    if section not in data: return 0
+    if option not in data[section]: return 0
     try:
-        return config.getint(section, option)
+        return int(data[section][option])
     except Exception:
         return 0
 
 def get_string_list(section, option):
-    "Return a list with all elements from a option welche are seperate by a comma"
-    dict_string = {} # ToDo: warum dict und nicht list?
-    if not os.path.isfile(PATH_TO_FILE_CONFIG_FILE): return dict_string
-    config = ConfigParser()
-    config.read(PATH_TO_FILE_CONFIG_FILE)
-    if not config.has_section(section): return dict_string
-    if not config.has_option(section, option): return dict_string
-    dict_string = config.get(section, option).split(",")
-    return dict_string
+    if section not in data: return []
+    if option not in data[section]: return []
+    return data[section][option]
 
 def get_configuration(section):
     dict_config = {}
@@ -60,8 +57,8 @@ def get_configuration(section):
 def main():
     read_successful, cfg = get_configuration("bot")
     print("Erfolgreich: " + str(read_successful) + " / " + str(cfg))
-    print(get_string_list("automod", "badwords"))
-    print(get_string_list("automod", "filler_sign"))
+    print(get_string_list("automod", "list_badwords"))
+    print(get_string_list("automod", "list_filler_sign"))
 
 if __name__ == "__main__":
     main()

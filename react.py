@@ -16,13 +16,14 @@ cfg_kd = tetueSrc.get_string_element("paths", "kd")
 HENNAME = tetueSrc.get_string_element("hunname", "id")
 hen_name_list = []
 # Auto-Vip
-LOYALITYPOINT_1 = tetueSrc.get_int_element("autovip", "loy_point_1")
-LOYALITYPOINT_2 = tetueSrc.get_int_element("autovip", "loy_point_2")
-LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "loy_point_3")
+LOYALITYPOINT_1 = tetueSrc.get_int_element("autovip", "num_loy_point_1")
+LOYALITYPOINT_2 = tetueSrc.get_int_element("autovip", "num_loy_point_2")
+LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "num_loy_point_3")
 
 def process(bot, user, message):
     update_records(bot, user)
     update_loyalty_points(user)
+    update_KD_Counter(bot)
 
     if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
@@ -71,11 +72,16 @@ def welcome(bot, user):
     elif user.badge == user_management.Badge.Broadcaster:
         bot.send_message(f"Dass du da bist is klar, {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
     else:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Viel Spaß beim mittüfteln.")
+        dict = bot.get_channel_info()
+        dict_game = tetueSrc.get_dict("games", dict["Game"])
+        if "welcome" in dict_game:
+            bot.send_message(f'Willkommen im Stream {user.get_displayname()}. {dict_game["welcome"]}')
+        else:
+            bot.send_message(f"Willkommen im Stream {user.get_displayname()}.")
 
 def say_goodbye(bot, user):
     if user_management.is_user_id_active(user.id) == True:
-        bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()}. Bis zum nächsten Mal.")
+        bot.send_message(f"Vielen dank {user.get_displayname()}. Bis zum nächsten Mal.")
         user_management.set_user_inactive(user.id)
 
 def thank_for_cheer(bot, user, bits):
@@ -100,24 +106,33 @@ def update_loyalty_points(user):
         db.execute("UPDATE users SET LoyaltyPoints = LoyaltyPoints + 1 WHERE UserID = ?", user.id)
 
 def update_KD_Counter(bot):
-    dict = bot.get_channel_info()
-    wins = db.field("SELECT Wins FROM category WHERE Category = ?", dict["Game"])
-    loses = db.field("SELECT Loses FROM category WHERE Category = ?", dict["Game"])
     try:
+        dict = bot.get_channel_info()
+        wins = db.field("SELECT Wins FROM category WHERE Category = ?", dict["Game"])
+        loses = db.field("SELECT Loses FROM category WHERE Category = ?", dict["Game"])
+        dict_game = tetueSrc.get_dict("games", dict["Game"])
         with open(cfg_kd, "w") as f:
-            f.write("K/D: " + str(wins) + "/" + str(loses))
+            f.write(dict_game["win"] + ": " + str(wins) + "\n" + dict_game["lose"] + ": " + str(loses))
     except Exception:
+        with open(cfg_kd, "w") as f:
+            f.write("No data")
         print("Fehler beim lesen/schreiben der K/D.")
 
 def create_hen_name_list():
     global hen_name_list
-    namelist = tetueSrc.get_string_list("hunname","name") # Read all possible Hen-Names
+    namelist_f = tetueSrc.get_string_list("hunname","list_name_f") # Read all possible Hen-Names
+    namelist_m = tetueSrc.get_string_list("hunname","list_name_m") # Read all possible Hen-Names
     proplist = tetueSrc.get_string_list("hunname","propertie") # Read all possible properties
     hennamelist = db.column("SELECT HenName FROM users WHERE HenName IS NOT NULL") # Get all existing Hen-Names
-    # Create list with all possible combinations of 
-    hen_name_list = [("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    # Create list with all possible combinations of names
+    hen_name_list_f = [("".join([prop, " ", name])) for name in namelist_f for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    hen_name_list_m = [("".join([prop, "r ", name])) for name in namelist_m for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
+    hen_name_list = hen_name_list_f + hen_name_list_m
 
 def main():
+    global hen_name_list
+    create_hen_name_list()
+    print(hen_name_list)
     pass
 
 if __name__ == "__main__":

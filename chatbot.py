@@ -46,15 +46,18 @@ class Bot(SingleServerIRCBot):
         cxn.join(self.CHANNEL)
         db.build()
         react.create_hen_name_list()
-        print("Online")
-        self.send_message("Now online.")
         react.update_KD_Counter(bot)
+        tetueSrc.log_header_info("Stream-Start")
+        self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
+        print("Online")
 
     @db.with_commit
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        print(tags)
+        tetueSrc.log_event_info(tags)
+        tetueSrc.log_event_info(message)
+
         active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
         if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
             # Feature: Wenn man nur mal kurz sagen will, dass man da ist aber wieder im Lurch geht:  !Lurk Hallo an alle, lass mal en bissel Liebe da
@@ -63,7 +66,7 @@ class Bot(SingleServerIRCBot):
             if "custom-reward-id" in tags:
                 react.channel_point(bot, active_user, message, tags["custom-reward-id"])
             elif "bits" in tags:
-                react.thank_for_cheer(bot, active_user, tags("bits"))
+                react.thank_for_cheer(bot, active_user, tags["bits"])
 
     def send_message(self, message):
         self.connection.privmsg(self.CHANNEL, message)
@@ -79,6 +82,11 @@ class Bot(SingleServerIRCBot):
             pass
         finally:
             return stream_info
+
+    def get_chatroom_info(self):
+        url = f"https://tmi.twitch.tv/group/user/technik_tueftler/chatters"
+        resp = get(url).json()
+        return resp
 
 if __name__ == "__main__":
     bot = Bot()

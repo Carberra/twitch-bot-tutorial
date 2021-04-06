@@ -1,0 +1,67 @@
+{   "general": {
+        "prefix_msg": "!",
+        "prefix_twe": "#",
+        "hashtag_min_size": 3,
+        "hashtag_max_length": 280,
+        "tweet_welcome": "Danke für den tollen Stream Tüftlies <3. Das waren die Highlights heute:"
+    },
+    "paths": { 
+        "kd": "files/KD.txt",
+        "logfile": "files/debug.log",
+        "reminderfile": "files/reminder.txt"
+    },
+    "outputtext": {
+        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
+        "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
+        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp"
+    },
+    "automod": {
+        "list_badwords": ["bigfollowscom", "bigfollowcom"],
+        "list_filler_sign": [".", " ", "!"],
+        "num_failed_cmd_thr": 25
+    },
+    "autovip": {
+        "badgeslist": ["Broadcaster", "Moderator", "ManuVIP", "AutoVIP", "Tueftlie"],
+        "list_filler_sign": [".", " ", "!"],
+        "num_max_auto_vips": 5,
+        "num_loy_point_1": 1,
+        "num_loy_point_2": 50,
+        "num_loy_point_3": 100
+    },
+    "hunname": {
+        "icon": "🐔",
+        "id": "5f4a599a-0133-4226-9eea-d5d2d53b9a4e",
+        "list_name_f": ["Adele", "Agata", "Agnes", "Almut", "Anneliese", "Adelgunde", "Antonia", "Agathe", "Anni", "Annegret", "Adelheit", "Alberta", "Alma", "Bertha", "Brunhilde", "Charlotte", "Cordula", "Dafne", "Dorothea", "Doris", "Erika", "Emma", "Erna", "Elise", "Edeltraud", "Elvira", "Elfriede", "Elsa", "Else", "Franzi", "Frieda", "Frederike", "Frida", "Gerda", "Gertrude", "Giselinde", "Gisela", "Greta", "Gretel", "Gerlinde", "Gunda", "Gundula", "Hannelore", "Helene", "Heidi", "Hilde", "Helga", "Helma", "Hertha", "Hermine", "Huberta", "Henriette", "Irmchen", "Ida", "Irma", "Ingeborg", "Isolde", "Ilse", "Josephine", "Johanna", "Klara", "Kriemhild", "Kunigunde", "Katharina", "Karla", "Klothilde", "Lotti", "Leonie", "Luise", "Leonore", "Luise", "Lotta", "Luci", "Madita", "Magda", "Magdalena", "Margot", "Marlene", "Martha", "Mathilde", "Mechthild", "Olga", "Paula" ,"Pauline", "Roberta", "Regina", "Rita" ,"Roswita", "Ruth", "Rosa", "Rosie", "Rosalie", "Rosalinde", "Siegrun", "Selma", "Sieglinde", "Therese", "Tilde", "Tilli", "Trude", "Uschi", "Wilma", "Walburga", "Wilhelmine", "Wiltrud"],
+        "list_name_m": ["Albert", "Arthur", "Charly", "Didi", "Eddy", "Egon", "Emil", "Fred", "Günther", "Heino", "Henry", "Hermann", "Hugo", "Horst", "Karl-Heinz", "Kuno", "Max", "Olli", "Otto", "Paul", "Theo", "Uwe", "Willi", "Adriano", "Angelo", "Antonio", "Bruno", "Carlo", "Caruso", "Don Camillo", "Enrico", "Francesco", "Giovanni", "Leonardo", "Luigi", "Pavarotti", "Rocco", "Kunibert"],
+        "propertie": ["mutige", "agile", "akkurate", "ausgeglichene", "autarke", "authentische", "charismatische", "charmante", "dynamische", "ehrgeizige", "enthusiastische", "idealistische", "initiative", "intelligente", "kompetente", "konsequente", "kooperative", "kulante", "kultivierte", "liberale", "liebenswerte", "lockere", "loyale", "motivierte", "optimistische", "romantische", "sinnliche","smarte", "spontane", "sympathische", "tolerante", "unkomplizierte", "vitale", "weitsichtige", "wissbegierige", "witzige", "zuversichtliche", "zuvorkommende", "belastbare", "ehrliche", "empathische", "faire", "geduldige", "gewissenhafte", "hilfsbereite", "innovative", "kommunikative", "kreative", "leistungsbereite", "lernbereite", "mobile", "offene", "organisierte", "proaktive", "selbstbewusste", "soziale", "sportliche", "stabile", "unternehmerische", "verantwortungsbewusste", "analytische", "disziplinierte", "dominante", "entscheidungsfreudige", "extravertierte", "introvertierte", "kritische", "perfektionistische", "wilde"]
+    },
+    "tea_butler":{
+        "prefix_butler": "@",
+        "answer_butler": ["danke", "dankeschön", "dange"],
+        "answer_time": 60,
+        "quotes_path": "files/quotes.txt",
+        "emote": "CoffeeTime"
+    },
+    "games": {
+        "Science & Technology":{
+            "win": "Features",
+            "lose": "Bugs",
+            "welcome": "Viel Spaß beim mittüfteln."
+        },
+        "Populous: The Beginning":{
+            "win": "Wins",
+            "lose": "Loses",
+            "welcome": "Lass uns gemeinsam die anderen Schamanen bezwingen."
+        },
+        "Makers & Crafting":{
+            "win": "Successes",
+            "lose": "Failures",
+            "welcome": "Viel Spaß beim mitknorzen."
+        },
+        "Grounded":{
+            "win": "Kills",
+            "lose": "Deads",
+            "welcome": "Lass uns gemeinsam Spinnen killen."
+        }
+    }
+}
