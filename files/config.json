@@ -35,6 +35,13 @@
         "list_name_m": ["Albert", "Arthur", "Charly", "Didi", "Eddy", "Egon", "Emil", "Fred", "Günther", "Heino", "Henry", "Hermann", "Hugo", "Horst", "Karl-Heinz", "Kuno", "Max", "Olli", "Otto", "Paul", "Theo", "Uwe", "Willi", "Adriano", "Angelo", "Antonio", "Bruno", "Carlo", "Caruso", "Don Camillo", "Enrico", "Francesco", "Giovanni", "Leonardo", "Luigi", "Pavarotti", "Rocco", "Kunibert"],
         "propertie": ["mutige", "agile", "akkurate", "ausgeglichene", "autarke", "authentische", "charismatische", "charmante", "dynamische", "ehrgeizige", "enthusiastische", "idealistische", "initiative", "intelligente", "kompetente", "konsequente", "kooperative", "kulante", "kultivierte", "liberale", "liebenswerte", "lockere", "loyale", "motivierte", "optimistische", "romantische", "sinnliche","smarte", "spontane", "sympathische", "tolerante", "unkomplizierte", "vitale", "weitsichtige", "wissbegierige", "witzige", "zuversichtliche", "zuvorkommende", "belastbare", "ehrliche", "empathische", "faire", "geduldige", "gewissenhafte", "hilfsbereite", "innovative", "kommunikative", "kreative", "leistungsbereite", "lernbereite", "mobile", "offene", "organisierte", "proaktive", "selbstbewusste", "soziale", "sportliche", "stabile", "unternehmerische", "verantwortungsbewusste", "analytische", "disziplinierte", "dominante", "entscheidungsfreudige", "extravertierte", "introvertierte", "kritische", "perfektionistische", "wilde"]
     },
+    "tea_butler":{
+        "prefix_butler": "@",
+        "answer_butler": ["danke", "dankeschön"],
+        "answer_time": 60,
+        "quotes_path": "files/quotes.txt",
+        "emote": "CoffeeTime"
+    },
     "games": {
         "Science & Technology":{
             "win": "Features",

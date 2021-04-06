@@ -4,7 +4,6 @@ from time import time
 import tetueSrc
 import db, user_management, react
 
-BOOT_TIME = time()
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
 TWEETMAXLENGTH = tetueSrc.get_int_element("general", "hashtag_max_length")
@@ -91,6 +90,7 @@ def shutdown(bot, user, *args):
             bot.send_message("Danke für den tollen Stream Tüftlies. Bis zum nächsten Mal.")
         else:
             bot.send_message(TWEETWELCOME + " " + " ".join(hashtag_tweet_list))
+        tetueSrc.log_header_info("Stream-Ende")
         db.commit()
         db.close()
         bot.disconnect()

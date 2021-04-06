@@ -11,15 +11,8 @@
 import sys
 from irc.bot import SingleServerIRCBot
 from requests import get
-import logging
 import tetueSrc
 import user_management, db, react, automod, cmds
-
-logging.basicConfig(
-    handlers=[logging.FileHandler(tetueSrc.get_string_element("paths", "logfile"), 'a', 'utf-8')],
-    format='[%(asctime)s] %(levelname)-10s %(message)s',
-    level=logging.INFO
-)
 
 read_successful, cfg = tetueSrc.get_configuration("bot")
 read_successful, cfg_owner = tetueSrc.get_configuration("vipbot")
@@ -53,16 +46,17 @@ class Bot(SingleServerIRCBot):
         cxn.join(self.CHANNEL)
         db.build()
         react.create_hen_name_list()
-        print("Online")
-        self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
         react.update_KD_Counter(bot)
+        tetueSrc.log_header_info("Stream-Start")
+        self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
+        print("Online")
 
     @db.with_commit
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        logging.info(tags)
-        logging.info(message)
+        tetueSrc.log_event_info(tags)
+        tetueSrc.log_event_info(message)
 
         active_user = user_management.get_active_user(tags["user-id"], tags["display-name"], tags["badges"])
         if active_user.get_name() != cfg["name"] and automod.clear(bot, active_user, message):
@@ -88,6 +82,11 @@ class Bot(SingleServerIRCBot):
             pass
         finally:
             return stream_info
+
+    def get_chatroom_info(self):
+        url = f"https://tmi.twitch.tv/group/user/technik_tueftler/chatters"
+        resp = get(url).json()
+        return resp
 
 if __name__ == "__main__":
     bot = Bot()

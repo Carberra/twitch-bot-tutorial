@@ -3,6 +3,7 @@ import misc, economy, games, mod, tetueSrc, user_management, automod
 
 PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
+PREFIXBUTLER = tetueSrc.get_string_element("tea_butler", "prefix_butler")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
@@ -33,6 +34,7 @@ cmds = [
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
     Cmd(["competition"], games.competition, "games"),
+    Cmd(["tee", "tea"], games.new_tea, "games"),
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
@@ -52,6 +54,11 @@ def process(bot, user, message):
         hashtag = message.split(" ")[0].lower()
         args = message.split(" ")[1:]
         misc.register_hastag(bot, user, hashtag, *args)
+    elif message.startswith(PREFIXBUTLER):
+        butler = message.split(" ")[0][len(PREFIXBUTLER):].lower()
+        args = message.split(" ")[1:]
+        if butler != bot.USERNAME: return
+        games.process_tea_butler(bot, user, *args)
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):

@@ -5,6 +5,7 @@ from requests import get
 from random import choice
 import logging
 import json
+import tetueSrc
 
 # read_successful, cfg = tetueSrc.get_configuration("vipbot")
 # USERNAME = cfg["name"].lower()
@@ -92,7 +93,20 @@ def main():
     # print(type(str(data['autovip']['num_max_auto_vips'])))
 
     # print(data['games']['Populous: The Beginning']['welcome'])
+    # Zwei Listen vergleichen
+    # list_1 = ["test 1", "test 2", "test 3"]
+    # list_2 = ["test1", "test 1", "test 2"]
+    # list_3 = []
+    # for element_1 in list_1:
+    #     for element_2 in list_2:
+    #         if element_1 == element_2:
+    #             list_3.append(element_2)
+    # print(list_3)
+    # list_4 = [element_2 for element_1 in list_1 for element_2 in list_2 if element_1 == element_2]
+    # print(list_4)
+    quote = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
 
+    print(quote)
     pass
 
 if __name__ == "__main__":

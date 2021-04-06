@@ -23,6 +23,7 @@ LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "num_loy_point_3")
 def process(bot, user, message):
     update_records(bot, user)
     update_loyalty_points(user)
+    update_KD_Counter(bot)
 
     if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
