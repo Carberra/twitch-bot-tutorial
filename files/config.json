@@ -36,11 +36,13 @@
         "propertie": ["mutige", "agile", "akkurate", "ausgeglichene", "autarke", "authentische", "charismatische", "charmante", "dynamische", "ehrgeizige", "enthusiastische", "idealistische", "initiative", "intelligente", "kompetente", "konsequente", "kooperative", "kulante", "kultivierte", "liberale", "liebenswerte", "lockere", "loyale", "motivierte", "optimistische", "romantische", "sinnliche","smarte", "spontane", "sympathische", "tolerante", "unkomplizierte", "vitale", "weitsichtige", "wissbegierige", "witzige", "zuversichtliche", "zuvorkommende", "belastbare", "ehrliche", "empathische", "faire", "geduldige", "gewissenhafte", "hilfsbereite", "innovative", "kommunikative", "kreative", "leistungsbereite", "lernbereite", "mobile", "offene", "organisierte", "proaktive", "selbstbewusste", "soziale", "sportliche", "stabile", "unternehmerische", "verantwortungsbewusste", "analytische", "disziplinierte", "dominante", "entscheidungsfreudige", "extravertierte", "introvertierte", "kritische", "perfektionistische", "wilde"]
     },
     "tea_butler":{
-        "prefix_butler": "@",
-        "answer_butler": ["danke", "dankeschön", "dange"],
-        "answer_time": 60,
+        "answer_butler": ["danke", "dankeschön", "dange", "thx", "merci"],
+        "answer_time": 30,
         "quotes_path": "files/quotes.txt",
-        "emote": "CoffeeTime"
+        "cmd_coffee": ["kaffee", "coffee"],
+        "emote_coffee": "CoffeeTime",
+        "cmd_tea": ["tee", "tea"],
+        "emote_tea": "teaTime"
     },
     "games": {
         "Science & Technology":{

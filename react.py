@@ -24,6 +24,7 @@ def process(bot, user, message):
     update_records(bot, user)
     update_loyalty_points(user)
     update_KD_Counter(bot)
+    games.process_tea_butler(bot, user, message)
 
     if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
@@ -34,9 +35,6 @@ def process(bot, user, message):
         if element in message.lower():
             bot.send_message(f"Was @{user.get_displayname()} meint ist SeemsGood und ist ein Emote aus einer anderen Welt!")
             break
-
-    # if (match := search(r'cheer[0-9]+', message)) is not None:
-    #     thank_for_cheer(bot, user, match)
 
 def channel_point(bot, user, message, rewardid):
     global hen_name_list
@@ -60,7 +58,6 @@ def update_records(bot, user):
     if datetime.strptime(stamp, "%Y-%m-%d %H:%M:%S") < datetime.today():
         coinlock = (datetime.today()+timedelta(seconds=60)).strftime("%Y-%m-%d %H:%M:%S")
         db.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", randint(1, 5), coinlock, user.id)
-
 
 def welcome(bot, user):
     if user.badge == user_management.Badge.Moderator:

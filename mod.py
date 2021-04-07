@@ -18,7 +18,7 @@ def set_games_off(bot, user, *args):
         if element.function_info == "games":
             element.allowed = False
 
-def warn(bot, user, target=None, *args):
+def warn(bot, user, call, target=None, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     
     if target is None:
@@ -39,7 +39,7 @@ def warn(bot, user, target=None, *args):
             bot.send_message(f"/ban {target} wiederholter Verstoß.")
             bot.send_message(f"{target}, du wurdest wegen wiederholter Verstöße der Chatregeln aus dem Chat verbannt.")
 
-def remove_warn(bot, user, target=None, *args):
+def remove_warn(bot, user, call, target=None, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
 
     if target is None:

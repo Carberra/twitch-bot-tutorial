@@ -5,7 +5,10 @@ import db,user_management, tetueSrc
 
 TEAANSWERTIME = tetueSrc.get_int_element("tea_butler", "answer_time")
 TEAANSWER = tetueSrc.get_string_list("tea_butler", "answer_butler")
-TEAEMOTE = tetueSrc.get_string_element("tea_butler", "emote")
+TEA_EMOTE = tetueSrc.get_string_element("tea_butler", "emote_tea")
+TEA_CMD = tetueSrc.get_string_list("tea_butler", "cmd_tea")
+COFFEE_EMOTE = tetueSrc.get_string_element("tea_butler", "emote_coffee")
+COFFEE_CMD = tetueSrc.get_string_list("tea_butler", "cmd_coffee")
 QUOTESPATH = tetueSrc.get_string_element("tea_butler", "quotes_path")
 
 running_competition = None
@@ -23,20 +26,22 @@ class tea_butler():
     def get_lifetime(self):
         return time.time() - self.starttime
 
-def new_tea(bot, user, cmd=None, *args):
+def new_tea(bot, user, call, *args):
     quote_raw = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
     quote = quote_raw.replace("\n", "")
-    bot.send_message(f"{TEAEMOTE} {user.get_displayname()}, bitteschön. {quote}")
+    if any(word in call for word in TEA_CMD):
+        bot.send_message(f"{TEA_EMOTE} {user.get_displayname()}, bitteschön. {quote}")
+    elif any(word in call for word in COFFEE_CMD):
+        bot.send_message(f"{COFFEE_EMOTE} {user.get_displayname()}, bitteschön. {quote}")
 
     running_tea_butler.append(tea_butler(user.id))
 
-def process_tea_butler(bot, user, *args):
+def process_tea_butler(bot, user, message):
     for tea in running_tea_butler:
         if tea.get_lifetime() > TEAANSWERTIME:
             running_tea_butler.remove(tea)
         elif tea.user_id == user.id:
-            list = [string_msg for string_msg in args for string_list in TEAANSWER if string_msg.lower() == string_list.lower()]
-            if len(list) > 0:
+            if any(word in message.lower() for word in TEAANSWER):
                 bot.send_message(f"{user.get_displayname()}, bitteschön <3")
                 running_tea_butler.remove(tea)
                 break
@@ -84,7 +89,9 @@ def competition(bot, user, cmd=None, *args):
     else:
         pass
 
-def coinflip(bot, user, side=None, *args):
+def coinflip(bot, user, call, side=None, *args):
+    print(side)
+    print(*args)
     if side is None:
         bot.send_message("Du musst raten, auf welcher Seite die Münze landen wird.")
     elif (side := side.lower()) not in (opt := ("k", "z", "kopf", "zahl")):

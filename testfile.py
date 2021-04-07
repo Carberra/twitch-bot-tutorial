@@ -107,6 +107,8 @@ def main():
     quote = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
 
     print(quote)
+    CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_coffee") + tetueSrc.get_string_list("tea_butler", "cmd_tea")
+    print(CMD_TEA_BUTTLER)
     pass
 
 if __name__ == "__main__":
