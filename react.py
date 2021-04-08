@@ -19,6 +19,8 @@ hen_name_list = []
 LOYALITYPOINT_1 = tetueSrc.get_int_element("autovip", "num_loy_point_1")
 LOYALITYPOINT_2 = tetueSrc.get_int_element("autovip", "num_loy_point_2")
 LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "num_loy_point_3")
+# Channel points
+CP_LIEGESTUETZE = tetueSrc.get_string_element("general", "cp_liege_stue")
 
 def process(bot, user, message):
     update_records(bot, user)
@@ -44,6 +46,9 @@ def channel_point(bot, user, message, rewardid):
         db.execute("UPDATE users SET HenName = ? WHERE UserID = ?", henname, user.id)
         bot.send_message(f"@{user.get_displayname()}, dein Hühnername ist: {henname}.")
         user.hunname = henname
+    elif rewardid == CP_LIEGESTUETZE:
+        db.execute("INSERT OR IGNORE INTO awards (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
+        db.execute("UPDATE awards SET Sporthuhn = Sporthuhn + ? WHERE UserID = ?", 1, user.id)
 
 def update_records(bot, user):
     # Zähle Nachrichten für lokalen User

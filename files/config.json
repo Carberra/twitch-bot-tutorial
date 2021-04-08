@@ -3,7 +3,8 @@
         "prefix_twe": "#",
         "hashtag_min_size": 3,
         "hashtag_max_length": 280,
-        "tweet_welcome": "Danke für den tollen Stream Tüftlies 🐔. Das waren die Highlights heute:"
+        "tweet_welcome": "Danke für den tollen Stream Tüftlies 🐔. Das waren die Highlights heute:",
+        "cp_liege_stue": "abca8dda-8b7d-420c-b6ae-a05ca15b3a04"
     },
     "paths": { 
         "kd": "files/KD.txt",

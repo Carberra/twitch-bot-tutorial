@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS category (
 
 CREATE TABLE IF NOT EXISTS awards (
 	UserID text PRIMARY KEY,
+	UserName text,
 	Sporthuhn integer DEFAULT 0, -- Punkte für: Wie oft zum Sport aufgerufen
 	Kampfhuhn integer DEFAULT 0, -- Punkte für: Bits pro game (game != Wissenschaft oder Basteln oder Just Chatting) (Warchicken, battlechicken)
 	Tueftelhuhn integer DEFAULT 0, -- Punkte für: Bits pro Wissenschaft

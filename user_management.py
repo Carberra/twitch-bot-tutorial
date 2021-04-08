@@ -3,6 +3,8 @@
 import db, tetueSrc
 from enum import Enum, auto
 
+user_awards = {}
+
 class Badge(Enum):
     Broadcaster = auto()
     Moderator = auto()
@@ -38,13 +40,19 @@ class Chatuser:
         self.statusIsActive = False
         self.hunname = hunname
         self.failedCmd = 0
+        self.user_award = get_user_award(self.id)
 
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
+        display_name = ""
         if not self.hunname:
-            return self.name
+            display_name = self.name
         else:
-            return self.hunname
+            display_name = self.hunname
+        if self.user_award != None:
+            display_name = self.user_award + " " + display_name
+        return display_name
+
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
@@ -58,6 +66,19 @@ class Chatuser:
 
 activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
+
+def update_user_awards():
+    global user_awards
+    # Update Sporthuhn
+    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE Sporthuhn = (SELECT MAX(Sporthuhn) FROM awards)")
+
+def get_user_award(user_id):
+    award = None
+    for key, val in user_awards.items():
+        if user_id == val:
+            award = key
+            break
+    return award
 
 def get_active_user(user_id, display_name, badge):
     """
