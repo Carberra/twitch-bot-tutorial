@@ -1,2 +1,2 @@
-Features: 8
-Bugs: 10
+Wins: 19
+Loses: 5

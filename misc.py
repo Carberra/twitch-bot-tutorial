@@ -19,7 +19,7 @@ def lurk(bot, user, *args):
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()} und viel Spaß Im Lurk.")
         user_management.set_user_inactive(user.id)
 
-def hug(bot, user, *args):
+def hug(bot, user, call, *args):
     if len(args) > 1: return
     if len(args) < 1:
         bot.send_message(f"{user.get_displayname()} nimmt sich selbst in den Arm <3 VirtualHug")
@@ -37,7 +37,7 @@ def hype(bot, user, *args):
 def modlove(bot, user, *args):
     bot.send_message(tetueSrc.get_string_element("outputtext", "modlove"))
 
-def lostcounter(bot, user, *args):
+def lostcounter(bot, user, call, *args):
     if len(args) < 1:
         db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", user.get_name())
     elif len(args) > 1:
@@ -49,7 +49,7 @@ def lostcounter(bot, user, *args):
         # else:
         #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
-def state(bot, user, *args):
+def state(bot, user, call, *args):
     if len(args) < 1: return
     output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
     if output_text == "": return
@@ -76,7 +76,7 @@ def register_hastag(bot, user, hashtag, *args):
     else:
         bot.send_message(f'Hashtag nicht registriert. {user.get_displayname()}, es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
 
-def reminder(bot, user, *args):
+def reminder(bot, user, call, *args):
     with open(tetueSrc.get_string_element("paths", "reminderfile"), "a") as f:
         f.write(f'{datetime.today()}: {" ".join(args)}\n')
 

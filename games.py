@@ -90,8 +90,6 @@ def competition(bot, user, cmd=None, *args):
         pass
 
 def coinflip(bot, user, call, side=None, *args):
-    print(side)
-    print(*args)
     if side is None:
         bot.send_message("Du musst raten, auf welcher Seite die Münze landen wird.")
     elif (side := side.lower()) not in (opt := ("k", "z", "kopf", "zahl")):
