@@ -6,6 +6,7 @@ from random import choice
 import logging
 import json
 import tetueSrc
+import user_management
 
 # read_successful, cfg = tetueSrc.get_configuration("vipbot")
 # USERNAME = cfg["name"].lower()
@@ -104,11 +105,15 @@ def main():
     # print(list_3)
     # list_4 = [element_2 for element_1 in list_1 for element_2 in list_2 if element_1 == element_2]
     # print(list_4)
-    quote = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
+    # --------------- Quote ----------------
+    # quote = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
 
-    print(quote)
-    CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_coffee") + tetueSrc.get_string_list("tea_butler", "cmd_tea")
-    print(CMD_TEA_BUTTLER)
+    # print(quote)
+    # CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_coffee") + tetueSrc.get_string_list("tea_butler", "cmd_tea")
+    # print(CMD_TEA_BUTTLER)
+    # --------------- Database ----------------
+    user_management.update_user_awards()
+    print(user_management.user_awards)
     pass
 
 if __name__ == "__main__":

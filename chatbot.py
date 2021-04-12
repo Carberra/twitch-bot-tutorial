@@ -71,6 +71,7 @@ class Bot(SingleServerIRCBot):
             if "custom-reward-id" in tags:
                 react.channel_point(bot, active_user, message, tags["custom-reward-id"])
             elif "bits" in tags:
+                react.update_bits_records(bot, active_user, tags["bits"])
                 react.thank_for_cheer(bot, active_user, tags["bits"])
 
     def send_message(self, message):

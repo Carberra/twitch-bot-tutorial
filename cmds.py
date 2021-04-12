@@ -19,7 +19,7 @@ cmds = [
     #	misc
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
-    Cmd(["liebe","love"], misc.love, "misc"),
+    Cmd(["liebe","love"], misc.pogopuschel, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
     Cmd(["state", "statement"], misc.state, "misc"),

@@ -1,2 +1,2 @@
-Wins: 19
-Loses: 5
+Wins: 24
+Loses: 9

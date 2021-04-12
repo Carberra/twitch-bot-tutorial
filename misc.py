@@ -28,7 +28,7 @@ def hug(bot, user, call, *args):
         if user_management.is_user_name_active(clear_username.lower()) == True:
             bot.send_message(f"{user.get_displayname()} nimmt {clear_username} ganz fest in den Arm <3")
 
-def love(bot, user, *args):
+def pogopuschel(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
 
 def hype(bot, user, *args):

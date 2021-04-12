@@ -70,7 +70,9 @@ userListToday = [] # User die während des Stream schon mal da waren, sich aber 
 def update_user_awards():
     global user_awards
     # Update Sporthuhn
-    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE Sporthuhn = (SELECT MAX(Sporthuhn) FROM awards)")
+    user_awards["Kampfhuhn"] = db.field("SELECT UserID FROM awards WHERE Kampfhuhn = (SELECT MAX(Kampfhuhn) FROM awards)")
+    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) ORDER BY Sporthuhn DESC", user_awards["Kampfhuhn"])
+    user_awards["Quatschhuhn"] = db.field("SELECT UserID FROM users WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY MessagesSent DESC", user_awards["Kampfhuhn"], user_awards["Sporthuhn"])
 
 def get_user_award(user_id):
     award = None

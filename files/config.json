@@ -37,7 +37,7 @@
         "propertie": ["mutige", "agile", "akkurate", "ausgeglichene", "autarke", "authentische", "charismatische", "charmante", "dynamische", "ehrgeizige", "enthusiastische", "idealistische", "initiative", "intelligente", "kompetente", "konsequente", "kooperative", "kulante", "kultivierte", "liberale", "liebenswerte", "lockere", "loyale", "motivierte", "optimistische", "romantische", "sinnliche","smarte", "spontane", "sympathische", "tolerante", "unkomplizierte", "vitale", "weitsichtige", "wissbegierige", "witzige", "zuversichtliche", "zuvorkommende", "belastbare", "ehrliche", "empathische", "faire", "geduldige", "gewissenhafte", "hilfsbereite", "innovative", "kommunikative", "kreative", "leistungsbereite", "lernbereite", "mobile", "offene", "organisierte", "proaktive", "selbstbewusste", "soziale", "sportliche", "stabile", "unternehmerische", "verantwortungsbewusste", "analytische", "disziplinierte", "dominante", "entscheidungsfreudige", "extravertierte", "introvertierte", "kritische", "perfektionistische", "wilde"]
     },
     "tea_butler":{
-        "answer_butler": ["danke", "dankeschön", "dange", "thx", "merci"],
+        "answer_butler": ["danke", "dankeschön", "dange", "thx", "merci", "thanks"],
         "answer_time": 30,
         "quotes_path": "files/quotes.txt",
         "cmd_coffee": ["kaffee", "coffee"],
