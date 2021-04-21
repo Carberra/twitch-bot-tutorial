@@ -22,13 +22,13 @@ To install the necessary libraries, run one of the the following commands:
 
 ```bash
 # Windows
-py -3.8 -m pip irc requests
+py -3.8 -m pip install irc requests
 
 # Linux/macOS
-python3.8 -m pip irc requests
+python3.8 -m pip install irc requests
 
 # In a virtual environment
-pip irc requests
+pip install irc requests
 ```
 
 ## License
