@@ -14,7 +14,10 @@
     "outputtext": {
         "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
         "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
-        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp"
+        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp",
+        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 001C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "python": "TeTü benutzt Python gerne und oft in seinen Projekten, weil während des Schre",
+        "github": "https://github.com/Technik-Tueftler/"
     },
     "automod": {
         "list_badwords": ["bigfollowscom", "bigfollowcom"],

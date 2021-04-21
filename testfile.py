@@ -112,8 +112,12 @@ def main():
     # CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_coffee") + tetueSrc.get_string_list("tea_butler", "cmd_tea")
     # print(CMD_TEA_BUTTLER)
     # --------------- Database ----------------
-    user_management.update_user_awards()
-    print(user_management.user_awards)
+    # user_management.update_user_awards()
+    # print(user_management.user_awards)
+    test = ["test", "lala", None]
+    print(test)
+    test2 = [element for element in ["test", "lala", None] if (element != None)]
+    print(test2)
     pass
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import db, tetueSrc
 from enum import Enum, auto
+from random import choice
 
 user_awards = {}
 
@@ -41,17 +42,17 @@ class Chatuser:
         self.hunname = hunname
         self.failedCmd = 0
         self.user_award = get_user_award(self.id)
+        self.displaynames = [name for name in [self.name, self.hunname, self.user_award] if (name != None)]
+
+    def user_welcome(self):
+        if not self.hunname:
+            return self.name
+        else:
+            return self.hunname
 
     # Name wie er im Chat angezeigt wird: Technik_Tueftler
     def get_displayname(self):
-        display_name = ""
-        if not self.hunname:
-            display_name = self.name
-        else:
-            display_name = self.hunname
-        if self.user_award != None:
-            display_name = self.user_award + " " + display_name
-        return display_name
+        return choice(self.displaynames)
 
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):

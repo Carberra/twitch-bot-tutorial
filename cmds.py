@@ -19,6 +19,7 @@ cmds = [
     #	misc
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
+    Cmd(["kluk", "klug", "kl", "smart"], misc.smartcounter, "misc", cooldown=5),
     Cmd(["liebe","love"], misc.pogopuschel, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
@@ -28,6 +29,8 @@ cmds = [
     Cmd(["modlove", "ml"], misc.modlove, "misc"),
     Cmd(["hug"], misc.hug, "misc"),
     Cmd(["hype"], misc.hype, "misc"),
+    Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP),
+    Cmd(["quote","qu"], misc.quote, "mod", user_management.Badge.AutoVIP, cooldown=30),
     #	economy
     Cmd(["coins", "money"], economy.coins, "economy"),
 
@@ -41,7 +44,8 @@ cmds = [
     Cmd(["unwarn", "rmwarn"], mod.remove_warn, "mod"),
     Cmd(["gameon"], mod.set_games_on, "mod"),
     Cmd(["gameoff"], mod.set_games_off, "mod"),
-    Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP)
+    Cmd(["hashdelete","hashd","hd"], mod.delete_hashtag, "mod", user_management.Badge.Moderator),
+    Cmd(["hashinfo","hashi","hi"], misc.info_hastag, "mod", user_management.Badge.Moderator)
 ]
 
 def process(bot, user, message):
@@ -51,7 +55,7 @@ def process(bot, user, message):
         args = message.split(" ")[1:]
         perform(bot, user, cmd, *args)
     elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.AutoVIP.value:
-        hashtag = message.split(" ")[0].lower()
+        hashtag = message.split(" ")[0]
         args = message.split(" ")[1:]
         misc.register_hastag(bot, user, hashtag, *args)
 

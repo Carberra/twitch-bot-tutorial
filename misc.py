@@ -20,7 +20,6 @@ def lurk(bot, user, *args):
         user_management.set_user_inactive(user.id)
 
 def hug(bot, user, call, *args):
-    if len(args) > 1: return
     if len(args) < 1:
         bot.send_message(f"{user.get_displayname()} nimmt sich selbst in den Arm <3 VirtualHug")
     else:
@@ -40,14 +39,16 @@ def modlove(bot, user, *args):
 def lostcounter(bot, user, call, *args):
     if len(args) < 1:
         db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", user.get_name())
-    elif len(args) > 1:
-        bot.send_message(f"{user.get_displayname()}, bitte nach dem Kommando nur ein Argument übergeben.")
     else:
         clear_username = args[0].replace("@", "").lower()
         if user_management.is_user_name_active(clear_username) == True:
             db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", clear_username.lower())
-        # else:
-        #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
+
+def smartcounter(bot, user, call, *args):
+    if len(args) < 1: return
+    clear_username = args[0].replace("@", "").lower()
+    if user_management.is_user_name_active(clear_username) != True or clear_username == user.get_name(): return
+    db.execute("UPDATE users SET KlugCounter = KlugCounter + 1 WHERE UserName = ?", clear_username.lower())
 
 def state(bot, user, call, *args):
     if len(args) < 1: return
@@ -76,9 +77,16 @@ def register_hastag(bot, user, hashtag, *args):
     else:
         bot.send_message(f'Hashtag nicht registriert. {user.get_displayname()}, es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
 
+def info_hastag(bot, user, call, *args):
+    global hashtag_tweet_list
+    bot.send_message(f'Registrierte #: {" ".join(hashtag_tweet_list)}. Es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
+
 def reminder(bot, user, call, *args):
     with open(tetueSrc.get_string_element("paths", "reminderfile"), "a") as f:
         f.write(f'{datetime.today()}: {" ".join(args)}\n')
+
+def quote(bot, user, call, *args):
+    db.execute("INSERT INTO quotes (UserID, UserName, Quote) VALUES (?, ?, ?)", user.id, user.get_name(), " ".join(args))
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "

@@ -1,4 +1,4 @@
-import db, cmds
+import db, cmds, misc
 import tetueSrc
 
 read_successful, cfg = tetueSrc.get_configuration("bot")
@@ -6,13 +6,18 @@ OWNER = cfg["owner"]
 
 warning_timers = (1, 5, 60)
 
-def set_games_on(bot, user, *args):
+def delete_hashtag(bot, user, call, *args):
+    if ("".join(args)) in misc.hashtag_tweet_list:
+        misc.hashtag_tweet_list.remove("".join(args))
+        bot.send_message(f'Hashtag {"".join(args)} wurde gelöscht.')
+
+def set_games_on(bot, user, call, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     for element in cmds.cmds:
         if element.function_info == "games":
             element.allowed = True
 
-def set_games_off(bot, user, *args):
+def set_games_off(bot, user, call, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     for element in cmds.cmds:
         if element.function_info == "games":

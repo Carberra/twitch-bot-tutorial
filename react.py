@@ -66,20 +66,20 @@ def update_records(bot, user):
 
 def welcome(bot, user):
     if user.badge == user_management.Badge.Moderator:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Die Macht ist mit dir!")
+        bot.send_message(f"Willkommen im Stream {user.user_welcome()}. Die Macht ist mit dir!")
     elif user.badge == user_management.Badge.AutoVIP:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Wegen deiner Treue hast du den VIP Status erhalten. Belehre mich!")
+        bot.send_message(f"Willkommen im Stream {user.user_welcome()}. Wegen deiner Treue hast du den VIP Status erhalten. Belehre mich!")
     elif user.badge == user_management.Badge.ManuVIP:
-        bot.send_message(f"Willkommen im Stream {user.get_displayname()}. Belehre mich!")
+        bot.send_message(f"Willkommen im Stream {user.user_welcome()}. Belehre mich!")
     elif user.badge == user_management.Badge.Broadcaster:
-        bot.send_message(f"Dass du da bist is klar, {user.get_displayname()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
+        bot.send_message(f"Dass du da bist is klar, {user.user_welcome()}. Bau bitte heute mal zur Abwechslung keinen Mist!")
     else:
         dict = bot.get_channel_info()
         dict_game = tetueSrc.get_dict("games", dict["Game"])
         if "welcome" in dict_game:
-            bot.send_message(f'Willkommen im Stream {user.get_displayname()}. {dict_game["welcome"]}')
+            bot.send_message(f'Willkommen im Stream {user.user_welcome()}. {dict_game["welcome"]}')
         else:
-            bot.send_message(f"Willkommen im Stream {user.get_displayname()}.")
+            bot.send_message(f"Willkommen im Stream {user.user_welcome()}.")
 
 def say_goodbye(bot, user):
     if user_management.is_user_id_active(user.id) == True:
