@@ -35,6 +35,6 @@ CREATE TABLE IF NOT EXISTS quotes (
 	Id integer PRIMARY KEY AUTOINCREMENT,
 	UserID text,
 	UserName text,
-	QuoteDate text DEFAULT CURRENT_TIMESTAMP,
+	QuoteDate text,
 	Quote text
 );

@@ -7,6 +7,7 @@ import logging
 import json
 import tetueSrc
 import user_management
+from datetime import datetime
 
 # read_successful, cfg = tetueSrc.get_configuration("vipbot")
 # USERNAME = cfg["name"].lower()
@@ -114,11 +115,15 @@ def main():
     # --------------- Database ----------------
     # user_management.update_user_awards()
     # print(user_management.user_awards)
-    test = ["test", "lala", None]
-    print(test)
-    test2 = [element for element in ["test", "lala", None] if (element != None)]
-    print(test2)
-    pass
+    # test = ["test", "lala", None]
+    # print(test)
+    # test2 = [element for element in ["test", "lala", None] if (element != None)]
+    # print(test2)
+    # pass
+
+    print(datetime.today())
+    print(datetime.now())
+    print(datetime.today().strftime("%Y-%m-%d %H:%M"))
 
 if __name__ == "__main__":
     main()

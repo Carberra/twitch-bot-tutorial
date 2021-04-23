@@ -3,6 +3,7 @@ from sys import exit
 from time import time
 import tetueSrc
 import db, user_management, react
+from random import randint
 
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
@@ -86,7 +87,13 @@ def reminder(bot, user, call, *args):
         f.write(f'{datetime.today()}: {" ".join(args)}\n')
 
 def quote(bot, user, call, *args):
-    db.execute("INSERT INTO quotes (UserID, UserName, Quote) VALUES (?, ?, ?)", user.id, user.get_name(), " ".join(args))
+    if len(args) > 1:
+        db.execute("INSERT INTO quotes (UserID, UserName, QuoteDate, Quote) VALUES (?, ?, ?, ?)", user.id, user.get_name(), datetime.today().strftime("%Y-%m-%d %H:%M"), " ".join(args))
+    else:
+        max = db.field("SELECT max(Id) FROM quotes")
+        if max >= 1:
+            quote = db.record("SELECT * FROM quotes WHERE Id = ?", randint(0, max))
+            bot.send_message(f"{quote[3]}: {quote[4]}")
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "

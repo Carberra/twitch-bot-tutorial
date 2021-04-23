@@ -84,6 +84,8 @@ class Bot(SingleServerIRCBot):
         stream_info = {"Game":None}
         try:
             stream_info["Game"] = resp["game"]
+            if stream_info["Game"] != None:
+                db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", stream_info["Game"], 0, 0)
         except Exception:
             pass
         finally:

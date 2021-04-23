@@ -92,10 +92,10 @@ def thank_for_cheer(bot, user, bits):
     else:
         bot.send_message(f"Vielen Dank für den einen Bit, {user.get_displayname()} <3 <3 <3. Der kommt in den Topf fürs nächste Projekt.")
 
-def update_bits_records(bot, active_user, bits):
+def update_bits_records(bot, user, bits):
     debug_temp = 0
+    dict = bot.get_channel_info()
     try:
-        dict = bot.get_channel_info()
         debug_temp = 1
         db.execute("INSERT OR IGNORE INTO awards (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
         debug_temp = 2
@@ -112,6 +112,7 @@ def update_bits_records(bot, active_user, bits):
         else:
             tetueSrc.log_event_info(f'Bits können nicht eingetragen werden in für Kategorie {dict["Game"]}. Eigene anlegen?')
     except:
+        print(debug_temp)
         tetueSrc.log_event_info(f'Fehler bei update_bits_records() {dict["Game"]} / {bits}. / {type(bits)}')
 
 def update_loyalty_points(user):
@@ -135,6 +136,7 @@ def update_KD_Counter(bot):
         wins = db.field("SELECT Wins FROM category WHERE Category = ?", dict["Game"])
         loses = db.field("SELECT Loses FROM category WHERE Category = ?", dict["Game"])
         dict_game = tetueSrc.get_dict("games", dict["Game"])
+
         with open(cfg_kd, "w") as f:
             f.write(dict_game["win"] + ": " + str(wins) + "\n" + dict_game["lose"] + ": " + str(loses))
     except Exception:

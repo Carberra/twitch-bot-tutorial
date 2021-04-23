@@ -16,7 +16,7 @@
         "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
         "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp",
         "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 001C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
-        "python": "TeTü benutzt Python gerne und oft in seinen Projekten, weil während des Schre",
+        "python": "TeTü benutzt Python gerne und oft in seinen Projekten. Weil es so einfach und strukturiert ist, bleibt ihm jede Menge Kreativität übrig.",
         "github": "https://github.com/Technik-Tueftler/"
     },
     "automod": {
@@ -68,6 +68,11 @@
             "win": "Kills",
             "lose": "Deads",
             "welcome": "Lass uns gemeinsam Spinnen killen."
+        },
+        "Just Chatting":{
+            "win": "Happy",
+            "lose": "Sad",
+            "welcome": "Lass uns en bissel quatschen."
         }
     }
 }
