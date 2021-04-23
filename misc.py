@@ -3,6 +3,7 @@ from sys import exit
 from time import time
 import tetueSrc
 import db, user_management, react
+from random import randint
 
 read_successful, cfg = tetueSrc.get_configuration("bot")
 OWNER = cfg["owner"]
@@ -19,8 +20,7 @@ def lurk(bot, user, *args):
         bot.send_message(f"Vielen dank fürs mittüfteln {user.get_displayname()} und viel Spaß Im Lurk.")
         user_management.set_user_inactive(user.id)
 
-def hug(bot, user, *args):
-    if len(args) > 1: return
+def hug(bot, user, call, *args):
     if len(args) < 1:
         bot.send_message(f"{user.get_displayname()} nimmt sich selbst in den Arm <3 VirtualHug")
     else:
@@ -28,7 +28,7 @@ def hug(bot, user, *args):
         if user_management.is_user_name_active(clear_username.lower()) == True:
             bot.send_message(f"{user.get_displayname()} nimmt {clear_username} ganz fest in den Arm <3")
 
-def love(bot, user, *args):
+def pogopuschel(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
 
 def hype(bot, user, *args):
@@ -37,19 +37,21 @@ def hype(bot, user, *args):
 def modlove(bot, user, *args):
     bot.send_message(tetueSrc.get_string_element("outputtext", "modlove"))
 
-def lostcounter(bot, user, *args):
+def lostcounter(bot, user, call, *args):
     if len(args) < 1:
         db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", user.get_name())
-    elif len(args) > 1:
-        bot.send_message(f"{user.get_displayname()}, bitte nach dem Kommando nur ein Argument übergeben.")
     else:
         clear_username = args[0].replace("@", "").lower()
         if user_management.is_user_name_active(clear_username) == True:
             db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", clear_username.lower())
-        # else:
-        #     bot.send_message(f"Lieber {user.get_displayname()}, der user {args[0]} existiert nicht oder befindet sich im Lurk.")
 
-def state(bot, user, *args):
+def smartcounter(bot, user, call, *args):
+    if len(args) < 1: return
+    clear_username = args[0].replace("@", "").lower()
+    if user_management.is_user_name_active(clear_username) != True or clear_username == user.get_name(): return
+    db.execute("UPDATE users SET KlugCounter = KlugCounter + 1 WHERE UserName = ?", clear_username.lower())
+
+def state(bot, user, call, *args):
     if len(args) < 1: return
     output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
     if output_text == "": return
@@ -76,9 +78,22 @@ def register_hastag(bot, user, hashtag, *args):
     else:
         bot.send_message(f'Hashtag nicht registriert. {user.get_displayname()}, es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
 
-def reminder(bot, user, *args):
+def info_hastag(bot, user, call, *args):
+    global hashtag_tweet_list
+    bot.send_message(f'Registrierte #: {" ".join(hashtag_tweet_list)}. Es bleiben nur noch {str(TWEETMAXLENGTH - len(TWEETWELCOME + " " + " ".join(hashtag_tweet_list)))} Zeichen übrig zum tweeten.')
+
+def reminder(bot, user, call, *args):
     with open(tetueSrc.get_string_element("paths", "reminderfile"), "a") as f:
         f.write(f'{datetime.today()}: {" ".join(args)}\n')
+
+def quote(bot, user, call, *args):
+    if len(args) > 1:
+        db.execute("INSERT INTO quotes (UserID, UserName, QuoteDate, Quote) VALUES (?, ?, ?, ?)", user.id, user.get_name(), datetime.today().strftime("%Y-%m-%d %H:%M"), " ".join(args))
+    else:
+        max = db.field("SELECT max(Id) FROM quotes")
+        if max >= 1:
+            quote = db.record("SELECT * FROM quotes WHERE Id = ?", randint(0, max))
+            bot.send_message(f"{quote[3]}: {quote[4]}")
 
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "

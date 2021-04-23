@@ -3,7 +3,7 @@ import misc, economy, games, mod, tetueSrc, user_management, automod
 
 PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
-PREFIXBUTLER = tetueSrc.get_string_element("tea_butler", "prefix_butler")
+CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_tea") + tetueSrc.get_string_list("tea_butler", "cmd_coffee")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
@@ -19,7 +19,8 @@ cmds = [
     #	misc
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
-    Cmd(["liebe","love"], misc.love, "misc"),
+    Cmd(["kluk", "klug", "kl", "smart"], misc.smartcounter, "misc", cooldown=5),
+    Cmd(["liebe","love"], misc.pogopuschel, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
     Cmd(["state", "statement"], misc.state, "misc"),
@@ -28,20 +29,23 @@ cmds = [
     Cmd(["modlove", "ml"], misc.modlove, "misc"),
     Cmd(["hug"], misc.hug, "misc"),
     Cmd(["hype"], misc.hype, "misc"),
+    Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP),
+    Cmd(["quote","qu"], misc.quote, "mod", user_management.Badge.AutoVIP, cooldown=30),
     #	economy
     Cmd(["coins", "money"], economy.coins, "economy"),
 
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
-    Cmd(["competition"], games.competition, "games"),
-    Cmd(["tee", "tea", "kaffee", "coffee"], games.new_tea, "games"),
+    #Cmd(["competition"], games.competition, "games"),
+    Cmd(CMD_TEA_BUTTLER, games.new_tea, "games"),
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
     Cmd(["unwarn", "rmwarn"], mod.remove_warn, "mod"),
     Cmd(["gameon"], mod.set_games_on, "mod"),
     Cmd(["gameoff"], mod.set_games_off, "mod"),
-    Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP)
+    Cmd(["hashdelete","hashd","hd"], mod.delete_hashtag, "mod", user_management.Badge.Moderator),
+    Cmd(["hashinfo","hashi","hi"], misc.info_hastag, "mod", user_management.Badge.Moderator)
 ]
 
 def process(bot, user, message):
@@ -51,14 +55,9 @@ def process(bot, user, message):
         args = message.split(" ")[1:]
         perform(bot, user, cmd, *args)
     elif message.startswith(PREFIXTWE) and user.badge.value <= user_management.Badge.AutoVIP.value:
-        hashtag = message.split(" ")[0].lower()
+        hashtag = message.split(" ")[0]
         args = message.split(" ")[1:]
         misc.register_hastag(bot, user, hashtag, *args)
-    elif message.startswith(PREFIXBUTLER):
-        butler = message.split(" ")[0][len(PREFIXBUTLER):].lower()
-        args = message.split(" ")[1:]
-        if butler != bot.USERNAME: return
-        games.process_tea_butler(bot, user, *args)
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):
@@ -70,7 +69,7 @@ def perform(bot, user, call, *args):
                 if cmd.allowed != True: return # cmd ist gerade nicht erlaubt
                 if user.badge.value > cmd.rights.value: return # Darf user das Kommando überhaupt ausführen
                 if time() > cmd.next_use:
-                    cmd.func(bot, user, *args)
+                    cmd.func(bot, user, call, *args)
                     cmd.next_use = time() + cmd.cooldown
                 else:
                     bot.send_message(f"Cooldown ist noch aktiv. Versuch es in {cmd.next_use-time():,.0f} Sekunde(n) noch einmal.")

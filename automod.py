@@ -20,9 +20,11 @@ def check_spam_cmd(bot, user):
     # Prüft ob der User den cmd Befehl als Spam benutzt. Wenn Anzahl überschritten, bekommt er ein
     # Timeout aber keine Verwarnung eingetragen.
     user.failedCmd += 1
+    print(user.failedCmd)
     if user.failedCmd >= failed_cmd_thr:
         bot.send_message(f"/timeout {user.get_displayname()} 1m")
         bot.send_message(f"{user.get_displayname()}, du hast einen Timeout bekommen, weil du zu häufig falsche Befehle eingegeben hast. Die Timeoutlänge beträgt 1 Minute.")
+        user.failedCmd = 0
         return False
     else:
         return True

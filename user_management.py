@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 import db, tetueSrc
 from enum import Enum, auto
+from random import choice
+
+user_awards = {}
 
 class Badge(Enum):
     Broadcaster = auto()
@@ -38,13 +41,19 @@ class Chatuser:
         self.statusIsActive = False
         self.hunname = hunname
         self.failedCmd = 0
+        self.user_award = get_user_award(self.id)
+        self.displaynames = [name for name in [self.name, self.hunname, self.user_award] if (name != None)]
 
-    # Name wie er im Chat angezeigt wird: Technik_Tueftler
-    def get_displayname(self):
+    def user_welcome(self):
         if not self.hunname:
             return self.name
         else:
             return self.hunname
+
+    # Name wie er im Chat angezeigt wird: Technik_Tueftler
+    def get_displayname(self):
+        return choice(self.displaynames)
+
     # Name in Keinbuchstaben: technik_tueftler
     def get_name(self):
         return self.name.lower()
@@ -58,6 +67,21 @@ class Chatuser:
 
 activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
+
+def update_user_awards():
+    global user_awards
+    # Update Sporthuhn
+    user_awards["Kampfhuhn"] = db.field("SELECT UserID FROM awards WHERE Kampfhuhn = (SELECT MAX(Kampfhuhn) FROM awards)")
+    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) ORDER BY Sporthuhn DESC", user_awards["Kampfhuhn"])
+    user_awards["Quatschhuhn"] = db.field("SELECT UserID FROM users WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY MessagesSent DESC", user_awards["Kampfhuhn"], user_awards["Sporthuhn"])
+
+def get_user_award(user_id):
+    award = None
+    for key, val in user_awards.items():
+        if user_id == val:
+            award = key
+            break
+    return award
 
 def get_active_user(user_id, display_name, badge):
     """

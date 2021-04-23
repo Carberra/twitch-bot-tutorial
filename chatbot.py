@@ -44,9 +44,14 @@ class Bot(SingleServerIRCBot):
             cxn.cap("REQ", f":twitch.tv/{req}")
 
         cxn.join(self.CHANNEL)
+        print("Chatroom joined")
         db.build()
         react.create_hen_name_list()
+        print("Create Hennamelist")
+        user_management.update_user_awards()
+        print("Update awards")
         react.update_KD_Counter(bot)
+        print("Update counter")
         tetueSrc.log_header_info("Stream-Start")
         self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
         print("Online")
@@ -66,6 +71,7 @@ class Bot(SingleServerIRCBot):
             if "custom-reward-id" in tags:
                 react.channel_point(bot, active_user, message, tags["custom-reward-id"])
             elif "bits" in tags:
+                react.update_bits_records(bot, active_user, tags["bits"])
                 react.thank_for_cheer(bot, active_user, tags["bits"])
 
     def send_message(self, message):
@@ -78,6 +84,8 @@ class Bot(SingleServerIRCBot):
         stream_info = {"Game":None}
         try:
             stream_info["Game"] = resp["game"]
+            if stream_info["Game"] != None:
+                db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", stream_info["Game"], 0, 0)
         except Exception:
             pass
         finally:
