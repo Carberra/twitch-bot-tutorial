@@ -48,6 +48,11 @@
         "cmd_tea": ["tee", "tea"],
         "emote_tea": "teaTime"
     },
+    "feat_honor":{
+        "cmd_honor": ["ehre"],
+        "answer_time": 60,
+        "divisor": 3
+    },
     "games": {
         "Science & Technology":{
             "win": "Features",

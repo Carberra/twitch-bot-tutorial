@@ -64,6 +64,8 @@ class Chatuser:
             return False
     def count_message(self):
         self.messages += 1
+    def __eq__(self, other):
+        return self.id == other.id
 
 activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind

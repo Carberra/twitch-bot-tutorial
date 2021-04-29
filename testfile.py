@@ -121,9 +121,19 @@ def main():
     # print(test2)
     # pass
 
-    print(datetime.today())
-    print(datetime.now())
-    print(datetime.today().strftime("%Y-%m-%d %H:%M"))
+    # print(datetime.today())
+    # print(datetime.now())
+    # print(datetime.today().strftime("%Y-%m-%d %H:%M"))
+    temp_1 = 7
+    temp_2 = 5
+    temp_3 = 4
+    if 7 <= (temp_1 or temp_3):
+        print("YEAH")
+    else:
+        print("NÖÖ")
+
+    test = {"lala", "test"}
+    print(", ".join(test))
 
 if __name__ == "__main__":
     main()

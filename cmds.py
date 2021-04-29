@@ -4,6 +4,7 @@ import misc, economy, games, mod, tetueSrc, user_management, automod
 PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
 CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_tea") + tetueSrc.get_string_list("tea_butler", "cmd_coffee")
+CMD_HONOR = tetueSrc.get_string_list("feat_honor", "cmd_honor")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
@@ -17,6 +18,7 @@ class Cmd(object):
 
 cmds = [
     #	misc
+    Cmd(CMD_HONOR, games.honor, "misc"),
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
     Cmd(["kluk", "klug", "kl", "smart"], misc.smartcounter, "misc", cooldown=5),

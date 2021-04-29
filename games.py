@@ -10,9 +10,12 @@ TEA_CMD = tetueSrc.get_string_list("tea_butler", "cmd_tea")
 COFFEE_EMOTE = tetueSrc.get_string_element("tea_butler", "emote_coffee")
 COFFEE_CMD = tetueSrc.get_string_list("tea_butler", "cmd_coffee")
 QUOTESPATH = tetueSrc.get_string_element("tea_butler", "quotes_path")
+HONORANSWERTIME = tetueSrc.get_int_element("feat_honor", "answer_time")
+HONOR_MIN_DIVISOR = tetueSrc.get_string_list("feat_honor", "divisor")
 
 running_competition = None
 running_tea_butler = []
+running_time_processes = []
 
 class Status(Enum):
     Running = auto()
@@ -25,6 +28,48 @@ class tea_butler():
         self.starttime = time.time()
     def get_lifetime(self):
         return time.time() - self.starttime
+
+class honor_process():
+    def __init__(self, nominee_user, bot):
+        self.nominee_user = nominee_user
+        self.starttime = time.time()
+        self.runbot = bot
+        self.active_user = set()
+        self.chatter_count = self.runbot.get_chatroom_info()["chatter_count"]
+    def run(self):
+        if self.get_lifetime() > HONORANSWERTIME:
+            print(f'Lifetime abgelaufen: {self.chatter_count} durch {HONOR_MIN_DIVISOR} = {self.chatter_count//HONOR_MIN_DIVISOR}')
+            if len(self.active_user) >= self.chatter_count//HONOR_MIN_DIVISOR:
+                db.execute("UPDATE users SET EhrenCounter = EhrenCounter + 1 WHERE UserName = ?", self.nominee_user)
+                self.runbot.send_message(f"Ehre geht raus an {self.nominee_user} mit den supportern: {', '.join(self.active_user)}")
+            return False
+        return True
+    def get_lifetime(self):
+        return time.time() - self.starttime
+
+def honor(bot, user, call, *args):
+    if len(args) < 1: return # No nominee user
+    clear_username = args[0].replace("@", "").lower()
+    temp_honor_active = False
+    for run_process in running_time_processes:
+        if isinstance(run_process, honor_process):
+            if run_process.nominee_user == clear_username:
+                run_process.active_user.add(user.get_name())
+                temp_honor_active = True
+                print(run_process.active_user)
+                break
+    if (user.get_name() == bot.owner) and (temp_honor_active == False):
+        nomination = honor_process(clear_username, bot)
+        running_time_processes.append(nomination)
+        nomination.active_user.add(user.get_name())
+        print(running_time_processes)
+
+def run_time_processes():
+    global running_time_processes
+    for process in running_time_processes[:]:
+        if process.run() == False:
+            running_time_processes.remove(process)
+            print(running_time_processes)
 
 def new_tea(bot, user, call, *args):
     quote_raw = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())

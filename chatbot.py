@@ -25,8 +25,8 @@ class Bot(SingleServerIRCBot):
         self.USERNAME = cfg["name"].lower()
         self.CLIENT_ID = cfg["client_id"]
         self.TOKEN = cfg["token"]
-        owner = cfg["owner"]
-        self.CHANNEL = f"#{owner}"
+        self.owner = cfg["owner"]
+        self.CHANNEL = f"#{self.owner}"
         url = f"https://api.twitch.tv/kraken/users?login={self.USERNAME}"
         headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
         resp = get(url, headers=headers).json()
@@ -34,7 +34,7 @@ class Bot(SingleServerIRCBot):
         super().__init__([(self.HOST, self.PORT, f"oauth:{self.TOKEN}")], self.USERNAME, self.USERNAME)
 
         # Init for TeTue-Channel
-        url_owner = f"https://api.twitch.tv/kraken/users?login={owner}"
+        url_owner = f"https://api.twitch.tv/kraken/users?login={self.owner}"
         headers_owner = {"Client-ID": cfg_owner["client_id"], "Accept": "application/vnd.twitchtv.v5+json"}
         resp_owner = get(url_owner, headers=headers_owner).json()
         self.channel_id = resp_owner["users"][0]["_id"]
@@ -92,7 +92,8 @@ class Bot(SingleServerIRCBot):
             return stream_info
 
     def get_chatroom_info(self):
-        url = f"https://tmi.twitch.tv/group/user/technik_tueftler/chatters"
+        # {'_links': {}, 'chatter_count': 5, 'chatters': {'broadcaster': ['technik_tueftler'], 'vips': [], 'moderators': [], 'staff': [], 'admins': [], 'global_mods': [], 'viewers': ['carbob14xyz', 'dialogiktv', 'kopfsalto1337', 'streamelements']}}
+        url = f"https://tmi.twitch.tv/group/user/{self.owner}/chatters"
         resp = get(url).json()
         return resp
 
