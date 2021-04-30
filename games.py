@@ -22,10 +22,17 @@ class Status(Enum):
     Stopped = auto()
     Closed = auto()
 
-class tea_butler():
+class tea_process():
     def __init__(self, user):
         self.user_id = user
         self.starttime = time.time()
+    def run(self, bot, user, message):
+        if self.get_lifetime() > TEAANSWERTIME: return False
+        if self.user_id != user.id: return True
+        if any(word in message.lower() for word in TEAANSWER):
+            bot.send_message(f"{user.get_displayname()}, bitteschön <3")
+            return False
+        return True
     def get_lifetime(self):
         return time.time() - self.starttime
 
@@ -36,9 +43,8 @@ class honor_process():
         self.runbot = bot
         self.active_user = set()
         self.chatter_count = self.runbot.get_chatroom_info()["chatter_count"]
-    def run(self):
+    def run(self, bot, user, message):
         if self.get_lifetime() > HONORANSWERTIME:
-            print(f'Lifetime abgelaufen: {self.chatter_count} durch {HONOR_MIN_DIVISOR} = {self.chatter_count//HONOR_MIN_DIVISOR}')
             if len(self.active_user) >= self.chatter_count//HONOR_MIN_DIVISOR:
                 db.execute("UPDATE users SET EhrenCounter = EhrenCounter + 1 WHERE UserName = ?", self.nominee_user)
                 self.runbot.send_message(f"Ehre geht raus an {self.nominee_user} mit den supportern: {', '.join(self.active_user)}")
@@ -64,32 +70,20 @@ def honor(bot, user, call, *args):
         nomination.active_user.add(user.get_name())
         print(running_time_processes)
 
-def run_time_processes():
+def run_time_processes(bot, user, message):
     global running_time_processes
     for process in running_time_processes[:]:
-        if process.run() == False:
+        if process.run(bot, user, message) == False:
             running_time_processes.remove(process)
-            print(running_time_processes)
 
-def new_tea(bot, user, call, *args):
+def tea(bot, user, call, *args):
     quote_raw = choice(open(tetueSrc.get_string_element("tea_butler", "quotes_path"), encoding='utf-8').readlines())
     quote = quote_raw.replace("\n", "")
     if any(word in call for word in TEA_CMD):
         bot.send_message(f"{TEA_EMOTE} {user.get_displayname()}, bitteschön. {quote}")
     elif any(word in call for word in COFFEE_CMD):
         bot.send_message(f"{COFFEE_EMOTE} {user.get_displayname()}, bitteschön. {quote}")
-
-    running_tea_butler.append(tea_butler(user.id))
-
-def process_tea_butler(bot, user, message):
-    for tea in running_tea_butler:
-        if tea.get_lifetime() > TEAANSWERTIME:
-            running_tea_butler.remove(tea)
-        elif tea.user_id == user.id:
-            if any(word in message.lower() for word in TEAANSWER):
-                bot.send_message(f"{user.get_displayname()}, bitteschön <3")
-                running_tea_butler.remove(tea)
-                break
+    running_time_processes.append(tea_process(user.id))
 
 class Competition:
     def __init__(self):

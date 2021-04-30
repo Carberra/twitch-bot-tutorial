@@ -26,8 +26,7 @@ def process(bot, user, message):
     update_records(bot, user)
     update_loyalty_points(user)
     update_KD_Counter(bot)
-    games.process_tea_butler(bot, user, message)
-    games.run_time_processes()
+    games.run_time_processes(bot, user, message)
 
     if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
