@@ -30,6 +30,8 @@ def abstract_badge(badge_from_string):
     if "ManuVIP" in badge_from_string: return Badge.ManuVIP
     if "AutoVIP" in badge_from_string: return Badge.AutoVIP
     if "Tueftlie" in badge_from_string: return Badge.Tueftlie
+    return Badge.Tueftlie
+
     # ToDo: Gründerabzeichen einfügen, richtig sortieren und alle badges der chatter einfügen
 
 class Chatuser:
@@ -72,10 +74,10 @@ userListToday = [] # User die während des Stream schon mal da waren, sich aber 
 
 def update_user_awards():
     global user_awards
-    # Update Sporthuhn
-    user_awards["Kampfhuhn"] = db.field("SELECT UserID FROM awards WHERE Kampfhuhn = (SELECT MAX(Kampfhuhn) FROM awards)")
-    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) ORDER BY Sporthuhn DESC", user_awards["Kampfhuhn"])
-    user_awards["Quatschhuhn"] = db.field("SELECT UserID FROM users WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY MessagesSent DESC", user_awards["Kampfhuhn"], user_awards["Sporthuhn"])
+    user_awards["Tüftelhuhn"] = db.field("SELECT UserID FROM awards WHERE Tueftelhuhn = (SELECT MAX(Tueftelhuhn) FROM awards)")
+    user_awards["Kampfhuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) ORDER BY Kampfhuhn DESC", user_awards["Tüftelhuhn"])
+    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY Sporthuhn DESC", user_awards["Tüftelhuhn"], user_awards["Kampfhuhn"])
+    user_awards["Quatschhuhn"] = db.field("SELECT UserID FROM users WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY MessagesSent DESC", user_awards["Tüftelhuhn"], user_awards["Kampfhuhn"], user_awards["Sporthuhn"])
 
 def get_user_award(user_id):
     award = None

@@ -27,6 +27,8 @@ def process(bot, user, message):
     update_loyalty_points(user)
     update_KD_Counter(bot)
     games.run_time_processes(bot, user, message)
+    if user.id == "100135110": # StreamElements
+        update_bot_helper(bot, user, message)
 
     if user.statusIsActive == False:
         welcome(bot, user) # Willkommensnachricht für den User
@@ -77,9 +79,9 @@ def welcome(bot, user):
         dict = bot.get_channel_info()
         dict_game = tetueSrc.get_dict("games", dict["Game"])
         if "welcome" in dict_game:
-            bot.send_message(f'Willkommen im Stream {user.user_welcome()}. {dict_game["welcome"]}')
+            bot.send_message(f'Willkommen im Stream {user.user_welcome()}. {dict_game["welcome"]}. Bitte sei nach­sich­tig mit mir, wenn ich deinen Namen falsch ausspreche.')
         else:
-            bot.send_message(f"Willkommen im Stream {user.user_welcome()}.")
+            bot.send_message(f"Willkommen im Stream {user.user_welcome()}. Bitte sei nach­sich­tig mit mir, wenn ich deinen Namen falsch ausspreche.")
 
 def say_goodbye(bot, user):
     if user_management.is_user_id_active(user.id) == True:
@@ -103,16 +105,17 @@ def update_bits_records(bot, user, bits):
         debug_temp = 3
         db.execute("UPDATE category SET Bits = Bits + ? WHERE Category = ?", int(bits), dict["Game"])
         debug_temp = 4
-        if dict["Game"] == "technology":
+        bittype = db.field("SELECT BitType FROM category WHERE Category = ?", dict["Game"])
+        if bittype == "technology":
             debug_temp = 5
             db.execute("UPDATE awards SET Tueftelhuhn = Tueftelhuhn + ? WHERE UserID = ?", int(bits), user.id)
-        elif dict["Game"] == "strategy":
+        elif bittype == "strategy":
             debug_temp = 6
             db.execute("UPDATE awards SET Kampfhuhn = Kampfhuhn + ? WHERE UserID = ?", int(bits), user.id)
         else:
-            tetueSrc.log_event_info(f'Bits können nicht eingetragen werden in für Kategorie {dict["Game"]}. Eigene anlegen?')
+            print(f'Bits {bits} können nicht eingetragen werden für {dict["Game"]}')
     except:
-        print(debug_temp)
+        print(f'Fehlernummer: {debug_temp}')
         tetueSrc.log_event_info(f'Fehler bei update_bits_records() {dict["Game"]} / {bits}. / {type(bits)}')
 
 def update_loyalty_points(user):
@@ -155,10 +158,15 @@ def create_hen_name_list():
     hen_name_list_m = [("".join([prop, "r ", name])) for name in namelist_m for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))]
     hen_name_list = hen_name_list_f + hen_name_list_m
 
+def update_bot_helper(bot, user, message):
+    # Events die nicht über eine Message registriert werden. Hier hilft StreamElements, da der auf den IRC horcht
+    if "raided" in message:
+         # Beispiel: Raider just raided the channel with 4 viewers PogChamp
+        temp_message = message.split()
+        id = db.field("SELECT UserID FROM users WHERE UserName = ?", temp_message[0].lower()) # Check if raider exist and has a entry in database
+        db.execute("INSERT INTO raids (UserID, UserName, RaidDate, Raiders) VALUES (?, ?, ?, ?)", id, temp_message[0].lower(), datetime.today().strftime("%Y-%m-%d %H:%M"), int(temp_message[6]))
+
 def main():
-    global hen_name_list
-    create_hen_name_list()
-    print(hen_name_list)
     pass
 
 if __name__ == "__main__":

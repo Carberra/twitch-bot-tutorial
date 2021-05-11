@@ -18,7 +18,9 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS category (
 	Category text PRIMARY KEY,
 	Wins integer DEFAULT 0,
-	Loses integer DEFAULT 0
+	Loses integer DEFAULT 0,
+	BitType text DEFAULT "channel",
+	Bits integer DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS awards (
@@ -38,4 +40,11 @@ CREATE TABLE IF NOT EXISTS quotes (
 	UserName text,
 	QuoteDate text,
 	Quote text
+);
+
+CREATE TABLE IF NOT EXISTS raids (
+	UserID text,
+	UserName text,
+	RaidDate text,
+	Raiders integer DEFAULT 0
 );

@@ -27,7 +27,8 @@
     "autovip": {
         "badgeslist": ["Broadcaster", "Moderator", "ManuVIP", "AutoVIP", "Tueftlie"],
         "list_filler_sign": [".", " ", "!"],
-        "num_max_auto_vips": 5,
+        "num_max_auto_vips_loyalty": 5,
+        "num_max_auto_vips_raid": 1,
         "num_loy_point_1": 1,
         "num_loy_point_2": 50,
         "num_loy_point_3": 100
@@ -78,6 +79,11 @@
             "win": "Happy",
             "lose": "Sad",
             "welcome": "Lass uns en bissel quatschen."
+        },
+        "Port Royale 3: Pirates & Merchants":{
+            "win": "Kills",
+            "lose": "Deads",
+            "welcome": "Klar Schiff machen du Landhuhn."
         }
     }
 }
