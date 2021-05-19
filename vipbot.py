@@ -54,7 +54,7 @@ class VipBot(SingleServerIRCBot):
             time.sleep(0.5)
         print("Neue VIPs: " + str(vip_user))
         # Set all AutoVips based on raid
-        vip_user = db.column("SELECT users.UserName FROM users JOIN raids ON raids.UserID = users.UserID WHERE users.Warnings = 0 GROUP BY (users.UserID) ORDER BY count(raids.UserID) DESC, sum(raids.Raiders) DESC LIMIT ?", tetueSrc.get_int_element("autovip", "num_max_auto_vips_raid"))
+        vip_user = db.column("SELECT users.UserName FROM users JOIN raids ON raids.UserID = users.UserID WHERE users.Warnings = 0 AND users.Badges = ? GROUP BY (users.UserID) ORDER BY count(raids.UserID) DESC, sum(raids.Raiders) DESC LIMIT ?", "Tueftlie", tetueSrc.get_int_element("autovip", "num_max_auto_vips_raid"))
         for element in vip_user:
             self.send_message(f"/vip {element}")
             db.execute("UPDATE users SET Badges = ? WHERE UserName = ?", "AutoVIP", element)
