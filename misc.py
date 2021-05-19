@@ -31,12 +31,6 @@ def hug(bot, user, call, *args):
 def pogopuschel(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
 
-def hype(bot, user, *args):
-     bot.send_message(tetueSrc.get_string_element("outputtext", "hype"))
-
-def modlove(bot, user, *args):
-    bot.send_message(tetueSrc.get_string_element("outputtext", "modlove"))
-
 def lostcounter(bot, user, call, *args):
     if len(args) < 1:
         db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", user.get_name())
@@ -51,9 +45,8 @@ def smartcounter(bot, user, call, *args):
     if user_management.is_user_name_active(clear_username) != True or clear_username == user.get_name(): return
     db.execute("UPDATE users SET KlugCounter = KlugCounter + 1 WHERE UserName = ?", clear_username.lower())
 
-def state(bot, user, call, *args):
-    if len(args) < 1: return
-    output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
+def outputtext(bot, user, call, *args):
+    output_text = tetueSrc.get_string_element("outputtext", call.lower())
     if output_text == "": return
     bot.send_message(output_text)
 

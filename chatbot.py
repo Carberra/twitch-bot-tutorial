@@ -17,6 +17,7 @@ import user_management, db, react, automod, cmds
 read_successful, cfg = tetueSrc.get_configuration("bot")
 read_successful, cfg_owner = tetueSrc.get_configuration("vipbot")
 
+
 class Bot(SingleServerIRCBot):
     def __init__(self):
         # Init for Chat-Bot

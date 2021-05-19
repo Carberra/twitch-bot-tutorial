@@ -12,12 +12,15 @@
         "reminderfile": "files/reminder.txt"
     },
     "outputtext": {
-        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
-        "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
-        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp",
-        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 001C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "text_cmd": ["github", "python", "ide", "challenge", "discord", "wer", "modlove", "hype"],
+        "github": "https://github.com/Technik-Tueftler/",
         "python": "TeTü benutzt Python gerne und oft in seinen Projekten. Weil es so einfach und strukturiert ist, bleibt ihm jede Menge Kreativität übrig.",
-        "github": "https://github.com/Technik-Tueftler/"
+        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
+        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 002C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "discord": "Der Discord ist noch nicht bereit für euch Tüftlies.",
+        "wer": "Aktuell bin ich alleine. Sad TeTü",
+        "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
+        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp"
     },
     "automod": {
         "list_badwords": ["bigfollowscom", "bigfollowcom"],

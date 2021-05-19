@@ -5,6 +5,7 @@ PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
 CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_tea") + tetueSrc.get_string_list("tea_butler", "cmd_coffee")
 CMD_HONOR = tetueSrc.get_string_list("feat_honor", "cmd_honor")
+CMD_OUTPUTTEXT = tetueSrc.get_string_list("outputtext", "text_cmd")
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
@@ -18,6 +19,7 @@ class Cmd(object):
 
 cmds = [
     #	misc
+    Cmd(CMD_OUTPUTTEXT, misc.outputtext, "misc"),
     Cmd(CMD_HONOR, games.honor, "misc"),
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
@@ -25,12 +27,9 @@ cmds = [
     Cmd(["liebe","love"], misc.pogopuschel, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
-    Cmd(["state", "statement"], misc.state, "misc"),
     Cmd(["win"], misc.win, "misc", cooldown=30),
     Cmd(["lose"], misc.lose, "misc", cooldown=30),
-    Cmd(["modlove", "ml"], misc.modlove, "misc"),
     Cmd(["hug"], misc.hug, "misc"),
-    Cmd(["hype"], misc.hype, "misc"),
     Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP),
     Cmd(["quote","qu"], misc.quote, "mod", user_management.Badge.AutoVIP, cooldown=30),
     #	economy
@@ -78,4 +77,5 @@ def perform(bot, user, call, *args):
 
                 return
         if automod.check_spam_cmd(bot, user) == True:
-            bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
+            # bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
+            pass
