@@ -34,6 +34,7 @@ cmds = [
     Cmd(["quote","qu"], misc.quote, "mod", user_management.Badge.AutoVIP, cooldown=30),
     #	economy
     Cmd(["coins", "money"], economy.coins, "economy"),
+    Cmd(["stats"], economy.statistics, "economy"),
 
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
