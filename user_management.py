@@ -135,7 +135,14 @@ def set_user_inactive(user_id):
     for element in activeUserList:
         if element.id == user_id:
             activeUserList.remove(element)
-            element.statusIsActive  = False
+            element.statusIsActive = False
+            return
+
+def remove_user_from_active_list(user_id):
+    for element in activeUserList[:]:
+        if element.id == user_id:
+            activeUserList.remove(element)
+            userListToday.remove(element)
             return
 
 def get_user_with_id_from_list(list, user_id):
