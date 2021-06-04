@@ -10,6 +10,6 @@ venv/
 .idea/
 
 # private data
-# *.priv
-# *.log
-# *.txt
+*.priv
+*.log
+*.txt
