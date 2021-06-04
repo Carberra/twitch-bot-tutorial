@@ -1,2 +1,0 @@
-Features: 14
-Bugs: 16
