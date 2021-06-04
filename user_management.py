@@ -69,15 +69,42 @@ class Chatuser:
     def __eq__(self, other):
         return self.id == other.id
 
+
 activeUserList = [] # Aktive User im Chat
 userListToday = [] # User die während des Stream schon mal da waren, sich aber wieder abgemeldet haben bzw. in den Lurch gegangen sind
 
+
 def update_user_awards():
     global user_awards
-    user_awards["Tüftelhuhn"] = db.field("SELECT UserID FROM awards WHERE Tueftelhuhn = (SELECT MAX(Tueftelhuhn) FROM awards)")
-    user_awards["Kampfhuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) ORDER BY Kampfhuhn DESC", user_awards["Tüftelhuhn"])
-    user_awards["Sporthuhn"] = db.field("SELECT UserID FROM awards WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY Sporthuhn DESC", user_awards["Tüftelhuhn"], user_awards["Kampfhuhn"])
-    user_awards["Quatschhuhn"] = db.field("SELECT UserID FROM users WHERE (UserID IS NOT ?) AND (UserID IS NOT ?) AND (UserID IS NOT ?) ORDER BY MessagesSent DESC", user_awards["Tüftelhuhn"], user_awards["Kampfhuhn"], user_awards["Sporthuhn"])
+    liste_award_db = ["Tueftelhuhn", "Kampfhuhn", "Sporthuhn", "MessagesSent", "Wasserhuhn"]
+    liste_award_spell = ["Tüftelhuhn", "Kampfhuhn", "Sporthuhn", "Quatschhuhn", "Feuerwehrhuhn"]
+    liste_id = []
+
+    query_award_start = "SELECT UserID FROM awards "
+    query_users_start = "SELECT UserID FROM users "
+    query_order = "ORDER BY %s DESC"
+    query_where = "WHERE (UserID IS NOT %s) "
+    query_where_and = "AND (UserID IS NOT %s)"
+
+    # Index 0
+    query = query_award_start + query_order
+    liste_id.append(db.field(query % (liste_award_db[0])))
+    # Index 1
+    query = query_award_start + query_where + query_order
+    liste_id.append(db.field(query % (liste_id[0], liste_award_db[1])))
+    # Index 2
+    query = query_award_start + query_where + query_where_and + query_order
+    liste_id.append(db.field(query % (liste_id[0], liste_id[1], liste_award_db[2])))
+    # Index 3
+    query = query_users_start + query_where + query_where_and + query_where_and + query_order
+    liste_id.append(db.field(query % (liste_id[0], liste_id[1], liste_id[2], liste_award_db[3])))
+    # Index 4
+    query = query_award_start + query_where + query_where_and + query_where_and + query_where_and + query_order
+    liste_id.append(db.field(query % (liste_id[0], liste_id[1], liste_id[2], liste_id[3], liste_award_db[4])))
+
+    for index in range(len(liste_award_db)):
+        user_awards[liste_award_spell[index]] = liste_id[index]
+
 
 def get_user_award(user_id):
     award = None
@@ -87,6 +114,7 @@ def get_user_award(user_id):
             break
     return award
 
+
 def get_active_user(user_id, display_name, badge):
     """
     Diese Funktion prüft, ob der User schon in einer der Listen ist und gibt das Objekt zurück.
@@ -95,17 +123,13 @@ def get_active_user(user_id, display_name, badge):
     """
     user_active_found, user = get_user_with_id_from_list(activeUserList, user_id)
     if user_active_found == True: return user
-    #print("User war nicht aktiv")
     user_active_found, user = get_user_with_id_from_list(userListToday, user_id)
     if user_active_found == True:
-        #print("User war inaktiv")
         set_user_active(user)
         return user
     else:
-        #print("User war nicht inaktiv")
         user_db = db.record("SELECT * FROM users WHERE UserID = ?", user_id)
         if user_db == None: # Check if user not in DB
-            #print("User war nicht in der Datenbank")
             new_user = Chatuser(user_id, display_name, abstract_badge(badge), "")
             set_user_active(new_user)
             add_user_db(new_user)
@@ -116,6 +140,7 @@ def get_active_user(user_id, display_name, badge):
             old_user = Chatuser(user_id, display_name, abstract_badge(user_db[10]), user_db[11])
             set_user_active(old_user)
             return old_user
+
 
 def set_user_active(user):
     """
@@ -206,11 +231,15 @@ def main():
     # print('Time: ', stop - start)
     # henname = choice([("".join([prop, " ", name])) for name in namelist for prop in proplist if (name.lower().startswith(prop[:1])and("".join([prop, " ", name]) not in hennamelist))])
     # print(henname)
-    user = Chatuser(555, "test", Badge.Tueftlie, "Huhn")
-    print(user.badge)
-    if Badge.Tueftlie.value == Badge.Broadcaster.value:
-        print("Jopa")
-    else:
-        print("nope")
+#    user = Chatuser(555, "test", Badge.Tueftlie, "Huhn")
+#    print(user.badge)
+#    if Badge.Tueftlie.value == Badge.Broadcaster.value:
+#        print("Jopa")
+#    else:
+#        print("nope")
+
+    update_user_awards()
+    print(user_awards)
+
 if __name__ == "__main__":
     main()

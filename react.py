@@ -21,6 +21,7 @@ LOYALITYPOINT_2 = tetueSrc.get_int_element("autovip", "num_loy_point_2")
 LOYALITYPOINT_3 = tetueSrc.get_int_element("autovip", "num_loy_point_3")
 # Channel points
 CP_LIEGESTUETZE = tetueSrc.get_string_element("general", "cp_liege_stue")
+CP_TRINKWAS = tetueSrc.get_string_element("general", "cp_wasser_marsch")
 
 def process(bot, user, message):
     update_records(bot, user)
@@ -42,6 +43,8 @@ def process(bot, user, message):
 
 def channel_point(bot, user, message, rewardid):
     global hen_name_list
+    print(rewardid)
+    db.execute("UPDATE users SET UserName = ? WHERE UserID = ?", user.get_name(), user.id)
     if rewardid == HENNAME:
         henname = choice(hen_name_list)
         hen_name_list.remove(henname) 
@@ -51,6 +54,9 @@ def channel_point(bot, user, message, rewardid):
     elif rewardid == CP_LIEGESTUETZE:
         db.execute("INSERT OR IGNORE INTO awards (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
         db.execute("UPDATE awards SET Sporthuhn = Sporthuhn + ? WHERE UserID = ?", 1, user.id)
+    elif rewardid == CP_TRINKWAS:
+        db.execute("INSERT OR IGNORE INTO awards (UserID, UserName) VALUES (?, ?)", user.id, user.get_name())
+        db.execute("UPDATE awards SET WasserHuhn = WasserHuhn + ? WHERE UserID = ?", 1, user.id)
 
 def update_records(bot, user):
     # Zähle Nachrichten für lokalen User

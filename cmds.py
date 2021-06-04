@@ -7,6 +7,7 @@ CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_tea") + tetueSrc.g
 CMD_HONOR = tetueSrc.get_string_list("feat_honor", "cmd_honor")
 CMD_OUTPUTTEXT = tetueSrc.get_string_list("outputtext", "text_cmd")
 
+
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
         self.callables = callables
@@ -16,6 +17,7 @@ class Cmd(object):
         self.allowed = True
         self.function_info = function_info
         self.rights = rights
+
 
 cmds = [
     #	misc
@@ -51,6 +53,7 @@ cmds = [
     Cmd(["hashinfo","hashi","hi"], misc.info_hastag, "mod", user_management.Badge.Moderator)
 ]
 
+
 def process(bot, user, message):
     if message.startswith(PREFIXMSG):
         cmd = message.split(" ")[0][len(PREFIXMSG):].lower()
@@ -61,6 +64,7 @@ def process(bot, user, message):
         hashtag = message.split(" ")[0]
         args = message.split(" ")[1:]
         misc.register_hastag(bot, user, hashtag, *args)
+
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):

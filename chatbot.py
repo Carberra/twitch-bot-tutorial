@@ -8,7 +8,6 @@
 # Some code in this file is licensed under the Apache License, Version 2.0.
 # http://aws.amazon.com/apache2.0/
 
-import sys
 from irc.bot import SingleServerIRCBot
 from requests import get
 import tetueSrc
@@ -61,6 +60,7 @@ class Bot(SingleServerIRCBot):
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
+        print(event)
         tetueSrc.log_event_info(tags)
         tetueSrc.log_event_info(message)
 
