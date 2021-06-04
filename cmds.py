@@ -4,6 +4,9 @@ import misc, economy, games, mod, tetueSrc, user_management, automod
 PREFIXMSG = tetueSrc.get_string_element("general", "prefix_msg")
 PREFIXTWE = tetueSrc.get_string_element("general", "prefix_twe")
 CMD_TEA_BUTTLER = tetueSrc.get_string_list("tea_butler", "cmd_tea") + tetueSrc.get_string_list("tea_butler", "cmd_coffee")
+CMD_HONOR = tetueSrc.get_string_list("feat_honor", "cmd_honor")
+CMD_OUTPUTTEXT = tetueSrc.get_string_list("outputtext", "text_cmd")
+
 
 class Cmd(object):
     def __init__(self, callables, func, function_info, rights = user_management.Badge.Tueftlie, cooldown=0):
@@ -15,29 +18,31 @@ class Cmd(object):
         self.function_info = function_info
         self.rights = rights
 
+
 cmds = [
     #	misc
+    Cmd(["delete"], games.stats_delete, "games"),
+    Cmd(CMD_OUTPUTTEXT, misc.outputtext, "misc"),
+    Cmd(CMD_HONOR, games.honor, "misc"),
     Cmd(["shutdown"], misc.shutdown, "misc"),
     Cmd(["lost", "lostcounter"], misc.lostcounter, "misc", cooldown=5),
     Cmd(["kluk", "klug", "kl", "smart"], misc.smartcounter, "misc", cooldown=5),
     Cmd(["liebe","love"], misc.pogopuschel, "misc"),
     Cmd(["lurch", "lurk", "lörk"], misc.lurk, "misc"),
     Cmd(["bye"], misc.bye, "misc"),
-    Cmd(["state", "statement"], misc.state, "misc"),
     Cmd(["win"], misc.win, "misc", cooldown=30),
     Cmd(["lose"], misc.lose, "misc", cooldown=30),
-    Cmd(["modlove", "ml"], misc.modlove, "misc"),
     Cmd(["hug"], misc.hug, "misc"),
-    Cmd(["hype"], misc.hype, "misc"),
     Cmd(["reminder", "rm"], misc.reminder, "mod", user_management.Badge.ManuVIP),
     Cmd(["quote","qu"], misc.quote, "mod", user_management.Badge.AutoVIP, cooldown=30),
     #	economy
     Cmd(["coins", "money"], economy.coins, "economy"),
+    Cmd(["stats"], economy.statistics, "economy"),
 
     #	games
     Cmd(["coinflip", "flip"], games.coinflip, "games", cooldown=5),
     #Cmd(["competition"], games.competition, "games"),
-    Cmd(CMD_TEA_BUTTLER, games.new_tea, "games"),
+    Cmd(CMD_TEA_BUTTLER, games.tea, "games"),
 
     #	mod
     Cmd(["warn"], mod.warn, "mod"),
@@ -47,6 +52,7 @@ cmds = [
     Cmd(["hashdelete","hashd","hd"], mod.delete_hashtag, "mod", user_management.Badge.Moderator),
     Cmd(["hashinfo","hashi","hi"], misc.info_hastag, "mod", user_management.Badge.Moderator)
 ]
+
 
 def process(bot, user, message):
     if message.startswith(PREFIXMSG):
@@ -58,6 +64,7 @@ def process(bot, user, message):
         hashtag = message.split(" ")[0]
         args = message.split(" ")[1:]
         misc.register_hastag(bot, user, hashtag, *args)
+
 
 def perform(bot, user, call, *args):
     if call in ("help", "commands", "cmds"):
@@ -76,4 +83,5 @@ def perform(bot, user, call, *args):
 
                 return
         if automod.check_spam_cmd(bot, user) == True:
-            bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
+            # bot.send_message(f"{user.get_displayname()}, \"{call}\" ist kein gültiger Befehl.")
+            pass

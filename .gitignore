@@ -6,6 +6,9 @@ __pycache__
 .vscode/
 venv/
 
+# pycharm
+.idea/
+
 # private data
 *.priv
 *.log

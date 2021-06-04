@@ -28,14 +28,10 @@ def hug(bot, user, call, *args):
         if user_management.is_user_name_active(clear_username.lower()) == True:
             bot.send_message(f"{user.get_displayname()} nimmt {clear_username} ganz fest in den Arm <3")
 
+
 def pogopuschel(bot, user, *args):
     bot.send_message(40*"VirtualHug ")
 
-def hype(bot, user, *args):
-     bot.send_message(tetueSrc.get_string_element("outputtext", "hype"))
-
-def modlove(bot, user, *args):
-    bot.send_message(tetueSrc.get_string_element("outputtext", "modlove"))
 
 def lostcounter(bot, user, call, *args):
     if len(args) < 1:
@@ -45,23 +41,26 @@ def lostcounter(bot, user, call, *args):
         if user_management.is_user_name_active(clear_username) == True:
             db.execute("UPDATE users SET LostCounter = LostCounter + 1 WHERE UserName = ?", clear_username.lower())
 
+
 def smartcounter(bot, user, call, *args):
     if len(args) < 1: return
     clear_username = args[0].replace("@", "").lower()
     if user_management.is_user_name_active(clear_username) != True or clear_username == user.get_name(): return
     db.execute("UPDATE users SET KlugCounter = KlugCounter + 1 WHERE UserName = ?", clear_username.lower())
 
-def state(bot, user, call, *args):
-    if len(args) < 1: return
-    output_text = tetueSrc.get_string_element("outputtext", args[0].lower())
+
+def outputtext(bot, user, call, *args):
+    output_text = tetueSrc.get_string_element("outputtext", call.lower())
     if output_text == "": return
     bot.send_message(output_text)
+
 
 def win(bot, user, *args):
     dict = bot.get_channel_info()
     db.execute("INSERT OR IGNORE INTO category (Category, Wins, Loses) VALUES (?, ?, ?)", dict["Game"], 0, 0)
     db.execute("UPDATE category SET Wins = Wins + 1 WHERE Category = ?", dict["Game"])
     react.update_KD_Counter(bot)
+
 
 def lose(bot, user, *args):
     dict = bot.get_channel_info()
@@ -98,6 +97,7 @@ def quote(bot, user, call, *args):
 def help(bot, prefix, cmds):
     bot.send_message(f"Registrierte Befehle: "
         + ", ".join([f"{prefix}{cmd.callables[0]}" for cmd in sorted(cmds, key=lambda cmd: cmd.callables[0])]))
+
 
 def shutdown(bot, user, *args):
     if user.get_name() == OWNER:

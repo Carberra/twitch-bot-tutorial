@@ -4,20 +4,28 @@
         "hashtag_min_size": 3,
         "hashtag_max_length": 280,
         "tweet_welcome": "Danke für den tollen Stream Tüftlies 🐔. Das waren die Highlights heute:",
-        "cp_liege_stue": "abca8dda-8b7d-420c-b6ae-a05ca15b3a04"
+        "cp_liege_stue": "abca8dda-8b7d-420c-b6ae-a05ca15b3a04",
+        "answer_time": 30,
+        "cp_wasser_marsch": "d2100e8b-4e82-4872-a743-6a00c36c8f5a"
     },
-    "paths": { 
+    "paths": {
+        "database_gen": "./files/database.db",
+        "database": "//NASPIE/Entwicklung/workspace/TeTueSecrets/files/database.db",
         "kd": "files/KD.txt",
         "logfile": "files/debug.log",
         "reminderfile": "files/reminder.txt"
     },
     "outputtext": {
-        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
-        "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
-        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp",
-        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 001C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "text_cmd": ["github", "python", "ide", "challenge", "discord", "wer", "modlove", "hype"],
+        "github": "https://github.com/Technik-Tueftler/",
         "python": "TeTü benutzt Python gerne und oft in seinen Projekten. Weil es so einfach und strukturiert ist, bleibt ihm jede Menge Kreativität übrig.",
-        "github": "https://github.com/Technik-Tueftler/"
+        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
+        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 002C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "discord": "https://discord.gg/drVc8jeM68",
+        "dc": "https://discord.gg/drVc8jeM68",
+        "wer": "Aktuell bin ich alleine. Sad TeTü",
+        "modlove": "PETTHEMODS Danke, dass ihr da seid, liebe Mods! Auf euch ist immer Verlass! VirtualHug",
+        "hype": "KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp KAPOW PogChamp"
     },
     "automod": {
         "list_badwords": ["bigfollowscom", "bigfollowcom"],
@@ -27,7 +35,8 @@
     "autovip": {
         "badgeslist": ["Broadcaster", "Moderator", "ManuVIP", "AutoVIP", "Tueftlie"],
         "list_filler_sign": [".", " ", "!"],
-        "num_max_auto_vips": 5,
+        "num_max_auto_vips_loyalty": 5,
+        "num_max_auto_vips_raid": 1,
         "num_loy_point_1": 1,
         "num_loy_point_2": 50,
         "num_loy_point_3": 100
@@ -47,6 +56,11 @@
         "emote_coffee": "CoffeeTime",
         "cmd_tea": ["tee", "tea"],
         "emote_tea": "teaTime"
+    },
+    "feat_honor":{
+        "cmd_honor": ["ehre"],
+        "answer_time": 60,
+        "divisor": 3
     },
     "games": {
         "Science & Technology":{
@@ -73,6 +87,21 @@
             "win": "Happy",
             "lose": "Sad",
             "welcome": "Lass uns en bissel quatschen."
+        },
+        "Outcast: Second Contact":{
+            "win": "Kills",
+            "lose": "Deads",
+            "welcome": "Auf nach Adelpha mit uns."
+        },
+        "Port Royale 3: Pirates & Merchants":{
+            "win": "Kills",
+            "lose": "Deads",
+            "welcome": "Klar Schiff machen du Landhuhn."
+        },
+        "BioShock":{
+            "win": "Kills",
+            "lose": "Deads",
+            "welcome": "Lass uns den Parasit vernichten."
         }
     }
 }

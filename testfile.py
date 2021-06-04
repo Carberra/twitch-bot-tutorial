@@ -7,7 +7,8 @@ import logging
 import json
 import tetueSrc
 import user_management
-from datetime import datetime
+from datetime import datetime, timedelta
+import db2, db
 
 # read_successful, cfg = tetueSrc.get_configuration("vipbot")
 # USERNAME = cfg["name"].lower()
@@ -16,6 +17,10 @@ from datetime import datetime
 
 with open ('files/config.json', encoding='utf-8') as file:
     data = json.load(file)
+
+def coins(user, *args):
+    coins = db2.field("SELECT Coins FROM users WHERE UserID = ?", user)
+    print(f"100135110, du besitzt {coins:,} coins.")
 
 def main():
     # Get Channel
@@ -121,9 +126,36 @@ def main():
     # print(test2)
     # pass
 
-    print(datetime.today())
-    print(datetime.now())
-    print(datetime.today().strftime("%Y-%m-%d %H:%M"))
+    # print(datetime.today())
+    # print(datetime.now())
+    # print(datetime.today().strftime("%Y-%m-%d %H:%M"))
+
+    # Prufe ob man mit mehreren zugriffen auf die Datenbank kommt
+    # coins("206130928")
+    # coinlock = (datetime.today() + timedelta(seconds=60)).strftime("%Y-%m-%d %H:%M:%S")
+    # db2.execute("UPDATE users SET Coins = Coins + ?, CoinLock = ? WHERE UserID = ?", 1, coinlock, "206130928")
+    # coins("206130928")
+    # db2.commit()
+    # db2.close()
+    """
+    vip_user = db.records("SELECT UserID, MessagesSent, CountLogins, row_number() OVER(ORDER BY Warnings ASC, CountLogins DESC, LoyaltyPoints DESC, Coins DESC) as NoId FROM users WHERE UserID != 206130928 AND UserID != 100135110")
+    print(vip_user)
+    for element in vip_user:
+        if element[0] == "415494080":
+            print(f'Da ist er an Position: {element[3]}')
+            break
+    """
+    list = ["hallo", "test"]
+    element = "test"
+    if element not in list: return
+    print("yes")
+
+    for element in range(0, 21, 2):
+        print(element)
+
+    print(7+6)
+
+    print("7"+"6")
 
 if __name__ == "__main__":
     main()
