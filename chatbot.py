@@ -38,7 +38,7 @@ class Bot(SingleServerIRCBot):
         headers_owner = {"Client-ID": cfg_owner["client_id"], "Accept": "application/vnd.twitchtv.v5+json"}
         resp_owner = get(url_owner, headers=headers_owner).json()
         self.channel_id = resp_owner["users"][0]["_id"]
-    
+
     def on_welcome(self, cxn, event):
         for req in ("membership", "tags", "commands"):
             cxn.cap("REQ", f":twitch.tv/{req}")
@@ -56,11 +56,12 @@ class Bot(SingleServerIRCBot):
         self.send_message("En Gude Tüftlies " + tetueSrc.get_string_element("hunname", "icon"))
         print("Online")
 
+
     @db.with_commit
     def on_pubmsg(self, cxn, event):
         tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
         message = event.arguments[0]
-        print(event)
+        #print(event)
         tetueSrc.log_event_info(tags)
         tetueSrc.log_event_info(message)
 
@@ -97,6 +98,12 @@ class Bot(SingleServerIRCBot):
         url = f"https://tmi.twitch.tv/group/user/{self.owner}/chatters"
         resp = get(url).json()
         return resp
+
+    def get_extern_channel_info(self, user):
+        url = f"https://api.twitch.tv/kraken/users?login={user}"
+        headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
+        return get(url, headers=headers).json()
+
 
 if __name__ == "__main__":
     bot = Bot()

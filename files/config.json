@@ -19,8 +19,8 @@
         "text_cmd": ["github", "python", "ide", "challenge", "discord", "wer", "modlove", "hype"],
         "github": "https://github.com/Technik-Tueftler/",
         "python": "TeTü benutzt Python gerne und oft in seinen Projekten. Weil es so einfach und strukturiert ist, bleibt ihm jede Menge Kreativität übrig.",
-        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich mich für VS Code entschieden habe. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
-        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 002C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
+        "ide": "Das Thema IDE haben wir schon durchdiskutiert und hat uns zu viel Zeit gekostet. Es gibt verschiedene Gründe, warum ich von Atom über VS Code zu PyCharm gekommen bin. Jede IDE hat seine Liebhaber und Daseinsberechtigung VirtualHug",
+        "challenge": "Ich will zusammen mit euch verschiedene Probleme mit Hilfe von Python lösen. Die aktuelle Challenge ist die 003C. Für weitere Informationen gehe auf https://github.com/Technik-Tueftler/TeTueChallenge . Dort sind alle Regeln und die aktuelle Aufgabe aufgeschrieben.",
         "discord": "https://discord.gg/drVc8jeM68",
         "dc": "https://discord.gg/drVc8jeM68",
         "wer": "Aktuell bin ich alleine. Sad TeTü",
@@ -102,6 +102,14 @@
             "win": "Kills",
             "lose": "Deads",
             "welcome": "Lass uns den Parasit vernichten."
+        }
+    },
+    "shoutout": {
+        "der_dennis3d":{
+            "bio": "Einer meiner lieblings Ingenieure. Ein Herz und eine Seele mit seiner treuen Begleiterin Renate. Ein wahrer Künstler im 3D-Design und Erschaffer meiner coolen Rennautos. Tüftlies, schaut unbedingt bei ihm vorbei: twitch.tv/der_dennis3d. Eine Perle auf Twitch und TeTü-Geprüft!"
+        },
+        "jvpeek": {
+            "bio": "Der Mann mit dem Telefon und ein Meister der Illusionen mit elektrischen Brillen und Masken. Tüftlies, wenn er nicht gerade Lötunfälle provoziert oder Raidspiele manipuliert, baut er richtig geilen Kram auf Twitch. Schaut unbedingt bei ihm vorbei: twitch.tv/jvpeek. Eine Perle auf Twitch und TeTü-Geprüft!"
         }
     }
 }

@@ -45,6 +45,7 @@ cmds = [
     Cmd(CMD_TEA_BUTTLER, games.tea, "games"),
 
     #	mod
+    Cmd(["shoutout", "so"], mod.shoutout, "mod"),
     Cmd(["warn"], mod.warn, "mod"),
     Cmd(["unwarn", "rmwarn"], mod.remove_warn, "mod"),
     Cmd(["gameon"], mod.set_games_on, "mod"),
