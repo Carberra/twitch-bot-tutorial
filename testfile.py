@@ -8,7 +8,9 @@ import json
 import tetueSrc
 import user_management
 from datetime import datetime, timedelta
-import db2, db
+import db
+import win32api
+import win32com.client
 
 # read_successful, cfg = tetueSrc.get_configuration("vipbot")
 # USERNAME = cfg["name"].lower()
@@ -18,8 +20,19 @@ import db2, db
 with open ('files/config.json', encoding='utf-8') as file:
     data = json.load(file)
 
+
+class Test:
+    def __init__(self, number):
+        self.number = number
+
+    def __eq__(self, other):
+        return self.number == other.number
+
+    def __hash__(self):
+        return hash(self.number)
+
 def coins(user, *args):
-    coins = db2.field("SELECT Coins FROM users WHERE UserID = ?", user)
+    coins = db.field("SELECT Coins FROM users WHERE UserID = ?", user)
     print(f"100135110, du besitzt {coins:,} coins.")
 
 def main():
@@ -144,7 +157,7 @@ def main():
         if element[0] == "415494080":
             print(f'Da ist er an Position: {element[3]}')
             break
-    """
+
     list = ["hallo", "test"]
     element = "test"
     if element not in list: return
@@ -156,6 +169,32 @@ def main():
     print(7+6)
 
     print("7"+"6")
+    """
+    """    
+    list_a = []
+    list_b = set()
+    list_c = set()
+    list1 = [Test(1), Test(1), Test(2), Test(3)]
+    list2 = [Test(1), Test(1), Test(2), Test(3)]
+    list3 = [Test(1), Test(1), Test(2), Test(3)]
+    for element in list1:
+        if element not in list_a:
+            list_a.append(element)
+
+    for element in list2:
+        list_b.add(element)
+
+    list_c = {element for element in list3 if element not in list_c}
+    for element in list_c:
+        print(element.number)
+    """
+
+    shell = win32com.client.Dispatch("WScript.Shell")
+    win32api.Sleep(1500)
+    print("start")
+    shell.SendKeys("%^E")
+    print("ende")
+
 
 if __name__ == "__main__":
     main()

@@ -30,7 +30,7 @@ def set_games_off(bot, user, call, *args):
 def shoutout(bot, user, call, target=None, *args):
     if user.get_mod_rights() == False and user.get_name() != OWNER: return
     if target is None: return
-    clear_username = target.replace("@", "")
+    clear_username = target.replace("@", "").lower()
     channel_url = f'twitch.tv/{clear_username}'
     dict_channel = tetueSrc.get_dict("shoutout", clear_username)
     if dict_channel:
